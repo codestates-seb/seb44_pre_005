@@ -1,4 +1,4 @@
-package com5.preproject;
+package com.pre.preproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
