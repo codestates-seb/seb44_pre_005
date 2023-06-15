@@ -34,8 +34,16 @@ public class Member {
     @Column
     private String phone;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    /*
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<>  questions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<> answers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cas)
+*/
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
 
