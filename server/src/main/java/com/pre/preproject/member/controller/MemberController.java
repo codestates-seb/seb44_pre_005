@@ -1,5 +1,7 @@
 package com.pre.preproject.member.controller;
 
+import com.pre.preproject.dto.MultiResponseDto;
+import com.pre.preproject.dto.SingleResponseDto;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.service.MemberService;
@@ -46,7 +48,7 @@ public class MemberController {
         requestBody.setMemberId(memberId);
 
         Member member =
-                memberService.updateMember(mapper.memberPatchToMember(requestBody));
+                memberService.updateMember(mapper.PatchDtoToEntity(requestBody));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.memberToMemberResponse(member)),
