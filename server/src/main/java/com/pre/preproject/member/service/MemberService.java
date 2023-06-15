@@ -6,22 +6,29 @@ import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+/*
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+*/
 import org.springframework.stereotype.Service;
+
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
+
 
     private void verifyExistEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
@@ -37,17 +44,18 @@ public class MemberService {
 
     public Member createMember(Member member){
         verifyExistEmail(member.getEmail());
-
+        /*
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+         */
         return memberRepository.save(member);
     }
 
     public Member updateMember(Member member) {
-        Optional<Member> optionalMember = memberRepository.findById(member.getMember_id());
+        Optional<Member> optionalMember = memberRepository.findById(member.getMemberId());
         Member fm = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Optional.ofNullable(member.getName()).ifPresent(name -> fm.setName(member.getName()));
@@ -57,14 +65,14 @@ public class MemberService {
         return memberRepository.save(fm);
     }
 
-    public Member findMember(long member_id) {
-        Optional<Member> optionalMember = memberRepository.findById(member_id);
+    public Member findMember(long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member fM = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return fM;
     }
 
     public Page<Member> findMembers(int page, int size) {
-        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("member_id").descending()));
+        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
     public void deleteMember(long memberId) {

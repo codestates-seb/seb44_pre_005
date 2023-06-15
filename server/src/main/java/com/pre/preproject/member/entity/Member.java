@@ -19,19 +19,15 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_id;
+    private Long memberId;
 
-    @Column(nullable = false)
     private String email;
-
+    /*
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
+    */
     private String name;
-    @Column
     private LocalDate birthday;
-    @Column
     private String phone;
 
     /*
@@ -42,8 +38,8 @@ public class Member {
     private List<> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cas)
-*/
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
-
+*/
 }
