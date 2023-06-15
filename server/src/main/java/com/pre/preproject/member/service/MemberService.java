@@ -23,13 +23,19 @@ public class MemberService {
     private final CustomAuthorityUtils authorityUtils;
     private final PasswordEncoder passwordEncoder;
 
-    private void verifyExistEmail(String email){
+    private void verifyExistEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-        if(member.isPresent())
+        if (member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 
-    public Member createMember(Member member){
+    private void verifyExistMember(long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if (member.isPresent())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    public Member createMember(Member member) {
         verifyExistEmail(member.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -40,9 +46,9 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member){
+    public Member updateMember(Member member) {
         Optional<Member> optionalMember = memberRepository.findById(member.getMember_id());
-        Member fm = optionalMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        Member fm = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Optional.ofNullable(member.getName()).ifPresent(name -> fm.setName(member.getName()));
         Optional.ofNullable(member.getPhone()).ifPresent(phone -> fm.setPhone(member.getPhone()));
@@ -51,18 +57,19 @@ public class MemberService {
         return memberRepository.save(fm);
     }
 
-    public Member findMember(long member_id){
+    public Member findMember(long member_id) {
         Optional<Member> optionalMember = memberRepository.findById(member_id);
-        Member fM = optionalMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        Member fM = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return fM;
     }
 
-    public Page<Member> findMembers(int page, int size){
-        return memberRepository.findAll(PageRequest.of(page,size, Sort.by("member_id").descending()));
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("member_id").descending()));
     }
 
-    public Member deleteMember(long memberId){
-        return null;
+    public void deleteMember(long memberId) {
+        Member findMember = findMember(memberId);
+        memberRepository.delete(findMember);
     }
 
 }
