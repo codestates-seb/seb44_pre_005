@@ -42,6 +42,7 @@ public class MemberDto {
     @Getter
     @Setter
     public static class Patch{
+        private long memberId;
         @NotBlank(message = "공백이 아니어야 합니다.")
         @Size(min=1, max=30, message = "이름 길이는 최대 30입니다.")
         private String name;
@@ -56,6 +57,10 @@ public class MemberDto {
 
         private String phone;
         private LocalDate birthday;
+
+        public void setMemberId(long memberId) {
+            this.memberId = memberId;
+        }
     }
 
     /*
