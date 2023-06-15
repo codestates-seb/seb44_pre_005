@@ -6,7 +6,9 @@ import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +41,24 @@ public class MemberService {
     }
 
     public Member updateMember(Member member){
-        return null;
+        Optional<Member> optionalMember = memberRepository.findById(member.getMember_id());
+        Member fm = optionalMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        Optional.ofNullable(member.getName()).ifPresent(name -> fm.setName(member.getName()));
+        Optional.ofNullable(member.getPhone()).ifPresent(phone -> fm.setPhone(member.getPhone()));
+        Optional.ofNullable(member.getBirthday()).ifPresent(birthday -> fm.setBirthday(member.getBirthday()));
+
+        return memberRepository.save(fm);
     }
 
-    public Member findMembers(Member member){
+    public Member findMember(long member_id){
+        Optional<Member> optionalMember = memberRepository.findById(member_id);
+        Member fM = optionalMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return fM;
+    }
+
+    public Page<Member> findMembers(int page, int size){
+        return memberRepository.findAll(PageRequest.of(page,size, Sort.by("member_id").descending()));
     }
 
     public Member deleteMember(long memberId){
