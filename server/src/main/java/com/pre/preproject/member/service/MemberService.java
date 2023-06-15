@@ -35,7 +35,7 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 
-    public Member createMember(Member member) {
+    public Member createMember(Member member){
         verifyExistEmail(member.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
