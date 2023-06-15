@@ -1,9 +1,11 @@
 package com.pre.preproject.member.entity;
 
 import lombok.*;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +33,10 @@ public class Member {
     private LocalDate birthday;
     @Column
     private String phone;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+
+    private List<String> roles = new ArrayList<>();
 
 
 }
