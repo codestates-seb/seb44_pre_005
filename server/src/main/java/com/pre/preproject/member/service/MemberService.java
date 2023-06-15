@@ -45,7 +45,7 @@ public class MemberService {
     public Member findMembers(Member member){
     }
 
-    public Member deleteMember(Member member){
+    public Member deleteMember(long memberId){
         return null;
     }
 
