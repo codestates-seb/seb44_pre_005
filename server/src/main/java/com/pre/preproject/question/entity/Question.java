@@ -15,16 +15,20 @@ import java.time.LocalDateTime;
 public class Question {
     @Id
     @GeneratedValue
-    private Long questionId;
+    private Long question_id;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String content;
+    private long view;
+//    private long like;
+
+    //auditable 상속받을 시 제거
     private LocalDateTime date_created = LocalDateTime.now();
     private LocalDateTime date_modified = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member memberId;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }
