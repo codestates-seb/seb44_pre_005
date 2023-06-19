@@ -2,25 +2,82 @@ package com.pre.preproject.answer.controller;
 
 import com.pre.preproject.answer.dto.AnswerDto;
 import com.pre.preproject.answer.entity.Answer;
+import com.pre.preproject.answer.mapper.AnswerMapper;
 import com.pre.preproject.answer.service.AnswerService;
+import com.pre.preproject.dto.MultiResponseDto;
+import com.pre.preproject.dto.SingleResponseDto;
+import com.pre.preproject.member.service.MemberService;
+import com.pre.preproject.utils.UriCreator;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.net.URI;
+import java.util.List;
 
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/questions/{question-id}/answers")
+@Validated
 public class AnswerController {
     private final AnswerService answerService;
+    private final AnswerMapper mapper;
+    private final MemberService memberService;
 
-    public AnswerController(AnswerService answerService) {
+    public AnswerController(AnswerService answerService, AnswerMapper mapper, MemberService memberService) {
         this.answerService = answerService;
+        this.mapper = mapper;
+        this.memberService = memberService;
     }
 
-    @PostMapping("/{question-id}")
-    public ResponseEntity postAnswer(@PathVariable("question-id") long questionId,
+    @PostMapping
+    public ResponseEntity postAnswer(@PathVariable("question-id") @Positive long questionId,
                                      @Valid @RequestBody AnswerDto.Post requestBody) {
-        return new ResponseEntity<>(requestBody, HttpStatus.CREATED);
+        Answer answer = mapper.answerPostDtoToAnswer(requestBody);
+
+        answerService.createAnswer(answer);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToAnswerResponseDto(answer)), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{answer-id}")
+    public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
+                                      @Valid @RequestBody AnswerDto.Patch requestBody) {
+        requestBody.setAnswerId(answerId);
+
+        Answer answer =
+                answerService.updateAnswer(mapper.answerPatchDtoToAnswer(requestBody));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToAnswerResponseDto(answer)),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/{answer-id}")
+    public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId) {
+        Answer answer = answerService.findAnswer(answerId);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToAnswerResponseDto(answer)), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getAnswers(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size) {
+        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size);
+        List<Answer> answers = pageAnswers.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.answersToAnswerResponseDtos(answers), pageAnswers), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
+        answerService.deleteAnswer(answerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
