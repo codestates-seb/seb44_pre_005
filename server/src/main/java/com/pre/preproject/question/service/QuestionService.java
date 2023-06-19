@@ -32,9 +32,20 @@ public class QuestionService {
 
     }
 
-    public List<Question>
+    //질문 전체조회 ACTIVE question 가져오기
+//    public List<Question>
 
-    public void deleteQuestion(Long questionId){
+    //상세질문조회
+    public Question selectQuestion(long questionId) {
+        //runtimeException을 다른 예외처리로 변경해야함
+        Question question = questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
+        //뷰수 추가
+        question.setView(question.getView()+1);
+        questionRepository.save(question);
+        return question;
+    }
+
+    public void deleteQuestion(long questionId){
         Question question =
         questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);

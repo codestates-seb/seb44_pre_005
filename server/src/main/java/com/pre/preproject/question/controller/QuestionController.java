@@ -29,7 +29,7 @@ public class QuestionController {
     public ResponseEntity postQuestion(@RequestBody QuestionDto.Post postDto) {
         QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto));
         //시큐리티 도입시 Authentication 추가
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, responseDto.getQuestion_id());
+        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, responseDto.getQuestionId());
         return ResponseEntity.created(location).build();
     }
 

@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
 public class Question {
     @Id
     @GeneratedValue
-    private Long question_id;
+    private long questionId;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String content;
     private long view;
     private QuestionStatus questionStatus;
-    public Question(Long question_id, String title, String content, long view, QuestionStatus questionStatus, LocalDateTime date_created, LocalDateTime date_modified, Member member) {
-        this.question_id = question_id;
+    public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, LocalDateTime date_created, LocalDateTime date_modified, Member member) {
+        this.questionId = questionId;
         this.title = title;
         this.content = content;
         this.view = view;
@@ -55,7 +55,7 @@ public class Question {
     private LocalDateTime date_modified = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member-id")
     private Member member;
 
 }

@@ -24,9 +24,10 @@ public class QuestionDto {
 
     @Getter
     public static class Response{
-        private long question_id;
+        private long questionId;
         private String title;
         private String content;
+        private long view;
         private LocalDateTime date_created;
         private LocalDateTime date_modified;
         private MemberDto.Response member;
