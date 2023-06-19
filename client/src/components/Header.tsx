@@ -30,7 +30,27 @@ export default function Header() {
             <StyledLink href="https://stackoverflow.co/">About</StyledLink>
           )}
           {product ? (
-            <ActiveLink onClick={() => setProduct(false)}>Products</ActiveLink>
+            <div>
+              <ActiveLink onClick={() => setProduct(false)}>
+                Products
+              </ActiveLink>
+              <Menubox>
+                <ul>
+                  <li>Stack Overflow</li>
+                  <Description>Public questions & answers</Description>
+                  <li>Stack Overflow for Teams</li>
+                  <Description>Where developers & technologists</Description>
+                  <Description>Share private knowledge with</Description>
+                  <Description>coworkers</Description>
+                  <li>Talent</li>
+                  <Description>Build your employer brand</Description>
+                  <li>Advertising</li>
+                  <Description>Reach developers & technologists</Description>
+                  <Description>world wide</Description>
+                  <Description>About the company</Description>
+                </ul>
+              </Menubox>
+            </div>
           ) : (
             <StyledLink onClick={() => setProduct(true)}>Products</StyledLink>
           )}
@@ -73,24 +93,6 @@ export default function Header() {
           )}
         </LogoContainer>
       </Navbar>
-      {product && (
-        <Menubox>
-          <ul>
-            <li>Stack Overflow</li>
-            <Description>Public questions & answers</Description>
-            <li>Stack Overflow for Teams</li>
-            <Description>Where developers & technologists</Description>
-            <Description>Share private knowledge with</Description>
-            <Description>coworkers</Description>
-            <li>Talent</li>
-            <Description>Build your employer brand</Description>
-            <li>Advertising</li>
-            <Description>Reach developers & technologists</Description>
-            <Description>world wide</Description>
-            <Description>About the company</Description>
-          </ul>
-        </Menubox>
-      )}
       {outMenu && <LogoutModal />}
     </nav>
   );
@@ -123,6 +125,7 @@ absolute
 left-80
 z-10
 bg-white
+top-[50px]
 `;
 
 const Description = tw.li`
@@ -132,6 +135,9 @@ text-xs
 
 const Navbar = tw.div`
   flex items-center justify-evenly
+  fixed
+  right-[30px]
+  relative 
 `;
 
 const LogoContainer = tw.div`
@@ -174,6 +180,7 @@ const LogoutMenu = tw(StyledIcon)`
 border-2
 w-[270px]
 absolute
-left-[1300px]
+left-[1370px]
+top-[50px]
 z-10
 `;
