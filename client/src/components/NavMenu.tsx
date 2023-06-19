@@ -22,7 +22,7 @@ const NavMenu: React.FC = () => {
         <Innerli>
           <ContentOl>
             <OriginLi>
-              {location === "/" ? <SelectedLi></SelectedLi> : ""}
+              {location === "/" ? <Selected></Selected> : ""}
               <Link to="/">
                 <Category>
                   <EarthIcon>
@@ -38,7 +38,7 @@ const NavMenu: React.FC = () => {
               </a>
             </Tabli>
             <Tabli>
-              {location === "/user" ? <SelectedLi></SelectedLi> : ""}
+              {location === "/user" ? <Selected></Selected> : ""}
               <Link to="user">
                 <Category>Users</Category>
               </Link>
@@ -111,7 +111,7 @@ const Tabli = tw.li`
   pl-8
   inline-block
 `;
-const SelectedLi = tw(OriginLi)`
+const Selected = tw.div`
   absolute
   left-0
   top-0
