@@ -7,6 +7,9 @@ import com.pre.preproject.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class QuestionService {
     private final QuestionMapper questionMapper;
@@ -29,8 +32,12 @@ public class QuestionService {
 
     }
 
+    public List<Question>
+
     public void deleteQuestion(Long questionId){
-        questionRepository.deleteById(questionId);
+        Question question =
+        questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
+        question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
     }
 
 }

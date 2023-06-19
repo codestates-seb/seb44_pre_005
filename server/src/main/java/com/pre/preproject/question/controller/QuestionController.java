@@ -40,7 +40,7 @@ public class QuestionController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{qestion-id}")
+    @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
         return new ResponseEntity();
     }
