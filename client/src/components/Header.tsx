@@ -180,7 +180,7 @@ const LogoutMenu = tw(StyledIcon)`
 border-2
 w-[270px]
 absolute
-left-[1370px]
-top-[50px]
+left-[1255px]
+top-[40px]
 z-10
 `;
