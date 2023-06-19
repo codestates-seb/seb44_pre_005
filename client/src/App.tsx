@@ -5,6 +5,9 @@ import Detail from "./page/Detail";
 import User from "./page/User";
 import Footer from "./components/Footer";
 import CreateQuestion from "./page/CreateQuestion";
+import Main from "./page/Main";
+import Login from "./page/Login";
+import Join from "./page/Join";
 
 function App() {
   return (
