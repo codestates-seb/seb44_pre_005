@@ -1,4 +1,5 @@
 import React from "react";
+import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
 
 export default function Detail() {
@@ -8,5 +9,9 @@ export default function Detail() {
     // console.log(json.results);
   };
 
-  return <></>;
+  return (
+    <>
+      <NavMenu />
+    </>
+  );
 }
