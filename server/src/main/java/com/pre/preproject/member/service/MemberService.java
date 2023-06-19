@@ -60,10 +60,10 @@ public class MemberService {
         return memberRepository.save(fm);
     }
 
-    public Member findMember(long memberId) {
+    public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Member fM = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return fM;
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
     }
 
     public Page<Member> findMembers(int page, int size) {
@@ -71,7 +71,7 @@ public class MemberService {
     }
 
     public void deleteMember(long memberId) {
-        Member findMember = findMember(memberId);
+        Member findMember = findVerifiedMember(memberId);
         memberRepository.delete(findMember);
     }
 
