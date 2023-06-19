@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import tw from "tailwind-styled-components";
 import { Link } from "react-router-dom";
+import tw from "tailwind-styled-components";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 
 export default function Login() {
@@ -103,7 +103,6 @@ export default function Login() {
 }
 
 const LoginContainer = tw.div`
-margin 0
 bg-[#F1F2F3]
 w-screen h-screen
 overflow-hidden

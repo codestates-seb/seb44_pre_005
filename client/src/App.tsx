@@ -5,6 +5,8 @@ import Detail from "./page/Detail";
 import User from "./page/User";
 import Footer from "./components/Footer";
 import CreateQuestion from "./page/CreateQuestion";
+import Login from "./page/Login";
+import Join from "./page/Join";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           path="/create"
           element={<CreateQuestion></CreateQuestion>}
         ></Route>
+        <Route path="/Login" element={<Login />}></Route>
+        <Route path="/Join" element={<Join />}></Route>
       </Routes>
     </div>
   );
