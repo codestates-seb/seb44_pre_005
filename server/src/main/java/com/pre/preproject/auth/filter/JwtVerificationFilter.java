@@ -2,12 +2,20 @@ package com.pre.preproject.auth.filter;
 
 import com.pre.preproject.auth.jwt.JwtTokenizer;
 import com.pre.preproject.auth.util.CustomAuthorityUtils;
+import com.pre.preproject.exception.BusinessLogicException;
+import com.pre.preproject.exception.ExceptionCode;
+import com.pre.preproject.member.entity.Member;
+import com.pre.preproject.member.entity.RefreshToken;
+import com.pre.preproject.member.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -17,21 +25,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils){
+    private final RefreshTokenRepository refreshTokenRepository;
+
+
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, RefreshTokenRepository refreshTokenRepository){
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
+
         try {
-            Map<String, Object> claims = verifyJws(request);
-            setAuthenticationToContext(claims);
+            if(getToken(request) == true) {
+                Map<String, Object> claims = verifyJws(request);
+                setAuthenticationToContext(claims);
+            }
+
+
+
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
@@ -66,5 +85,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private boolean getToken(HttpServletRequest request) {
+        String Refresh = request.getHeader("Refresh");
+        if (StringUtils.hasText(Refresh)){
+            Optional<RefreshToken> findfresh = refreshTokenRepository.findByValue(Refresh);
+            RefreshToken Ref = findfresh.get();
+            if(Ref == null) return false;
+            else return true;
+        }
+        return false;
     }
 }

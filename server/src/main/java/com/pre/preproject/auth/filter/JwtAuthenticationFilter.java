@@ -4,7 +4,10 @@ import com.pre.preproject.auth.dto.LoginDto;
 import com.pre.preproject.auth.jwt.JwtTokenizer;
 import com.pre.preproject.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pre.preproject.member.entity.RefreshToken;
+import com.pre.preproject.member.service.RefreshTokenService;
 import lombok.SneakyThrows;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,10 +25,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
 
+    private final RefreshTokenService refreshTokenService;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer, RefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenizer = jwtTokenizer;
+        this.refreshTokenService = refreshTokenService;
     }
 
 
@@ -55,6 +60,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+
+        RefreshToken refreshTokenEntity = new RefreshToken();
+        refreshTokenEntity.setValue(refreshToken);
+        refreshTokenEntity.setMemberId(member.getMemberId());
+        refreshTokenService.addRefreshToken(refreshTokenEntity);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
