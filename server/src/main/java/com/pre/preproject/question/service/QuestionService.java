@@ -22,5 +22,15 @@ public class QuestionService {
         questionRepository.save(question);
         return question;
     }
+    public Question updateQuestion(QuestionDto.Patch patchDto){
+        Question question = questionMapper.patchDtoToQuestion(patchDto);
+        questionRepository.save(question);
+        return question;
+
+    }
+
+    public void deleteQuestion(Long questionId){
+        questionRepository.deleteById(questionId);
+    }
 
 }

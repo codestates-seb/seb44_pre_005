@@ -1,6 +1,7 @@
 package com.pre.preproject.question.controller;
 
 import com.pre.preproject.question.dto.QuestionDto;
+import com.pre.preproject.question.entity.Question;
 import com.pre.preproject.question.mapper.QuestionMapper;
 import com.pre.preproject.question.service.QuestionService;
 import com.pre.preproject.utils.UriCreator;
@@ -32,14 +33,15 @@ public class QuestionController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{question_id}")
-    public ResponseEntity patchQuestion(@PathVariable("question_id") Long questionId,
-                                        @RequestBody QuestionDto.Patch PatchDto){
-        return new ResponseEntity();
+    @PatchMapping("/{question-id}")
+    public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
+                                        @RequestBody QuestionDto.Patch patchDto){
+        QuestionDto.Response responseDto = questionMapper.questionToResponseDto((questionService.updateQuestion(patchDto));
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{qestion_id}")
-    public ResponseEntity getQuestion(@PathVariable("question_id") Long questionId){
+    @GetMapping("/{qestion-id}")
+    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
         return new ResponseEntity();
     }
 
@@ -49,9 +51,10 @@ public class QuestionController {
         return null;
     }
 
-    @DeleteMapping("/{question_id}")
-    public ResponseEntity deleteQuestion(@PathVariable("question_id") Long questionId){
-        return new ResponseEntity();
+    @DeleteMapping("/{question-id}")
+    public ResponseEntity deleteQuestion(@PathVariable("question-id") Long questionId){
+        questionService.deleteQuestion(questionId);
+        return ResponseEntity.noContent().build();
     }
 
 

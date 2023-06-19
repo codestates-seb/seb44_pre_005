@@ -4,16 +4,21 @@ import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.entity.Member;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class QuestionDto {
     public static class Post{
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
     }
 
     public static class Patch{
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
     }
 
