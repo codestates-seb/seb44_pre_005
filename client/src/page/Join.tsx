@@ -28,6 +28,7 @@ export default function Join() {
     if (password === "") {
       setPasswordError(true);
     } else if (!passwordRegex.test(password)) {
+      setPasswordError(false);
       setPasswordRegexError(true);
     } else {
       setPasswordError(false);
