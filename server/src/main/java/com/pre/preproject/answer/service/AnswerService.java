@@ -5,7 +5,6 @@ import com.pre.preproject.answer.repository.AnswerRepository;
 import com.pre.preproject.exception.BusinessLogicException;
 import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.service.MemberService;
-import com.pre.preproject.question.service.QuestionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

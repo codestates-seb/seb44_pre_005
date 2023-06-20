@@ -22,13 +22,16 @@ public class Member {
     private Long memberId;
 
     private String email;
-    /*
+
     @Column(nullable = false)
     private String password;
-    */
+
     private String name;
     private LocalDate birthday;
     private String phone;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     /*
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
@@ -38,8 +41,7 @@ public class Member {
     private List<> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cas)
+    */
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
-*/
+
 }

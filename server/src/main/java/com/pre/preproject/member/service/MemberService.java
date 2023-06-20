@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-/*
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-*/
+
 import org.springframework.stereotype.Service;
 
 
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     private void verifyExistEmail(String email) {
@@ -44,13 +44,13 @@ public class MemberService {
 
     public Member createMember(Member member){
         verifyExistEmail(member.getEmail());
-        /*
+
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-         */
+
         return memberRepository.save(member);
     }
 
