@@ -87,74 +87,74 @@ const NavMenu: React.FC = () => {
 export default NavMenu;
 
 const Container = tw.div`
-  min-h-full
-  w-40
-  pt-6
-  pb-2
+min-h-full
+w-40
+pt-6
+pb-2
 `;
 const ContentOl = tw.ol`
-  flex
-  flex-col
+flex
+flex-col
 `;
 const Innerli = tw.li`
-  relative
-  inline-block
+relative
+inline-block
 `;
 const OriginLi = tw.li`
-  relative
-  p-2
-  inline-block
+relative
+p-2
+inline-block
 `;
 const Tabli = tw.li`
-  relative
-  p-2
-  pl-8
-  inline-block
+relative
+p-2
+pl-8
+inline-block
 `;
 const Selected = tw.div`
-  absolute
-  left-0
-  top-0
-  bg-[#F1F2F3]
-  border-r-2
-  border-[#F48225]
-  z-[-1]
-  w-full
-  h-full
+absolute
+left-0
+top-0
+bg-[#F1F2F3]
+border-r-2
+border-[#F48225]
+z-[-1]
+w-full
+h-full
 `;
 
 const Title = tw.div`
-  text-[11px]
-  text-[#6A737C]
+text-[11px]
+text-[#6A737C]
 `;
 const Category = tw.div`
-  text-[13px]
-  text-[#0C0D0E]
-  leading-4
-  flex
+text-[13px]
+text-[#0C0D0E]
+leading-4
+flex
 `;
 const EarthIcon = tw.div`
-  text-[16px]
-  mr-[6px]
+text-[16px]
+mr-[6px]
 `;
 const ColorDiv = tw.div`
-  p-2
-  rounded
-  text-[11px]
-  text-[#0063BF]
-  bg-[#F0F8FF]
+p-2
+rounded
+text-[11px]
+text-[#0063BF]
+bg-[#F0F8FF]
 `;
 
 const StarIcon = tw.div`
-  text-[#F48225]
-  text-[18px]
-  mr-[6px]
+text-[#F48225]
+text-[18px]
+mr-[6px]
 `;
 const LockIcon = tw.div`
-  bg-[#F48225]
-  p-[3px]
-  text-white
-  text-[10px]
-  rounded
-  mr-[6px]
+bg-[#F48225]
+p-[3px]
+text-white
+text-[10px]
+rounded
+mr-[6px]
 `;
