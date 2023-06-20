@@ -36,14 +36,14 @@ public class QuestionController {
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
                                         @RequestBody QuestionDto.Patch patchDto){
-        QuestionDto.Response responseDto = questionMapper.questionToResponseDto((questionService.updateQuestion(patchDto));
+        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.updateQuestion(patchDto));
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
-        return new ResponseEntity();
-    }
+    //미완 수정예정
+//    @GetMapping("/{question-id}")
+//    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
+//        return new ResponseEntity();
+//    }
 
     @GetMapping
     public ResponseEntity getQuestion(@RequestParam("page") int page,
