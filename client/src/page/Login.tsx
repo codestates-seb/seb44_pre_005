@@ -62,7 +62,7 @@ export default function Login() {
             <EmailInputBox emailError={emailError}>
               <EmailInput
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
               {emailError && <ExclamationMark />}
             </EmailInputBox>
@@ -79,7 +79,7 @@ export default function Login() {
               <PasswordInput
                 type="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               {passwordError && <ExclamationMark />}
             </PasswordInputBox>
@@ -203,7 +203,7 @@ my-[2px]
 const EmailInputBox = tw.div<{ emailError: boolean }>`
 my-[2px]
 border-solid border
-${props => (props.emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -243,7 +243,7 @@ text-xs text-[#0074cc]
 const PasswordInputBox = tw.div<{ passwordError: boolean }>`
 my-[2px]
 border-solid border
-${props => (props.passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex

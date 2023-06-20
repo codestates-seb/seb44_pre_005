@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Detail from "./page/Detail";
 import User from "./page/User";
 import Footer from "./components/Footer";
+import CreateQuestion from "./page/CreateQuestion";
 
 function App() {
   return (
@@ -12,8 +13,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Detail />}></Route>
         <Route path="/user" element={<User />}></Route>
+        <Route
+          path="/create"
+          element={<CreateQuestion></CreateQuestion>}
+        ></Route>
       </Routes>
-      <Footer></Footer>
     </div>
   );
 }
