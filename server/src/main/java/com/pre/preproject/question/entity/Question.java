@@ -1,5 +1,6 @@
 package com.pre.preproject.question.entity;
 
+import com.pre.preproject.answer.entity.Answer;
 import com.pre.preproject.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -20,7 +23,8 @@ public class Question {
     private String title;
     @Column(nullable = false)
     private String content;
-    private long view;
+    @Column
+    private long view = 0L;
     private QuestionStatus questionStatus;
     public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, LocalDateTime date_created, LocalDateTime date_modified, Member member) {
         this.questionId = questionId;
@@ -57,5 +61,11 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+    
+
+    //답변 가져오기
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
+    
 
 }

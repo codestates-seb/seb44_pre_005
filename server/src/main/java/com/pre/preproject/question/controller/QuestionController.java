@@ -1,16 +1,23 @@
 package com.pre.preproject.question.controller;
 
+import com.pre.preproject.dto.MultiResponseDto;
+import com.pre.preproject.dto.SingleResponseDto;
+import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.question.dto.QuestionDto;
 import com.pre.preproject.question.entity.Question;
 import com.pre.preproject.question.mapper.QuestionMapper;
 import com.pre.preproject.question.service.QuestionService;
 import com.pre.preproject.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @Validated
 @RestController
@@ -39,16 +46,28 @@ public class QuestionController {
         QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.updateQuestion(patchDto));
         return ResponseEntity.ok().build();
     }
-    //미완 수정예정
-//    @GetMapping("/{question-id}")
-//    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
-//        return new ResponseEntity();
+    //질문 상세 조회, 뷰 카운트
+    @GetMapping("/{question-id}")
+    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
+        Question question = questionService.selectQuestion(questionId);
+        questionService.increaseViews(question);
+        return new ResponseEntity<>(new SingleResponseDto<>(questionMapper.questionToResponseDto(question)), HttpStatus.OK);
+    }
+
+//    @GetMapping
+//    public ResponseEntity getQuestion(@RequestParam("page") int page,
+//                                      @RequestParam("size") int size){
+//        return null;
 //    }
 
+    //전체게시글 조회
     @GetMapping
-    public ResponseEntity getQuestion(@RequestParam("page") int page,
-                                      @RequestParam("size") int size){
-        return null;
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId,
+                                      @RequestParam("page") int page,
+                                      @RequestParam("size") int size) {
+        Page<Question> pageQuestions = questionService.findquestions(- 1,size);
+        List<Question> questions = questionService.getAllQuestions();
+        return ResponseEntity.ok(questions);
     }
 
     @DeleteMapping("/{question-id}")

@@ -32,7 +32,7 @@ public class QuestionDto {
         private LocalDateTime date_modified;
         private MemberDto.Response member;
         //answer 추가예정
-//        private List<AnswerDto.Response> answer, answerCount
+//        private List<AnswerDto.Response> answerList;
     }
 
 
