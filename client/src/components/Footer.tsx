@@ -117,25 +117,25 @@ function Footer() {
 export default Footer;
 
 const Footerbox = tw.div`
-  z-5
-  bg-[#232629]
-  flex
-  gap-2.5
-  bottom-0
-  w-full
-  text-whitesmoke
-  justify-center
+z-5
+bg-[#232629]
+flex
+gap-2.5
+bottom-0
+w-full
+text-whitesmoke
+justify-center
 `;
 
 const Img = tw.img`
-  w-44
-  h-44
+w-44
+h-44
 `;
 
 const StyledUl = tw.ul`
-    m-0
-    p-0
-    list-none
+m-0
+p-0
+list-none
 `;
 
 const StyledList = tw.li`
@@ -143,19 +143,19 @@ my-[4px]
 `;
 
 const StyledLink = tw.a`
-  no-underline
-  text-[#80878e]
-  hover:text-neutral-950
+no-underline
+text-[#80878e]
+hover:text-neutral-950
 `;
 
 const StyledContnet = tw.div`
-  m-0
-  flex
-  w-[1250]
-  text-13
-  justify-around
-  my-[22px]
-  gap-[100px]
+m-0
+flex
+w-[1250]
+text-13
+justify-around
+my-[22px]
+gap-[100px]
 `;
 
 const StyledFooter = tw.div`
@@ -169,12 +169,12 @@ text-[#80878e]
 `;
 
 const FooterUl = tw.ul`
-  my-22
-  flex
-  gap-[20px]
-  `;
+my-22
+flex
+gap-[20px]
+`;
 
 const Footerli = tw.li`
-  inline
-  my-3
+inline
+my-3
 `;

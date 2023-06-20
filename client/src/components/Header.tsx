@@ -134,46 +134,45 @@ text-xs
 `;
 
 const Navbar = tw.div`
-  flex items-center justify-evenly
-  fixed
-  right-[30px]
-  relative 
+flex items-center justify-evenly
+fixed
+right-[30px]
+relative 
 `;
 
 const LogoContainer = tw.div`
-  flex items-center space-x-4
+flex items-center space-x-4
 `;
 
 const LogoImage = tw.img`
-  mr-2
+mr-2
 `;
 
 const SearchContainer = tw.div`
-  flex items-center space-x-2
+flex items-center space-x-2
 `;
 
 const StyledLink = tw.a`
-  text-decoration: none;
-  hover:bg-gray-200
-  rounded-xl
-  p-1
-  cursor-pointer
-  relative
-  
+text-decoration: none;
+hover:bg-gray-200
+rounded-xl
+p-1
+cursor-pointer
+relative
 `;
 
 const ActiveLink = tw.a`
 bg-orange-500
 text-white
 rounded-xl
-  p-1
-  cursor-pointer
-  relative
+p-1
+cursor-pointer
+relative
 `;
 
 const StyledIcon = tw.div`
-  flex
-  gap-[15px]
+flex
+gap-[15px]
 `;
 
 const LogoutMenu = tw(StyledIcon)`

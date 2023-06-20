@@ -117,7 +117,6 @@ export default SideMenu;
 
 const Container = tw.div`
 w-[300px]
-m-6
 `;
 
 const PostContainer = tw.div`

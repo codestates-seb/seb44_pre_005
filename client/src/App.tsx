@@ -5,15 +5,14 @@ import Detail from "./page/Detail";
 import User from "./page/User";
 import Footer from "./components/Footer";
 import CreateQuestion from "./page/CreateQuestion";
-import Login from "./page/Login";
-import Join from "./page/Join";
+import Main from "./page/Main";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<Detail />}></Route>
+        <Route path="/" element={<Main />}></Route>
         <Route path="/user" element={<User />}></Route>
         <Route
           path="/create"
