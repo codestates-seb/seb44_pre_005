@@ -20,6 +20,10 @@ public class CommentDto {
     public static class Patch {
         private long commentId;
         private String content;
+
+        public void setCommentId(long commentId) {
+            this.commentId = commentId;
+        }
     }
 
     @Getter
@@ -29,5 +33,6 @@ public class CommentDto {
         private long answerId;
         private String Content;
         private LocalDateTime dateCreated;
+        private LocalDateTime dateModified;
     }
 }

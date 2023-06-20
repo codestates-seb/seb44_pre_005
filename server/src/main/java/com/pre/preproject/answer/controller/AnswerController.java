@@ -6,8 +6,6 @@ import com.pre.preproject.answer.mapper.AnswerMapper;
 import com.pre.preproject.answer.service.AnswerService;
 import com.pre.preproject.dto.MultiResponseDto;
 import com.pre.preproject.dto.SingleResponseDto;
-import com.pre.preproject.member.service.MemberService;
-import com.pre.preproject.utils.UriCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,12 +22,10 @@ import java.util.List;
 public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper mapper;
-    private final MemberService memberService;
 
-    public AnswerController(AnswerService answerService, AnswerMapper mapper, MemberService memberService) {
+    public AnswerController(AnswerService answerService, AnswerMapper mapper) {
         this.answerService = answerService;
         this.mapper = mapper;
-        this.memberService = memberService;
     }
 
     @PostMapping
@@ -45,7 +40,8 @@ public class AnswerController {
     }
 
     @PatchMapping("/{answer-id}")
-    public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
+    public ResponseEntity patchAnswer(@PathVariable("question-id") @Positive long questionId,
+                                      @PathVariable("answer-id") @Positive long answerId,
                                       @Valid @RequestBody AnswerDto.Patch requestBody) {
         requestBody.setAnswerId(answerId);
 
@@ -58,7 +54,8 @@ public class AnswerController {
     }
 
     @GetMapping("/{answer-id}")
-    public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId) {
+    public ResponseEntity getAnswer(@PathVariable("question-id") @Positive long questionId,
+                                    @PathVariable("answer-id") @Positive long answerId) {
         Answer answer = answerService.findAnswer(answerId);
 
         return new ResponseEntity<>(
@@ -66,7 +63,8 @@ public class AnswerController {
     }
 
     @GetMapping
-    public ResponseEntity getAnswers(@Positive @RequestParam int page,
+    public ResponseEntity getAnswers(@PathVariable("question-id") @Positive long questionId,
+                                     @Positive @RequestParam int page,
                                      @Positive @RequestParam int size) {
         Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size);
         List<Answer> answers = pageAnswers.getContent();
@@ -76,7 +74,8 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{answer-id}")
-    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
+    public ResponseEntity deleteAnswer(@PathVariable("question-id") @Positive long questionId,
+                                       @PathVariable("answer-id") @Positive long answerId) {
         answerService.deleteAnswer(answerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

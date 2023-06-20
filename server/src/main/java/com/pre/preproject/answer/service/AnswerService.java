@@ -5,6 +5,7 @@ import com.pre.preproject.answer.repository.AnswerRepository;
 import com.pre.preproject.exception.BusinessLogicException;
 import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.service.MemberService;
+import com.pre.preproject.question.service.QuestionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -52,7 +53,7 @@ public class AnswerService {
         answerRepository.delete(findAnswer);
     }
 
-    private Answer findVerifiedAnswer(long answerId) {
+    public Answer findVerifiedAnswer(long answerId) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
         return findAnswer;

@@ -1,5 +1,7 @@
 package com.pre.preproject.question.service;
 
+import com.pre.preproject.exception.BusinessLogicException;
+import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.question.dto.QuestionDto;
 import com.pre.preproject.question.entity.Question;
 import com.pre.preproject.question.mapper.QuestionMapper;
@@ -53,4 +55,9 @@ public class QuestionService {
 
     //회원 존재하는 지 확인
 
+    public Question findVerifiedQuestion(long questionId) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Question findQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+        return findQuestion;
+    }
 }
