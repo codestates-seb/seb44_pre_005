@@ -55,7 +55,7 @@ public class Question {
     private LocalDateTime date_modified = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "member-id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
 }
