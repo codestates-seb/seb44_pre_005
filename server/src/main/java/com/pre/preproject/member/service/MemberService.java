@@ -6,19 +6,15 @@ import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
 
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +24,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final PasswordEncoder passwordEncoder;
-
 
     private void verifyExistEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
@@ -65,10 +60,10 @@ public class MemberService {
         return memberRepository.save(fm);
     }
 
-    public Member findMember(long memberId) {
+    public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Member fM = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return fM;
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
     }
 
     public Page<Member> findMembers(int page, int size) {
@@ -76,8 +71,12 @@ public class MemberService {
     }
 
     public void deleteMember(long memberId) {
-        Member findMember = findMember(memberId);
+        Member findMember = findVerifiedMember(memberId);
         memberRepository.delete(findMember);
+    }
+
+    public Member findMember(String email){
+        return  memberRepository.findByEmail(email).get();
     }
 
 }
