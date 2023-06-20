@@ -51,4 +51,6 @@ public class QuestionService {
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
     }
 
+    //회원 존재하는 지 확인
+
 }
