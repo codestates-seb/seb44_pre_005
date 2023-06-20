@@ -18,6 +18,7 @@ function App() {
           path="/create"
           element={<CreateQuestion></CreateQuestion>}
         ></Route>
+        <Route path="/detail" element={<Detail />}></Route>
       </Routes>
     </div>
   );

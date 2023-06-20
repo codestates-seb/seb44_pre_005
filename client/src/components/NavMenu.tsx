@@ -39,7 +39,7 @@ const NavMenu: React.FC = () => {
             </Tabli>
             <Tabli>
               {location === "/user" ? <Selected></Selected> : ""}
-              <Link to="user">
+              <Link to="/user">
                 <Category>Users</Category>
               </Link>
             </Tabli>
