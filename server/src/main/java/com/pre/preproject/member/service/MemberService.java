@@ -75,4 +75,8 @@ public class MemberService {
         memberRepository.delete(findMember);
     }
 
+    public Member findMember(String email){
+        return  memberRepository.findByEmail(email).get();
+    }
+
 }
