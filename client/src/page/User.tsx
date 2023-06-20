@@ -1,6 +1,6 @@
 import React from "react";
-import tw from "tailwind-styled-components";
 import NavMenu from "../components/NavMenu";
+import tw from "tailwind-styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const User: React.FC = () => {
@@ -50,72 +50,72 @@ const User: React.FC = () => {
 export default User;
 
 const Container = tw.div`
-  flex
+flex
 `;
 const UserContainer = tw.div`
-  w-[calc(100%-10rem)]
-  p-6
-  border-l
-  border-[#D6D9DC]
+w-[calc(100%-10rem)]
+p-6
+border-l
+border-[#D6D9DC]
 `;
 const Title = tw.h1`
-  text-[27px]
-  mb-6
+text-[27px]
+mb-6
 `;
 const FilterContainer = tw.div`
-  flex
-  justify-between
+flex
+justify-between
 `;
 const SearchBox = tw.div`
-  flex
-  p-1.5
-  border
-  border-[#BABFC4]
-  rounded
-  text-sm
+flex
+p-1.5
+border
+border-[#BABFC4]
+rounded
+text-sm
 `;
 const SearchIcon = tw.div`
-  text-lg
-  text-[#838C95]
-  mr-2
+text-lg
+text-[#838C95]
+mr-2
 `;
 const SearchInput = tw.input`
-  w-32
+w-32
 `;
 const FilterBox = tw.div`
-  flex
-  border-y
-  border-l
-  border-[#9FA6AD]
-  rounded
+flex
+border-y
+border-l
+border-[#9FA6AD]
+rounded
 `;
 const BoxEle = tw.p`
-  p-2
-  text-xs
-  text-[#6A7372]
-  border-r
-  border-[#9FA6AD]
+p-2
+text-xs
+text-[#6A7372]
+border-r
+border-[#9FA6AD]
 `;
 const Content = tw.div`
-  flex
-  mt-12
-  flex-wrap
+flex
+mt-12
+flex-wrap
 `;
 const UserEle = tw.div`
-  flex
-  p-2
-  mb-4
-  w-52
+flex
+p-2
+mb-4
+w-52
 `;
 const UserInfo = tw.div`
-  ml-2
-  text-xs
-  text-[#6A737C]
+ml-2
+text-xs
+text-[#6A737C]
 `;
 const UserTitle = tw.p`
 mb-2
-  text-base
-  text-[#0074CC]
+text-base
+text-[#0074CC]
 `;
 
 const userList = [

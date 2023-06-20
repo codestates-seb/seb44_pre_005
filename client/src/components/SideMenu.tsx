@@ -116,72 +116,72 @@ const SideMenu: React.FC = () => {
 export default SideMenu;
 
 const Container = tw.div`
-    w-[300px]
-    m-6
+w-[300px]
+m-6
 `;
 
 const PostContainer = tw.div`
-    text-[13px]
-    bg-[#FDF7E2]
-    border-[1px]
-    border-[#F1E5BC]
-    text-[#525960]
+text-[13px]
+bg-[#FDF7E2]
+border-[1px]
+border-[#F1E5BC]
+text-[#525960]
 `;
 const PostTitle = tw.li`
-    text-xs
-    font-bold
-    bg-[#FBF3D5]
-    px-[15px]
-    py-[12px]
-    border-y-[1px]
-    border-[#F1E5BC]
+text-xs
+font-bold
+bg-[#FBF3D5]
+px-[15px]
+py-[12px]
+border-y-[1px]
+border-[#F1E5BC]
 `;
 const PostContent = tw.li`
-    my-[12px]
-    px-[16px]
-    flex
+my-[12px]
+px-[16px]
+flex
 `;
 const PencilIcon = tw.div`
-  text-[10px]
-  pr-[10px]
-  pt-[8px]
+text-[10px]
+pr-[10px]
+pt-[8px]
 `;
 const ColorIcon = tw.div`
-  text-[13px]
-  text-[#50A6DA]
-  pr-[10px]
-  pt-[8px]
+text-[13px]
+text-[#50A6DA]
+pr-[10px]
+pt-[8px]
 `;
 const StackIcon = tw.div`
-  text-[13px]
-  pr-[10px]
-  pt-[8px]
+text-[13px]
+pr-[10px]
+pt-[8px]
 `;
 const TextIcon = tw(StackIcon)`
-  pt-0
+pt-0
 `;
 const FilterContainer = tw.div`
-  border-[1px]
-  border-[#D6D9DC]
-  my-4
-  rounded-sm
+border-[1px]
+border-[#D6D9DC]
+my-4
+rounded-sm
 `;
 const FilterTitle = tw.div`
-  bg-[#F8F9F9]
-  text-[#525960]
-  text-sm
-  py-3.5
-  px-4
+bg-[#F8F9F9]
+text-[#525960]
+text-sm
+py-3.5
+px-4
 `;
 const FilterContent = tw.div`
-  py-3.5
-  px-10
-  text-sm
-  text-center
+py-3.5
+px-10
+text-sm
+text-center
 `;
 const FilterIcon = tw.div`
-  text-4xl
-  mx-auto
-  w-10
-  mb-3.5
+text-4xl
+mx-auto
+w-10
+mb-3.5
 `;
