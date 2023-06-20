@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { IoEarth } from "react-icons/io5";
@@ -144,7 +144,6 @@ text-[11px]
 text-[#0063BF]
 bg-[#F0F8FF]
 `;
-
 const StarIcon = tw.div`
 text-[#F48225]
 text-[18px]
