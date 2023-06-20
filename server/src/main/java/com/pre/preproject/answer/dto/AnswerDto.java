@@ -1,9 +1,12 @@
 package com.pre.preproject.answer.dto;
 
+import com.pre.preproject.comment.dto.CommentDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class AnswerDto {
     @Getter
@@ -32,9 +35,8 @@ public class AnswerDto {
         private long memberId;
         private long questionId;
         private String content;
-
-        // comment 추가 가능
-
-        // dateCreated 추가 가능
+        private LocalDateTime dateCreated;
+        private LocalDateTime dateModified;
+        private List<CommentDto.Response> commentList;
     }
 }

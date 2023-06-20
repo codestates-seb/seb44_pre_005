@@ -1,6 +1,7 @@
 package com.pre.preproject.answer.entity;
 
 import com.pre.preproject.audit.Auditable;
+import com.pre.preproject.comment.entity.Comment;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.question.entity.Question;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -29,5 +32,6 @@ public class Answer extends Auditable {
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    // comment 추가매핑 가능
+    @OneToMany(mappedBy = "answer")
+    private List<Comment> comments = new ArrayList<>();
 }
