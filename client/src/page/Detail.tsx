@@ -21,5 +21,5 @@ export default function Detail() {
 }
 
 const Container = tw.div`
-  flex
+flex
 `;
