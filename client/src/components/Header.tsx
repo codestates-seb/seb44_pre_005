@@ -84,7 +84,28 @@ export default function Header() {
             </>
           ) : (
             <StyledIcon>
-              <FaUser></FaUser>
+              {outMenu ? (
+                <div>
+                  <FaUser></FaUser>
+                  <LogoutMenu>
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/Stack_Overflow_icon-icons.com_66761.png"
+                      }
+                      alt="logo"
+                      style={{ width: "20px" }}
+                    />
+                    <StyledIcon>
+                      <p>Stack Overflow</p>
+                      <p>help</p>
+                      <div>logout</div>
+                    </StyledIcon>
+                  </LogoutMenu>
+                </div>
+              ) : (
+                <FaUser></FaUser>
+              )}
               <BsFillInboxFill></BsFillInboxFill>
               <BsFillTrophyFill></BsFillTrophyFill>
               <GiHelp></GiHelp>
@@ -93,51 +114,42 @@ export default function Header() {
           )}
         </LogoContainer>
       </Navbar>
-      {outMenu && <LogoutModal />}
     </nav>
   );
 }
-
-const LogoutModal = () => {
-  return (
-    <LogoutMenu>
-      <img
-        src={
-          process.env.PUBLIC_URL + "/Stack_Overflow_icon-icons.com_66761.png"
-        }
-        alt="logo"
-        style={{ width: "20px" }}
-      />
-      <StyledIcon>
-        <p>Stack Overflow</p>
-        <p>help</p>
-        <div>logout</div>
-      </StyledIcon>
-    </LogoutMenu>
-  );
-};
-
 const Menubox = tw.div`
 border-2
 p-2
 w-44
 absolute
-left-80
 z-10
 bg-white
 top-[50px]
 `;
 
-const Description = tw.li`
-text-gray-400
-text-xs
+const LogoutMenu = tw(Menubox)`
+w-[240px]
+`;
+
+const Flexbar = tw.div`
+flex
+flex-col
 `;
 
 const Navbar = tw.div`
-flex items-center justify-evenly
+flex
 fixed
-right-[30px]
-relative 
+top-0
+bg-white
+w-full
+h-[40px]
+z-[1]
+justify-around
+`;
+
+const Description = tw.li`
+text-gray-400
+text-xs
 `;
 
 const LogoContainer = tw.div`
@@ -173,13 +185,4 @@ relative
 const StyledIcon = tw.div`
 flex
 gap-[15px]
-`;
-
-const LogoutMenu = tw(StyledIcon)`
-border-2
-w-[270px]
-absolute
-left-[1255px]
-top-[40px]
-z-10
 `;
