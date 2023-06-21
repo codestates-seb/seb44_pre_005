@@ -1,3 +1,4 @@
+import Pagenation from "../components/Pagenation";
 import tw from "tailwind-styled-components";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -100,6 +101,7 @@ const Main = () => {
       {dummydata.map((item, i) => {
         return <DataCard data={dummydata} i={i}></DataCard>;
       })}
+      <Pagenation></Pagenation>
     </>
   );
 };
