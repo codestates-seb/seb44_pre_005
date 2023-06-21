@@ -2,6 +2,7 @@ package com.pre.preproject.question.service;
 
 import com.pre.preproject.answer.entity.Answer;
 import com.pre.preproject.exception.BusinessLogicException;
+import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.service.MemberService;
 import com.pre.preproject.question.dto.QuestionDto;
@@ -85,5 +86,10 @@ public class QuestionService {
         question.setView(question.getView() +1);
         questionRepository.save(question);
     }
+
+    public Question findVerifiedQuestion(long questionId) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Question findQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+        return findQuestion;
 
 }
