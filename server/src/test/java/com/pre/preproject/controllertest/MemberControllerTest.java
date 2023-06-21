@@ -2,25 +2,28 @@ package com.pre.preproject.controllertest;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.Gson;
+import com.pre.preproject.member.controller.MemberController;
 import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.mapper.MemberMapper;
 import com.pre.preproject.member.service.MemberService;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -33,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -52,10 +56,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.web.servlet.function.RequestPredicates.accept;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(MemberController.class)
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureRestDocs
+@AutoConfigureMockMvc(addFilters = false)
+@MockBean(JpaMetamodelMappingContext.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MemberControllerTest implements ControllerTestHelper {
     @Autowired
     private MockMvc mockMvc;
@@ -65,7 +73,7 @@ public class MemberControllerTest implements ControllerTestHelper {
     @MockBean
     private MemberService memberService;
 
-    @Autowired
+    @MockBean
     private MemberMapper mapper;
 
     @DisplayName("create member test")
@@ -112,16 +120,16 @@ public class MemberControllerTest implements ControllerTestHelper {
     @Test
     public void getMembersTest() throws Exception {
         // given
-        Member member1 = new Member("hgd1@example.com", "홍길동1","010-1111-1111");
-        Member member2 = new Member("hdg2@example.com", "홍길동2","010-2222-2222");
+        Member member1 = new Member("hgd1@gmail.com", "홍길동1","010-1111-1111");
+        Member member2 = new Member("hgd2@gmail.com", "홍길동2","010-2222-2222");
 
         // stubbing
         Page<Member> pageMember = new PageImpl<>(List.of(member1, member2),
                 PageRequest.of(0,10, Sort.by("memberId").descending()), 2);
 
         List<MemberDto.Response> responses = List.of(
-                new MemberDto.Response(1L, "hgd1@example.com", "홍길동1", "010-1111-1111"),
-                new MemberDto.Response(2L, "hdg2@example.com", "홍길동2", "010-2222-2222"));
+                new MemberDto.Response(1L, "홍길동1", "hgd1@gmail.com", "010-1111-1111"),
+                new MemberDto.Response(2L, "홍길동2", "hgd2@gmail.com", "010-2222-2222"));
 
         given(memberService.findMembers(Mockito.anyInt(), Mockito.anyInt())).willReturn(pageMember);
         given(mapper.membersToMemberResponses(Mockito.anyList())).willReturn(responses);
@@ -183,13 +191,14 @@ public class MemberControllerTest implements ControllerTestHelper {
 
     // getmember
 
+
     @Test
     @DisplayName("member get test")
     public void getMemberTest() throws Exception {
         // given
-        MemberDto.Response response = new MemberDto.Response(1L, "hgd@gmail.com", "홍길동", "010-1234-5678");
+        MemberDto.Response response = new MemberDto.Response(1L, "홍길동", "hgd@gmail.com", "010-1111-1111");
 
-        given(memberService.findMember(String.valueOf(Mockito.anyLong()))).willReturn(new Member());
+        given(memberService.findMember(Mockito.anyLong())).willReturn(new Member());
         given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(response);
 
         // when
@@ -216,6 +225,47 @@ public class MemberControllerTest implements ControllerTestHelper {
                                 )
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("Member Patch Test")
+    public void patchMemberTest() throws Exception {
+        Member member = new Member("hgd@gmail.com","홍홍홍","010-2222-2222");
+        MemberDto.Patch patch = new MemberDto.Patch(1L,"홍길동", "hgd@gmail.com", "010-1234-1234");
+        String content = toJsonContent(patch);
+
+        given(memberService.findMember(Mockito.anyLong())).willReturn(new Member());
+        given(mapper.memberPatchToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
+        given(memberService.updateMember(Mockito.any(Member.class))).willReturn(new Member());
+
+        ResultActions actions = mockMvc.perform(
+                patch("/members/{member-id}",1L)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        );
+
+        actions
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "modifyMember",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("member-id").description("멤버 ID")
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                                        fieldWithPath("data.phone").type(JsonFieldType.STRING).description("휴대폰 번호")
+                                )
+                        )
+                ));
+
+
     }
 
 

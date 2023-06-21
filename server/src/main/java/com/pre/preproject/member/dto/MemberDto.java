@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 public class MemberDto {
     @Getter
-    @Builder
     @AllArgsConstructor
     public static class Response{
         private Long memberId;
@@ -46,6 +45,7 @@ public class MemberDto {
     }
 
     @Getter
+    @AllArgsConstructor
     public static class Patch{
         private long memberId;
         @NotBlank(message = "공백이 아니어야 합니다.")

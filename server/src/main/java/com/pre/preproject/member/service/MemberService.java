@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +78,9 @@ public class MemberService {
         memberRepository.delete(findMember);
     }
 
+    public Member findMember(long memberId) {
+        return findVerifiedMember(memberId);
+    }
     public Member findMember(String email){
         return  memberRepository.findByEmail(email).get();
     }

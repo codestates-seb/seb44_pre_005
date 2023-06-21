@@ -2,17 +2,17 @@ package com.pre.preproject.member.controller;
 
 import com.pre.preproject.dto.MultiResponseDto;
 import com.pre.preproject.dto.SingleResponseDto;
-import com.pre.preproject.member.dto.RefreshTokenDto;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.service.MemberService;
 import com.pre.preproject.member.mapper.MemberMapper;
-import com.pre.preproject.member.service.RefreshTokenService;
 import com.pre.preproject.utils.UriCreator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,12 +26,11 @@ import java.util.List;
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
     private final MemberService memberService;
-    private final RefreshTokenService refreshTokenService;
+    //private final RefreshTokenService refreshTokenService;
     private final MemberMapper mapper;
 
-    public MemberController(MemberService memberService, RefreshTokenService refreshTokenService, MemberMapper mapper) {
+    public MemberController(MemberService memberService, MemberMapper mapper) {
         this.memberService = memberService;
-        this.refreshTokenService = refreshTokenService;
         this.mapper = mapper;
     }
 
@@ -79,11 +78,13 @@ public class MemberController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+/*
     @DeleteMapping("/logout")
     public ResponseEntity logout(@RequestHeader("Refresh") @Positive String refreshtoken) {
         log.info(refreshtoken);
         refreshTokenService.deleteRefreshToken(refreshtoken);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+ */
 }
