@@ -1,18 +1,16 @@
-package com.pre.preproject.answer.dto;
+package com.pre.preproject.comment.dto;
 
-import com.pre.preproject.comment.dto.CommentDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class AnswerDto {
+public class CommentDto {
     @Getter
     public static class Post {
         @Positive
-        private long questionId;
+        private long answerId;
 
         @NotBlank
         private String content;
@@ -20,23 +18,21 @@ public class AnswerDto {
 
     @Getter
     public static class Patch {
-        private long answerId;
-
+        private long commentId;
         private String content;
 
-        public void setAnswerId(long answerId) {
-            this.answerId = answerId;
+        public void setCommentId(long commentId) {
+            this.commentId = commentId;
         }
     }
 
     @Getter
     public static class Response {
-        private long answerId;
+        private long commentId;
         private long memberId;
-        private long questionId;
-        private String content;
+        private long answerId;
+        private String Content;
         private LocalDateTime dateCreated;
         private LocalDateTime dateModified;
-        private List<CommentDto.Response> commentList;
     }
 }
