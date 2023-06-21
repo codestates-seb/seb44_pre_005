@@ -5,68 +5,45 @@ import SideMenu from "../components/SideMenu";
 import Footer from "../components/Footer";
 import tw from "tailwind-styled-components";
 
-export default function ModifyDetail() {
+export default function AnswerModifyDetail() {
   return (
     <div>
       <NavMenu />
-      <ModifyDetailForm>
-        <TitleContainer>
-          <Title>Title</Title>
-          <TitleInputBox>
-            <TitleInput></TitleInput>
-          </TitleInputBox>
-        </TitleContainer>
-        <BodyContainer>
-          <Body>Body</Body>
-          <BodyInputBox>
-            <BodyInput></BodyInput>
-          </BodyInputBox>
-        </BodyContainer>
+      <AnswerModifyDetailForm>
+        <AnswerContainer>
+          <Answer>Answer</Answer>
+          <AnswerInputBox>
+            <AnswerInput></AnswerInput>
+          </AnswerInputBox>
+        </AnswerContainer>
         <ButtonContainer>
           <SaveButton>Save edits</SaveButton>
           <CancelLink to="/detail/">Cancel</CancelLink>
         </ButtonContainer>
-      </ModifyDetailForm>
+      </AnswerModifyDetailForm>
       <SideMenu />
       <Footer />
     </div>
   );
 }
 
-const ModifyDetailForm = tw.div`
+const AnswerModifyDetailForm = tw.div`
 flex flex-col
 w-[950px]
 `;
-const TitleContainer = tw.div`
+const AnswerContainer = tw.div`
 w-[100%]
 pb-[15px]
 `;
-const Title = tw.div`
+const Answer = tw.div`
 text-[18px] font-semibold	
 m-[4px]
 `;
-const TitleInputBox = tw.div`
-border border-solid border-[#BABFC4]
-w-[900px] h-[32px]
-py-[0.6px] pl-[9.1px]
-`;
-const TitleInput = tw.input`
-w-[100%] h-[100%]
-outline-none
-`;
-const BodyContainer = tw.div`
-w-[100%]
-pb-[15px]
-`;
-const Body = tw.div`
-text-[18px] font-semibold	
-m-[4px]
-`;
-const BodyInputBox = tw.div`
+const AnswerInputBox = tw.div`
 border border-solid border-[#BABFC4]
 w-[900px] h-[200px]
 `;
-const BodyInput = tw.textarea`
+const AnswerInput = tw.textarea`
 w-[100%] h-[100%]
 outline-none
 p-[10px]

@@ -224,12 +224,11 @@ hover:text-sky-500
 `;
 
 const Explaincontent = tw(Margin)`
-    t-[15px]
+t-[15px]
 `;
 
 const Wholeform = tw.div`
-    flex
-    
+flex
 `;
 
 const Inputform = tw.div`
@@ -240,49 +239,48 @@ border-solid
 border-[rgb(183, 215, 240);]
 p-[24px]
 mt-[10px]
-    
 `;
 
 const Bodyform = tw(Inputform)`
-  h-[200px]
+h-[200px]
 `;
 
 const Titlemodal = tw.div`
-    h-[50px]
-    ml-[20px]
-    mt-[10px]
+h-[50px]
+ml-[20px]
+mt-[10px]
 `;
 
 const Modaltitle = tw.div`
-    border-[1px]
-    border-solid
-    border-[border-right: 1px solid rgb(183, 215, 240);]
-    p-[10px]
+border-[1px]
+border-solid
+border-[border-right: 1px solid rgb(183, 215, 240);]
+p-[10px]
 `;
 
 const Modalbody = tw.div`
-    flex
-    p-[10px]
-    border-[1px]
-    border-solid
-    border-[border-right: 1px solid rgb(183, 215, 240);]
-    gap-[10px]
-    t-[12px]
+flex
+p-[10px]
+border-[1px]
+border-solid
+border-[border-right: 1px solid rgb(183, 215, 240);]
+gap-[10px]
+t-[12px]
 `;
 
 const Titleinput = tw.input<{ invalid: boolean }>`
-    w-[900px]
-    h-[30px]
-    p-[5px]
-    rounded-[5px]
-    border-[1px]
-    border-solid
-    focus:outline-none
-    ${(props) => (props.invalid ? "border-[#de4f54]" : "border-[#BABFC4]")}
+w-[900px]
+h-[30px]
+p-[5px]
+rounded-[5px]
+border-[1px]
+border-solid
+focus:outline-none
+${(props) => (props.invalid ? "border-[#de4f54]" : "border-[#BABFC4]")}
 `;
 
 const Bodyinput = tw(Titleinput)`
-  h-[140px]
+h-[140px]
 `;
 
 const Submitbutton = tw.button`
