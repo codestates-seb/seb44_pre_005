@@ -1,7 +1,6 @@
 package com.pre.preproject.member.entity;
 
 import lombok.*;
-import org.aspectj.weaver.patterns.TypePatternQuestions;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,13 +22,17 @@ public class Member {
 
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
     private String name;
     private LocalDate birthday;
     private String phone;
 
+    public Member(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
