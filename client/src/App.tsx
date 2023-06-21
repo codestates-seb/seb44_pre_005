@@ -20,7 +20,6 @@ function App() {
         ></Route>
         <Route path="/detail" element={<Detail />}></Route>
       </Routes>
-      <Footer></Footer>
     </div>
   );
 }
