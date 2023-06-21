@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.pre.preproject.member.service.MemberService;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,12 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionMapper questionMapper;
     private final QuestionRepository questionRepository;
+    private final MemberService memberService;
 
-    public QuestionService(QuestionMapper questionMapper, QuestionRepository questionRepository) {
+    public QuestionService(QuestionMapper questionMapper, QuestionRepository questionRepository, MemberService memberService) {
         this.questionMapper = questionMapper;
         this.questionRepository = questionRepository;
+        this.memberService = memberService;
     }
 
     //게시글 등록
@@ -72,9 +75,9 @@ public class QuestionService {
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
     }
     //회원이 존재하는지 확인
-//    private void verifyQuestion(Question question) {
-//        memberService.findVerifiedMember(question.getMember().getMemberId());
-//    }
+    private void verifyQuestion(Question question) {
+        memberService.findVerifiedMember(question.getMember().getMemberId());
+    }
 
 
     //조회수 증가
