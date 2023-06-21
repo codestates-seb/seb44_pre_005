@@ -25,21 +25,31 @@ public class Member {
 
     private String email;
 
-    private String password;
+
+    //private String password;
 
     private String name;
 
-    private LocalDate birthday;
+    //private LocalDate birthday;
+    @Column(nullable = false)
     private String phone;
 
-    public Member(String email, String name, String password) {
+    public Member(String email, String name) {
         this.email = email;
         this.name = name;
-        this.password = password;
+        //this.password = password;
     }
+
+    public Member(String email, String name,String phone) {
+        this.email = email;
+        this.name = name;
+        //this.password = password;
+        this.phone = phone;
+    }
+    /*
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
-
+    */
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question>  questions = new ArrayList<>();

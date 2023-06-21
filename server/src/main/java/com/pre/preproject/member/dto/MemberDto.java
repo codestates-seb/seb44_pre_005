@@ -13,13 +13,15 @@ import java.time.LocalDate;
 public class MemberDto {
     @Getter
     @Builder
+    @AllArgsConstructor
     public static class Response{
         private Long memberId;
         private String name;
         private String email;
-        private LocalDate birthday;
+        //private LocalDate birthday;
         private String phone;
     }
+
 
     @Getter
     @AllArgsConstructor
@@ -54,11 +56,13 @@ public class MemberDto {
 
         @Pattern(regexp = "^010-\\d{3,4}-\\d{4}",message = "휴대폰 번호는 010으로 시작하는 11자리 숫자와 '-'로 구성되어야 합니다.")
         private String phone;
-        private LocalDate birthday;
-
+        //private LocalDate birthday;
+        /*
         public void setMemberId(long memberId) {
             this.memberId = memberId;
         }
+        */
+
     }
 
     /*

@@ -1,6 +1,6 @@
 package com.pre.preproject.member.service;
 
-import com.pre.preproject.auth.util.CustomAuthorityUtils;
+//import com.pre.preproject.auth.util.CustomAuthorityUtils;
 import com.pre.preproject.exception.BusinessLogicException;
 import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final CustomAuthorityUtils authorityUtils;
+    //private final CustomAuthorityUtils authorityUtils;
     private final PasswordEncoder passwordEncoder;
 
     private void verifyExistEmail(String email) {
@@ -40,11 +40,13 @@ public class MemberService {
     public Member createMember(Member member){
         verifyExistEmail(member.getEmail());
 
+        /*
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+        */
 
         return memberRepository.save(member);
     }
@@ -55,7 +57,7 @@ public class MemberService {
 
         Optional.ofNullable(member.getName()).ifPresent(name -> fm.setName(member.getName()));
         Optional.ofNullable(member.getPhone()).ifPresent(phone -> fm.setPhone(member.getPhone()));
-        Optional.ofNullable(member.getBirthday()).ifPresent(birthday -> fm.setBirthday(member.getBirthday()));
+        //Optional.ofNullable(member.getBirthday()).ifPresent(birthday -> fm.setBirthday(member.getBirthday()));
 
         return memberRepository.save(fm);
     }
