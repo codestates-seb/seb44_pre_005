@@ -7,35 +7,42 @@ import tw from "tailwind-styled-components";
 
 export default function ModifyDetail() {
   return (
-    <div>
-      <NavMenu />
-      <ModifyDetailForm>
-        <TitleContainer>
-          <Title>Title</Title>
-          <TitleInputBox>
-            <TitleInput></TitleInput>
-          </TitleInputBox>
-        </TitleContainer>
-        <BodyContainer>
-          <Body>Body</Body>
-          <BodyInputBox>
-            <BodyInput></BodyInput>
-          </BodyInputBox>
-        </BodyContainer>
-        <ButtonContainer>
-          <SaveButton>Save edits</SaveButton>
-          <CancelLink to="/detail/">Cancel</CancelLink>
-        </ButtonContainer>
-      </ModifyDetailForm>
-      <SideMenu />
+    <>
+      <Container>
+        <NavMenu />
+        <ModifyDetailForm>
+          <TitleContainer>
+            <Title>Title</Title>
+            <TitleInputBox>
+              <TitleInput></TitleInput>
+            </TitleInputBox>
+          </TitleContainer>
+          <BodyContainer>
+            <Body>Body</Body>
+            <BodyInputBox>
+              <BodyInput></BodyInput>
+            </BodyInputBox>
+          </BodyContainer>
+          <ButtonContainer>
+            <SaveButton>Save edits</SaveButton>
+            <CancelLink to="/detail/">Cancel</CancelLink>
+          </ButtonContainer>
+        </ModifyDetailForm>
+        <SideMenu />
+      </Container>
       <Footer />
-    </div>
+    </>
   );
 }
 
+const Container = tw.div`
+flex
+justify-center
+`;
 const ModifyDetailForm = tw.div`
 flex flex-col
 w-[950px]
+p-[24px]
 `;
 const TitleContainer = tw.div`
 w-[100%]
