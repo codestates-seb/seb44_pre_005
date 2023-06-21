@@ -34,8 +34,9 @@ public class QuestionService {
     }
 
     //게시글 등록
-    public Question createQuestion(QuestionDto.Post postDto){
+    public Question createQuestion(QuestionDto.Post postDto, Member member){
         Question question = questionMapper.postDtoToQuestion(postDto);
+        question.setMember(member);
         questionRepository.save(question);
         return question;
     }
@@ -46,6 +47,7 @@ public class QuestionService {
         questionRepository.save(question);
         return question;
 
+        //작성자확인, 예외처리
     }
 
     //질문 전체조회 ACTIVE question 가져오기
@@ -74,7 +76,10 @@ public class QuestionService {
         Question question =
         questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
+
+        //작성자 확인, 예외처리
     }
+
     //회원이 존재하는지 확인
     private void verifyQuestion(Question question) {
         memberService.findVerifiedMember(question.getMember().getMemberId());
@@ -91,6 +96,12 @@ public class QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question findQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
         return findQuestion;
+    }
+
+    //총 질문 수 카운트
+    public long getTotalQuestionCount() {
+        long questionCount = questionRepository.count();
+        return  questionCount;
     }
 
 }

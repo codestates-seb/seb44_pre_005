@@ -1,6 +1,7 @@
 package com.pre.preproject.question.entity;
 
 import com.pre.preproject.answer.entity.Answer;
+import com.pre.preproject.audit.Auditable;
 import com.pre.preproject.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Question {
+public class Question extends Auditable {
     @Id
     @GeneratedValue
     private long questionId;
@@ -26,14 +27,12 @@ public class Question {
     @Column
     private long view = 0L;
     private QuestionStatus questionStatus;
-    public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, LocalDateTime date_created, LocalDateTime date_modified, Member member) {
+    public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, Member member) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
         this.view = view;
         this.questionStatus = questionStatus == null ? questionStatus.ACTIVE : questionStatus;
-        this.date_created = date_created;
-        this.date_modified = date_modified;
         this.member = member;
     }
 
@@ -52,11 +51,7 @@ public class Question {
         }
 
     }
-//    private long like;
 
-    //auditable 상속받을 시 제거
-    private LocalDateTime date_created = LocalDateTime.now();
-    private LocalDateTime date_modified = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "member_id")

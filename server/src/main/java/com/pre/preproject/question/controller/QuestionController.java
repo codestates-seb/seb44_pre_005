@@ -12,12 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -33,9 +36,9 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity postQuestion(@RequestBody QuestionDto.Post postDto) {
-        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto));
-        //시큐리티 도입시 Authentication 추가
+    public ResponseEntity postQuestion(@RequestBody QuestionDto.Post postDto, Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, member));
         URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, responseDto.getQuestionId());
         return ResponseEntity.created(location).build();
     }
@@ -54,12 +57,6 @@ public class QuestionController {
         return new ResponseEntity<>(new SingleResponseDto<>(questionMapper.questionToResponseDto(question)), HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity getQuestion(@RequestParam("page") int page,
-//                                      @RequestParam("size") int size){
-//        return null;
-//    }
-
     //전체게시글 조회
     @GetMapping
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId,
@@ -71,9 +68,16 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{question-id}")
-    public ResponseEntity deleteQuestion(@PathVariable("question-id") Long questionId){
+    public ResponseEntity deleteQuestion(@PathVariable("question-id") long questionId){
         questionService.deleteQuestion(questionId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity getTotalQuestionCount() {
+        Map<String,Long> count = new HashMap<>();
+        count.put("questionCount", questionService.getTotalQuestionCount());
+        return ResponseEntity.ok(count);
     }
 
 

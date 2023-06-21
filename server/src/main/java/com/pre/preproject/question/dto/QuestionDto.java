@@ -1,11 +1,13 @@
 package com.pre.preproject.question.dto;
 
+import com.pre.preproject.answer.dto.AnswerDto;
 import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.entity.Member;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class QuestionDto {
     public static class Post{
@@ -31,8 +33,12 @@ public class QuestionDto {
         private LocalDateTime date_created;
         private LocalDateTime date_modified;
         private MemberDto.Response member;
-        //answer 추가예정
-//        private List<AnswerDto.Response> answerList;
+        private List<AnswerDto.Response> answerList;
+    }
+
+    @Getter
+    public static class CountResponse {
+        private long questionCount;
     }
 
 
