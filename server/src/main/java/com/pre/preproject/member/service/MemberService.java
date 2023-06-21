@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     //private final CustomAuthorityUtils authorityUtils;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     private void verifyExistEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);

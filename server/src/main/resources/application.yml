@@ -25,22 +25,7 @@ spring:
     servlet:
       encoding:
         force-response: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: 445352671644-r63ah7ovh24jbru29cjgl5n6l7gn4tea.apps.googleusercontent.com
-            clientSecret: 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
-            scope:
-              - email
-              - profile
 
 mail:
   address:
     admin: admin@gmail.com
-
-jwt:
-  key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420

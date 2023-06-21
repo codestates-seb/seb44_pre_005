@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -70,7 +71,7 @@ public class MemberControllerTest implements ControllerTestHelper {
     @DisplayName("create member test")
     @Test
     void createMemberTest() throws Exception{
-        MemberDto.Post post = new MemberDto.Post("홍길동", "hgd@gmail.com","Abc123123","010-1234-1234");
+        MemberDto.Post post = new MemberDto.Post("홍길동", "hgd@gmail.com","010-1234-1234");
 
         Member member = mapper.memberPostToMember(post);
         member.setMemberId(1L);
@@ -220,6 +221,21 @@ public class MemberControllerTest implements ControllerTestHelper {
 
 
     // delete
+    @Test
+    public void deleteMemberTest() throws Exception {
+        Member member = new Member("hgd@example.com", "홍길동", "010-1234-5678");
+
+
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/members/{member-id}", 1))
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-member",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("member-id").description("멤버 ID")
+                        )
+                ));
+    }
 
 
     //patch
