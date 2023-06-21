@@ -96,4 +96,26 @@ public class MemberControllerTest {
                 ));
 
     }
+
+    // getmembers
+    @Test
+    @DisplayName("Members Get Test")
+    public void getMembersTest() throws Exception{
+        String page = "1";
+        String size = "3";
+        String sortBy = "memberId";
+
+
+    }
+
+
+    // getmember
+
+
+
+    // delete
+
+
+    //patch
+
 }
