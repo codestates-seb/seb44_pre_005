@@ -62,8 +62,9 @@ public class QuestionController {
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId,
                                       @RequestParam("page") int page,
                                       @RequestParam("size") int size) {
+        //size 값 변경 가능
         Page<Question> pageQuestions = questionService.findquestions(- 1,size);
-        List<Question> questions = questionService.getAllQuestions();
+        List<Question> questions = pageQuestions.getContent();
         return ResponseEntity.ok(questions);
     }
 

@@ -50,8 +50,6 @@ public class QuestionService {
         //작성자확인, 예외처리
     }
 
-    //질문 전체조회 ACTIVE question 가져오기
-//    public List<Question>
 
     //상세질문조회
     public Question selectQuestion(long questionId) {
@@ -63,12 +61,12 @@ public class QuestionService {
         return question;
     }
 
-    public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
-    }
+//    public List<Question> getAllQuestions() {
+//        return questionRepository.findAll();
+//    }
 
     public Page<Question> findquestions(int page, int size) {
-        return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()),"ACTIVE");
     }
 
     //게시글 삭제
