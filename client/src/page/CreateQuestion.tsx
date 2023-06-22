@@ -1,5 +1,5 @@
-import tw from "tailwind-styled-components";
 import { useState } from "react";
+import tw from "tailwind-styled-components";
 
 //todo: codeSyntaxHighlight or backgroundcolor grey
 //todo: valid test (통합 ? useEffect?)
@@ -10,29 +10,41 @@ const CreateQuestion = () => {
   const [titleModal, setTitleModal] = useState(false);
   const [bodyInvalid, setBodyInvalid] = useState(false);
   const [bodyModal, setBodyModal] = useState(false);
-  const [valid, setvalid] = useState(false);
+  const [validtest, setValidTest] = useState(false);
 
   const titleBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleModal(false);
     if (event.target.value === "") {
       console.log("잘못입력햇다.");
       setInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
     } else setInvalid(false);
   };
 
   const titleOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "") {
       setInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
     } else setInvalid(false);
   };
 
-  const titleFocusHandler = () => {
+  const titleFocusHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleModal(true);
+    if (event.target.value === "") {
+      console.log("잘못입력햇다.");
+      setInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
+    }
   };
 
   const bodyOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length < 20) {
       setBodyInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
     } else setBodyInvalid(false);
   };
 
@@ -40,11 +52,18 @@ const CreateQuestion = () => {
     setBodyModal(false);
     if (event.target.value.length < 20) {
       setBodyInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
     } else setBodyInvalid(false);
   };
 
-  const bodyFocusHandler = () => {
+  const bodyFocusHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBodyModal(true);
+    if (event.target.value.length < 20) {
+      setBodyInvalid(true);
+    } else if (invalid === false && bodyInvalid === false) {
+      setValidTest(true);
+    }
   };
 
   const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -129,7 +148,11 @@ const CreateQuestion = () => {
               onChange={bodyOnchangeHandler}
             ></Bodyinput>
             {bodyInvalid && <Redcolor>20자 이상 입력해주세요!</Redcolor>}
-            <Submitbutton type="submit" disabled={valid ? false : true}>
+            <Submitbutton
+              type="submit"
+              onClick={() => console.log("테스트통과했습니다.")}
+              disabled={validtest ? false : true}
+            >
               Submit
             </Submitbutton>
             <Cancelbutton className="cancel-button">Cancel</Cancelbutton>
@@ -186,32 +209,31 @@ text-red-600
 `;
 
 const Margin = tw.div`
-    mt-[10px]
+mt-[10px]
 `;
 
 const StyledForm = tw.form`
-    ml-[310px]
-    mt-[10px]
+ml-[310px]
+mt-[10px]
     
 `;
 
 const StyledFlex = tw.div`
-    flex
-    gap-[400px]
-    h2{
-        text-[30px]
-    }
+flex
+gap-[400px]
+h2{
+text-[30px]
+}
 `;
 
 const StyledBox = tw.div`
-    bg-[rgb(235,244,251)]
-    border-[rgb(95,148,233)]
-    border-solid
-    border-[1px]
-    rounded-sm
-    w-[950px]
-    p-[30px]
-    
+bg-[rgb(235,244,251)]
+border-[rgb(95,148,233)]
+border-solid
+border-[1px]
+rounded-sm
+w-[950px]
+p-[30px]
 `;
 
 const Styledtitle = tw.h2<{ text: string }>`
@@ -292,6 +314,7 @@ mt-[10px]
 bg-blue-600
 shadow-blue-500/10
 hover:bg-blue-950
+disabled:bg-slate-400 text-white cursor-not-allowed
 `;
 
 const Cancelbutton = tw.button`

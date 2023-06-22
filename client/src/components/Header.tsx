@@ -1,12 +1,12 @@
 import React from "react";
-import tw from "tailwind-styled-components";
-import { Link } from "react-router-dom";
-import { BsSearch } from "react-icons/bs";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import tw from "tailwind-styled-components";
+import { BsSearch } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { BsFillInboxFill, BsFillTrophyFill, BsMenuUp } from "react-icons/bs";
 import { GiHelp } from "react-icons/gi";
+import { Button } from "@mui/material";
 
 export default function Header() {
   const [product, setProduct] = useState(false);
@@ -14,6 +14,11 @@ export default function Header() {
   const [outMenu, setOutMenu] = useState(false);
   const logOutMenu: React.MouseEventHandler<SVGElement> = () => {
     setOutMenu(!outMenu);
+  };
+
+  const logOutHandler = () => {
+    setlogIn(false);
+    setOutMenu(false);
   };
 
   return (
@@ -30,7 +35,7 @@ export default function Header() {
             <StyledLink href="https://stackoverflow.co/">About</StyledLink>
           )}
           {product ? (
-            <div>
+            <Positionobx>
               <ActiveLink onClick={() => setProduct(false)}>
                 Products
               </ActiveLink>
@@ -50,7 +55,7 @@ export default function Header() {
                   <Description>About the company</Description>
                 </ul>
               </Menubox>
-            </div>
+            </Positionobx>
           ) : (
             <StyledLink onClick={() => setProduct(true)}>Products</StyledLink>
           )}
@@ -85,24 +90,24 @@ export default function Header() {
           ) : (
             <StyledIcon>
               {outMenu ? (
-                <div>
+                <Positionobx>
                   <FaUser></FaUser>
                   <LogoutMenu>
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/Stack_Overflow_icon-icons.com_66761.png"
-                      }
-                      alt="logo"
-                      style={{ width: "20px" }}
-                    />
                     <StyledIcon>
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/Stack_Overflow_icon-icons.com_66761.png"
+                        }
+                        alt="logo"
+                        style={{ width: "20px" }}
+                      />
                       <p>Stack Overflow</p>
                       <p>help</p>
-                      <div>logout</div>
+                      <div onClick={logOutHandler}>logout</div>
                     </StyledIcon>
                   </LogoutMenu>
-                </div>
+                </Positionobx>
               ) : (
                 <FaUser></FaUser>
               )}
@@ -117,6 +122,9 @@ export default function Header() {
     </nav>
   );
 }
+const Positionobx = tw.div`
+relative
+`;
 const Menubox = tw.div`
 border-2
 p-2
@@ -124,16 +132,14 @@ w-44
 absolute
 z-10
 bg-white
-top-[50px]
+top-[30px]
+left-[-130px]
 `;
 
 const LogoutMenu = tw(Menubox)`
-w-[240px]
-`;
-
-const Flexbar = tw.div`
-flex
-flex-col
+w-[270px]
+absoulte
+top-[25px]
 `;
 
 const Navbar = tw.div`
