@@ -20,6 +20,7 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/members") //TODO 경로 바꾸기
 @Slf4j
@@ -29,7 +30,9 @@ public class MemberController {
     private final RefreshTokenService refreshTokenService;
     private final MemberMapper mapper;
 
-    public MemberController(MemberService memberService, RefreshTokenService refreshTokenService, MemberMapper mapper) {
+    public MemberController(MemberService memberService,
+                            RefreshTokenService refreshTokenService,
+                            MemberMapper mapper) {
         this.memberService = memberService;
         this.refreshTokenService = refreshTokenService;
         this.mapper = mapper;
@@ -80,10 +83,13 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
     @DeleteMapping("/logout")
     public ResponseEntity logout(@RequestHeader("Refresh") @Positive String refreshtoken) {
         log.info(refreshtoken);
         refreshTokenService.deleteRefreshToken(refreshtoken);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
 }

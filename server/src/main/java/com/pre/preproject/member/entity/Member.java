@@ -1,5 +1,8 @@
 package com.pre.preproject.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pre.preproject.answer.entity.Answer;
+import com.pre.preproject.question.entity.Question;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +28,7 @@ public class Member {
     private String password;
 
     private String name;
+
     private LocalDate birthday;
     private String phone;
 
@@ -36,14 +40,16 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    /*
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<>  questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<> answers = new ArrayList<>();
+    private List<Question>  questions = new ArrayList<>();
+/*
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Answer> answers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cas)
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<> comments =
     */
 
 
