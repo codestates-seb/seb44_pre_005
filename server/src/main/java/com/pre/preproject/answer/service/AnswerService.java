@@ -28,7 +28,7 @@ public class AnswerService {
     }
 
     public Answer createAnswer(Answer answer) {
-        verifyAnswer(answer);
+        //verifyAnswer(answer);
         return answerRepository.save(answer);
     }
 
@@ -58,7 +58,7 @@ public class AnswerService {
         Answer findAnswer = optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
         return findAnswer;
     }
-
+/*
     private void verifyAnswer(Answer answer) {
         // 회원이 존재하는지 확인
         memberService.findVerifiedMember(answer.getMember().getMemberId());
@@ -66,4 +66,6 @@ public class AnswerService {
         // 질문이 존재하는지 확인
         questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
     }
+
+ */
 }
