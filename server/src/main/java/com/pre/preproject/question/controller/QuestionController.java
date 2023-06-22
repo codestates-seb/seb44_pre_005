@@ -37,8 +37,12 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity postQuestion(@RequestBody QuestionDto.Post postDto, Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
-        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, member));
+        //멤버 확인해줘야하는데 문제가 생김
+        Map<String,Object> principal = (Map) authentication.getPrincipal();
+        long memberId = ((Number) principal.get("memberId")).longValue();
+        System.out.println(memberId+"################################################################");
+//        Member member = (Member) authentication.getPrincipal();
+        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, memberId));
         URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, responseDto.getQuestionId());
         return ResponseEntity.created(location).build();
     }
@@ -46,6 +50,7 @@ public class QuestionController {
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
                                         @RequestBody QuestionDto.Patch patchDto){
+        //작성자만 수정할 수 있게끔
         QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.updateQuestion(patchDto));
         return ResponseEntity.ok().build();
     }
@@ -59,17 +64,17 @@ public class QuestionController {
 
     //전체게시글 조회
     @GetMapping
-    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId,
-                                      @RequestParam("page") int page,
-                                      @RequestParam("size") int size) {
+    public ResponseEntity getQuestions(@RequestParam("page") int page,
+                                       @RequestParam("size") int size) {
         //size 값 변경 가능
-        Page<Question> pageQuestions = questionService.findquestions(- 1,size);
+        Page<Question> pageQuestions = questionService.findquestions(page-1,size);
         List<Question> questions = pageQuestions.getContent();
         return ResponseEntity.ok(questions);
     }
 
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") long questionId){
+        //작성자 확인
         questionService.deleteQuestion(questionId);
         return ResponseEntity.noContent().build();
     }

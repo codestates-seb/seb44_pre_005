@@ -26,6 +26,7 @@ public class Question extends Auditable {
     private String content;
     @Column
     private long view = 0L;
+    @Enumerated(EnumType.STRING)
     private QuestionStatus questionStatus;
     public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, Member member) {
         this.questionId = questionId;

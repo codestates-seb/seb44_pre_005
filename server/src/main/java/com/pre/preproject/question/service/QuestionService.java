@@ -34,8 +34,9 @@ public class QuestionService {
     }
 
     //게시글 등록
-    public Question createQuestion(QuestionDto.Post postDto, Member member){
+    public Question createQuestion(QuestionDto.Post postDto, long memberId){
         Question question = questionMapper.postDtoToQuestion(postDto);
+        Member member = memberService.findVerifiedMember(memberId);
         question.setMember(member);
         questionRepository.save(question);
         return question;
@@ -66,7 +67,7 @@ public class QuestionService {
 //    }
 
     public Page<Question> findquestions(int page, int size) {
-        return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()),"ACTIVE");
+        return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()), Question.QuestionStatus.ACTIVE);
     }
 
     //게시글 삭제

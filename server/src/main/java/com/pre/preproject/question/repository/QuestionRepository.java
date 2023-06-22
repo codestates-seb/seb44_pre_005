@@ -14,6 +14,6 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
 //    List<Question> findQuestionByQuestionStatus(String ACTIVE);
 //    @Query("SELECT q FROM QUESTION WHERE q.STATUS = 'ACTIVE'")
 //    List<Question> findByQuestionStatus();
-    @Query("SELECT b from Question b WHERE b.questionStatus like %:status%")
-    Page<Question> findByQuestionStatus(Pageable pageable, @Param("status") String status);
+    @Query("SELECT b from Question b WHERE b.questionStatus = :status")
+    Page<Question> findByQuestionStatus(Pageable pageable, @Param("status")Question.QuestionStatus questionStatus);
 }
