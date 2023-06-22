@@ -11,6 +11,7 @@ const User: React.FC = () => {
     { id: 4, text: "Editors" },
     { id: 5, text: "Moderators" },
   ];
+
   return (
     <Container>
       <NavMenu />

@@ -5,16 +5,11 @@ import SideMenu from "../components/SideMenu";
 import tw from "tailwind-styled-components";
 
 export default function Detail() {
-  const getData = async () => {
-    const response = await preApi.getSomething();
-    const json = await response.json();
-    // console.log(json.results);
-  };
-
   return (
     <Container>
       <NavMenu />
       <>Content</>
+
       <SideMenu />
     </Container>
   );
