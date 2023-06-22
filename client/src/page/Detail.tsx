@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
@@ -9,10 +9,13 @@ import { MdBookmarkBorder, MdHistory } from "react-icons/md";
 
 export default function Detail() {
   const getData = async () => {
-    const response = await preApi.getSomething();
+    const response = await preApi.getUserList();
     const json = await response.json();
-    // console.log(json.results);
+    console.log(json);
   };
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Container>
