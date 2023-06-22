@@ -103,10 +103,12 @@ function Footer() {
                 </Footerli>
               ))}
             </FooterUl>
-            <p>
-              Site design/logo © 2023 Stack Exchange Inc; user contributions
-              licensed under CC BY-SA. rev 2023.4.13.4387
-            </p>
+            <div>
+              <Pstyle>
+                Site design/logo © 2023 Stack Exchange Inc; user contributions
+              </Pstyle>
+              <Pstyle>licensed under CC BY-SA. rev 2023.4.13.4387</Pstyle>
+            </div>
           </StyledFooter>
         </StyledContnet>
       </Footerbox>
@@ -115,6 +117,10 @@ function Footer() {
 }
 
 export default Footer;
+
+const Pstyle = tw.p`
+  text-[10px]
+`;
 
 const Footerbox = tw.div`
 z-5
@@ -128,8 +134,9 @@ justify-center
 `;
 
 const Img = tw.img`
-w-44
-h-44
+w-[50px]
+h-[50px]
+ml-[20px]
 `;
 
 const StyledUl = tw.ul`
@@ -156,6 +163,7 @@ text-13
 justify-around
 my-[22px]
 gap-[100px]
+ml-[120px]
 `;
 
 const StyledFooter = tw.div`

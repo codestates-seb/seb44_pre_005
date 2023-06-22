@@ -11,59 +11,67 @@ const CreateQuestion = () => {
   const [bodyInvalid, setBodyInvalid] = useState(false);
   const [bodyModal, setBodyModal] = useState(false);
   const [validtest, setValidTest] = useState(false);
+  const [Ttouch, setTtouch] = useState(false);
+  const [Btouch, setBtouch] = useState(false);
 
   const titleBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleModal(false);
     if (event.target.value === "") {
-      console.log("잘못입력햇다.");
+      setValidTest(false);
       setInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
-    } else setInvalid(false);
+    } else if (event.target.value !== "") {
+      setInvalid(false);
+      if (invalid === false && bodyInvalid === false && Btouch) {
+        setValidTest(true);
+      }
+    }
   };
 
   const titleOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "") {
+      setValidTest(false);
       setInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
-    } else setInvalid(false);
-  };
-
-  const titleFocusHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleModal(true);
-    if (event.target.value === "") {
-      console.log("잘못입력햇다.");
-      setInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
+    } else if (event.target.value !== "") {
+      setInvalid(false);
+      if (invalid === false && bodyInvalid === false && Btouch) {
+        setValidTest(true);
+      }
     }
   };
 
   const bodyOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length < 20) {
       setBodyInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
-    } else setBodyInvalid(false);
+      setValidTest(false);
+    } else if (event.target.value.length >= 20) {
+      setBodyInvalid(false);
+      if (invalid === false && bodyInvalid === false && Ttouch) {
+        setValidTest(true);
+      }
+    }
   };
 
   const bodyBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBodyModal(false);
     if (event.target.value.length < 20) {
       setBodyInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
-    } else setBodyInvalid(false);
+      setValidTest(false);
+    } else if (event.target.value.length >= 20) {
+      setBodyInvalid(false);
+      if (invalid === false && bodyInvalid === false && Ttouch) {
+        setValidTest(true);
+      }
+    }
   };
 
-  const bodyFocusHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const titleFocusHandler = () => {
+    setTitleModal(true);
+    setTtouch(true);
+  };
+
+  const bodyFocusHandler = () => {
     setBodyModal(true);
-    if (event.target.value.length < 20) {
-      setBodyInvalid(true);
-    } else if (invalid === false && bodyInvalid === false) {
-      setValidTest(true);
-    }
+    setBtouch(true);
   };
 
   const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -71,96 +79,99 @@ const CreateQuestion = () => {
     console.log("제출되었습니다.");
   };
   return (
-    <StyledForm onSubmit={onSubmitHandler}>
-      <StyledFlex>
-        <h2>Ask a public question</h2>
-        <img src={process.env.PUBLIC_URL + "/2023-06-18 15 46 02.png"}></img>
-      </StyledFlex>
-      <StyledBox>
-        <Styledtitle text="20">Writing a good question</Styledtitle>
-        <Explaincontent>
+    <div style={{ marginLeft: "30px" }}>
+      <StyledForm onSubmit={onSubmitHandler}>
+        <StyledFlex>
+          <h2>Ask a public question</h2>
+          <img src={process.env.PUBLIC_URL + "/2023-06-18 15 46 02.png"}></img>
+        </StyledFlex>
+        <StyledBox>
+          <Styledtitle text="20">Writing a good question</Styledtitle>
+          <Explaincontent>
+            <p>
+              You're ready to{" "}
+              <StyledLink href="https://stackoverflow.com/help/how-to-ask">
+                ask
+              </StyledLink>{" "}
+              a{" "}
+              <StyledLink href="https://stackoverflow.com/help/on-topic">
+                programming-related question
+              </StyledLink>{" "}
+              and this form will help guide you through the process.
+            </p>
+          </Explaincontent>
           <p>
-            You're ready to{" "}
-            <StyledLink href="https://stackoverflow.com/help/how-to-ask">
-              ask
+            Looking to ask a non-programming question? See{" "}
+            <StyledLink href="https://stackexchange.com/sites#technology">
+              the topics here
             </StyledLink>{" "}
-            a{" "}
-            <StyledLink href="https://stackoverflow.com/help/on-topic">
-              programming-related question
-            </StyledLink>{" "}
-            and this form will help guide you through the process.
+            to find a relevant site
           </p>
-        </Explaincontent>
-        <p>
-          Looking to ask a non-programming question? See{" "}
-          <StyledLink href="https://stackexchange.com/sites#technology">
-            the topics here
-          </StyledLink>{" "}
-          to find a relevant site
-        </p>
-        <br></br>
-        <h1>Steps</h1>
-        <Explaincontent>
-          <li>Summarize your problem in a one-line title.</li>
-          <li>Describe your problem in more detail.</li>
-          <li>Describe what you tried and what you expected to happen.</li>
-          <li>
-            Add “tags” which help surface your question to members of the
-            community.
-          </li>
-          <li>Review your question and post it to the site.</li>
-        </Explaincontent>
-      </StyledBox>
-      <Wholeform>
-        <Inputform>
-          <Styledtitle text="10">Title</Styledtitle>
-          <label>
-            Be specific and imagine you’re asking a question to another person.
-          </label>
-          <div className="title-input-form">
-            <Titleinput
-              invalid={invalid}
-              type="text"
-              placeholder="e.g Is there an R funcction for finding the index of an element in a vector?"
-              onBlur={titleBlurHandler}
-              onChange={titleOnchangeHandler}
-              onFocus={titleFocusHandler}
-            ></Titleinput>
-            {invalid && <Redcolor>제목을 입력해주세요!</Redcolor>}
-          </div>
-        </Inputform>
-        {titleModal && <TitleModal></TitleModal>}
-      </Wholeform>
-      <Wholeform>
-        <Bodyform>
-          <Styledtitle text="20">
-            What are the details of your problem?
-          </Styledtitle>
-          <p>
-            Introduce the problem and expand on what you put in the title.
-            Minimum 20 characters.
-          </p>
-          <div className="body-input-form">
-            <Bodyinput
-              invalid={bodyInvalid}
-              onFocus={bodyFocusHandler}
-              onBlur={bodyBlurHandler}
-              onChange={bodyOnchangeHandler}
-            ></Bodyinput>
-            {bodyInvalid && <Redcolor>20자 이상 입력해주세요!</Redcolor>}
-            <Submitbutton
-              type="submit"
-              onClick={() => console.log("테스트통과했습니다.")}
-              disabled={validtest ? false : true}
-            >
-              Submit
-            </Submitbutton>
-            <Cancelbutton className="cancel-button">Cancel</Cancelbutton>
-          </div>
-        </Bodyform>
-        {bodyModal && <BodyModal></BodyModal>}
-      </Wholeform>
-    </StyledForm>
+          <br></br>
+          <h1>Steps</h1>
+          <Explaincontent>
+            <li>Summarize your problem in a one-line title.</li>
+            <li>Describe your problem in more detail.</li>
+            <li>Describe what you tried and what you expected to happen.</li>
+            <li>
+              Add “tags” which help surface your question to members of the
+              community.
+            </li>
+            <li>Review your question and post it to the site.</li>
+          </Explaincontent>
+        </StyledBox>
+        <Wholeform>
+          <Inputform>
+            <Styledtitle text="10">Title</Styledtitle>
+            <label>
+              Be specific and imagine you’re asking a question to another
+              person.
+            </label>
+            <div className="title-input-form">
+              <Titleinput
+                invalid={invalid}
+                type="text"
+                placeholder="e.g Is there an R funcction for finding the index of an element in a vector?"
+                onBlur={titleBlurHandler}
+                onChange={titleOnchangeHandler}
+                onFocus={titleFocusHandler}
+              ></Titleinput>
+              {invalid && <Redcolor>제목을 입력해주세요!</Redcolor>}
+            </div>
+          </Inputform>
+          {titleModal && <TitleModal></TitleModal>}
+        </Wholeform>
+        <Wholeform>
+          <Bodyform>
+            <Styledtitle text="20">
+              What are the details of your problem?
+            </Styledtitle>
+            <p>
+              Introduce the problem and expand on what you put in the title.
+              Minimum 20 characters.
+            </p>
+            <div className="body-input-form">
+              <Bodyinput
+                invalid={bodyInvalid}
+                onFocus={bodyFocusHandler}
+                onBlur={bodyBlurHandler}
+                onChange={bodyOnchangeHandler}
+              ></Bodyinput>
+              {bodyInvalid && <Redcolor>20자 이상 입력해주세요!</Redcolor>}
+              <Submitbutton
+                type="submit"
+                onClick={() => console.log("테스트통과했습니다.")}
+                disabled={validtest ? false : true}
+              >
+                Submit
+              </Submitbutton>
+              <Cancelbutton className="cancel-button">Cancel</Cancelbutton>
+            </div>
+          </Bodyform>
+          {bodyModal && <BodyModal></BodyModal>}
+        </Wholeform>
+      </StyledForm>
+    </div>
   );
 };
 
@@ -314,7 +325,8 @@ mt-[10px]
 bg-blue-600
 shadow-blue-500/10
 hover:bg-blue-950
-disabled:bg-slate-400 text-white cursor-not-allowed
+disabled:bg-slate-400 text-white 
+
 `;
 
 const Cancelbutton = tw.button`

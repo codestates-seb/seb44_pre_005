@@ -80,10 +80,15 @@ export default function Header() {
                 variant="outlined"
                 size="small"
                 onClick={() => setlogIn(true)}
+                style={{ width: "100px", height: "30px" }}
               >
                 Log in
               </Button>
-              <Button variant="contained" size="small">
+              <Button
+                variant="contained"
+                size="small"
+                style={{ width: "100px", height: "30px" }}
+              >
                 Sign up
               </Button>
             </>
@@ -148,9 +153,12 @@ fixed
 top-0
 bg-white
 w-full
-h-[40px]
+h-[50px]
 z-[1]
 justify-around
+py-4
+border-b-[1px]
+border-[#E0E2E5]
 `;
 
 const Description = tw.li`

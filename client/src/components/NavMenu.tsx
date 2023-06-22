@@ -22,7 +22,11 @@ const NavMenu: React.FC = () => {
         <Innerli>
           <ContentOl>
             <OriginLi>
-              {location === "/" ? <Selected></Selected> : ""}
+              {location === "/" || location === "/detail" ? (
+                <Selected></Selected>
+              ) : (
+                ""
+              )}
               <Link to="/">
                 <Category>
                   <EarthIcon>
