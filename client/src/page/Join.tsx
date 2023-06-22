@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import preApi from "../api/preApi";
-import { HmacSHA256 } from "crypto-js";
+import { Link } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { RiQuestionnaireFill } from "react-icons/ri";
@@ -14,64 +12,27 @@ interface Join {
 }
 
 export default function Join() {
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState(false);
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState(false);
-  const [birthday, setBirthday] = useState("");
-  const [birthdayError, setBirthdayError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordRegexError, setPasswordRegexError] = useState(false);
 
-  const handleJoin = async () => {
+  const handleJoin = () => {
+    if (!email.includes("@")) {
+      setEmailError(true);
+    } else {
+      setEmailError(false);
+    }
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    const phoneRegex = /^010-?([0-9]{4})-?([0-9]{4})$/;
-    const navigate = useNavigate();
-
-    !email.includes("@") ? setEmailError(true) : setEmailError(false); // 이메일 유효성 검사
     if (password === "") {
-      // 패스워드 유효성 검사
       setPasswordError(true);
     } else if (!passwordRegex.test(password)) {
       setPasswordError(false);
       setPasswordRegexError(true);
     } else {
-      setPasswordRegexError(false);
       setPasswordError(false);
-    }
-    name === "" ? setNameError(true) : setNameError(false); // 이름 유효성 검사
-    phoneRegex.test(phone) && phone !== "" // 휴대폰 유효성 검사
-      ? setPhoneError(false)
-      : setPhoneError(true);
-    birthday === "" ? setBirthdayError(true) : setBirthdayError(false); // 생년월일 유효성 검사
-
-    if (
-      !emailError &&
-      !passwordError &&
-      !passwordRegexError &&
-      !nameError &&
-      !phoneError &&
-      !birthdayError
-    ) {
-      const hashedPassword = HmacSHA256(
-        password,
-        "fightingteamlove"
-      ).toString();
-      const data = { name, phone, email, password: hashedPassword, birthday };
-      try {
-        const response = await preApi.postMember(data);
-        if (response.ok) {
-          console.log("성공");
-          navigate("/login");
-        } else {
-          console.log("실패");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      setPasswordRegexError(false);
     }
   };
 
@@ -138,36 +99,21 @@ export default function Join() {
         <FormContainer>
           <NameContainer>
             <InputLabel>Display name</InputLabel>
-            <NameInputBox nameError={nameError}>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
-              {nameError && <ExclamationMark />}
+            <NameInputBox>
+              <Input />
             </NameInputBox>
-            {nameError && <ErrorMsg>Name cannot be empty.</ErrorMsg>}
           </NameContainer>
           <PhoneContainer>
             <InputLabel>Phone</InputLabel>
-            <PhoneInputBox phoneError={phoneError}>
-              <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
-              {phoneError && <ExclamationMark />}
+            <PhoneInputBox>
+              <Input />
             </PhoneInputBox>
-            {phoneError && (
-              <ErrorMsg>
-                The mobile phone number must consist of an 11-digit number
-                starting with 010 and a '-'.
-              </ErrorMsg>
-            )}
           </PhoneContainer>
           <BirthdayContainer>
             <InputLabel>Birthday</InputLabel>
-            <BirthdayInputBox birthdayError={birthdayError}>
-              <Input
-                type="date"
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
-              />
-              {birthdayError && <ExclamationMark />}
+            <BirthdayInputBox>
+              <Input type="date" />
             </BirthdayInputBox>
-            {birthdayError && <ErrorMsg>Birthday cannot be empty.</ErrorMsg>}
           </BirthdayContainer>
           <EmailContainer>
             <InputLabel>Email</InputLabel>
@@ -305,7 +251,7 @@ const FacebookIcon = tw.img`
 w-[22px] h-[22px]
 `;
 const FormContainer = tw.div`
-w-[300px] h-[900px]
+w-[300px] h-[670px]
 bg-white
 flex
 flex-col
@@ -321,10 +267,9 @@ flex
 flex-col
 my-[6px]
 `;
-const NameInputBox = tw.div<{ nameError: boolean }>`
+const NameInputBox = tw.div`
 my-[2px]
-border-solid border 
-${(props) => (props.nameError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+border-solid border border-[#BABFC4]
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -334,10 +279,9 @@ flex
 flex-col
 my-[6px]
 `;
-const PhoneInputBox = tw.div<{ phoneError: boolean }>`
+const PhoneInputBox = tw.div`
 my-[2px]
-border-solid border 
-${(props) => (props.phoneError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+border-solid border border-[#BABFC4]
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -347,10 +291,9 @@ flex
 flex-col
 my-[6px]
 `;
-const BirthdayInputBox = tw.div<{ birthdayError: boolean }>`
+const BirthdayInputBox = tw.div`
 my-[2px]
-border-solid border
-${(props) => (props.birthdayError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+border-solid border border-[#BABFC4]
 w-[256px] h-[30px]
 rounded-[3px]
 flex
