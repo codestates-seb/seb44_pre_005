@@ -25,11 +25,11 @@ export default function Join() {
   const [passwordError, setPasswordError] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordRegexError, setPasswordRegexError] = useState(false);
+  const navigate = useNavigate();
 
   const handleJoin = async () => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
     const phoneRegex = /^010-?([0-9]{4})-?([0-9]{4})$/;
-    const navigate = useNavigate();
 
     !email.includes("@") ? setEmailError(true) : setEmailError(false); // 이메일 유효성 검사
     if (password === "") {
@@ -198,7 +198,7 @@ export default function Join() {
               least 1 letter and 1 number.
             </PasswordExplanation>
           </PasswordContainer>
-          <JoinButton onClick={handleJoin}>Sign in</JoinButton>
+          <JoinButton onClick={handleJoin}>Sign up</JoinButton>
           <JoinExplanation>
             By clicking “Sign up”, you agree to our terms of service and
             acknowledge that you have read and understand our privacy policy and
