@@ -103,7 +103,9 @@ const Main = () => {
       <div style={{ position: "absolute", top: "0px", left: "1500px" }}>
         <SideMenu></SideMenu>
       </div>
-      <NavMenu></NavMenu>
+      <div style={{ marginLeft: "303px" }}>
+        <NavMenu></NavMenu>
+      </div>
     </div>
   );
 };
