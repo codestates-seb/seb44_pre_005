@@ -12,8 +12,9 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 
-@Service
+
 @RequiredArgsConstructor
+@Service
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 

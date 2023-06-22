@@ -26,6 +26,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -33,7 +36,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-public class SecurityConfiguration {
+public class SecurityConfiguration implements WebMvcConfigurer {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -52,8 +55,12 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
+                .oauth2Login()
+                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenService))
+                .and()
                 .csrf().disable()
-                .cors(withDefaults())
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
@@ -68,16 +75,13 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/members").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.GET, "/members").permitAll()
-                        .antMatchers(HttpMethod.GET, "/members/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/member/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/questions").authenticated()
                         .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
                         .antMatchers(HttpMethod.GET, "/questions").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/questions/**").hasRole("USER")
                         .anyRequest().permitAll()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenService))
                 );
 
         return http.build();
@@ -91,8 +95,12 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE"));
+
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.addExposedHeader("Authorization");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
@@ -115,6 +123,18 @@ public class SecurityConfiguration {
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)
                     .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
+
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .exposedHeaders("Authorization")
+                .maxAge(3000);
     }
 
 }

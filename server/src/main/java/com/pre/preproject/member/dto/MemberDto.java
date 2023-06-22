@@ -12,12 +12,12 @@ import java.time.LocalDate;
 
 public class MemberDto {
     @Getter
-    @Builder
+    @AllArgsConstructor
     public static class Response{
         private Long memberId;
         private String name;
         private String email;
-        private LocalDate birthday;
+        //private LocalDate birthday;
         private String phone;
     }
 
