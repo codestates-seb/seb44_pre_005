@@ -148,9 +148,12 @@ fixed
 top-0
 bg-white
 w-full
-h-[40px]
+h-[50px]
 z-[1]
 justify-around
+py-4
+border-b-[1px]
+border-[#E0E2E5]
 `;
 
 const Description = tw.li`

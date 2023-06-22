@@ -300,10 +300,11 @@ inline-block
 const AddAnswerContiner = tw.div`
   
 `;
-const AddAnswer = tw.input`
+const AddAnswer = tw.textarea`
 mt-8
 p-4
 w-full
+h-80
 border-[1px]
 border-black
 `;
