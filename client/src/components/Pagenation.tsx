@@ -1,14 +1,23 @@
-import { useState } from "react";
 import tw from "tailwind-styled-components";
 
-const Pagenation = () => {
-  const [page, setPage] = useState(1);
+interface PagenationProps {
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  totalquestion: number;
+}
+
+const Pagenation: React.FC<PagenationProps> = ({
+  page,
+  setPage,
+  totalquestion,
+}) => {
+  const numPages = Math.ceil(totalquestion / 7);
   return (
     <Nav>
       <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
         &lt;
       </Button>
-      {Array(10)
+      {Array(numPages)
         .fill(null)
         .map((_, i) => (
           <Button
@@ -19,7 +28,7 @@ const Pagenation = () => {
             {i + 1}
           </Button>
         ))}
-      <Button onClick={() => setPage(page + 1)} disabled={page === 10}>
+      <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
         &gt;
       </Button>
     </Nav>

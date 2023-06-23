@@ -13,6 +13,8 @@ const CreateQuestion = () => {
   const [validtest, setValidTest] = useState(false);
   const [Ttouch, setTtouch] = useState(false);
   const [Btouch, setBtouch] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const titleBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleModal(false);
@@ -21,6 +23,7 @@ const CreateQuestion = () => {
       setInvalid(true);
     } else if (event.target.value !== "") {
       setInvalid(false);
+      setTitle(event.target.value);
       if (invalid === false && bodyInvalid === false && Btouch) {
         setValidTest(true);
       }
@@ -28,6 +31,7 @@ const CreateQuestion = () => {
   };
 
   const titleOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
     if (event.target.value === "") {
       setValidTest(false);
       setInvalid(true);
@@ -40,6 +44,7 @@ const CreateQuestion = () => {
   };
 
   const bodyOnchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(event.target.value);
     if (event.target.value.length < 20) {
       setBodyInvalid(true);
       setValidTest(false);
@@ -58,6 +63,7 @@ const CreateQuestion = () => {
       setValidTest(false);
     } else if (event.target.value.length >= 20) {
       setBodyInvalid(false);
+      setContent(event.target.value);
       if (invalid === false && bodyInvalid === false && Ttouch) {
         setValidTest(true);
       }
@@ -74,13 +80,30 @@ const CreateQuestion = () => {
     setBtouch(true);
   };
 
-  const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    console.log("제출되었습니다.");
+  const onSubmitHandler = () => {
+    const data = {
+      title: title,
+      content: content,
+    };
+
+    fetch("https://32c6-221-148-162-66.ngrok-free.app/questions", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoidGVzdDExMTFAZ21haWwuY29tIiwic3ViIjoidGVzdDExMTFAZ21haWwuY29tIiwiaWF0IjoxNjg3NTA4ODc3LCJleHAiOjE2ODc1MTA2Nzd9.HyINet_F-lKHqQiMhqgfbchc_0Z2cEHf2z_pPCOvLDuo21GQtf0IBUSJrW93uDa7",
+        Refresh:
+          "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTExMUBnbWFpbC5jb20iLCJpYXQiOjE2ODc1MDg4NzcsImV4cCI6MTY4NzUzNDA3N30.VXOiSintg2DCwv7TvYoetZTTIbPQXQUY-rQk1LeyIpGrcU4h88Q3pjewI3NUwc-T",
+      },
+    });
+    setTitle("");
+    setContent("");
   };
   return (
     <div style={{ marginLeft: "30px" }}>
-      <StyledForm onSubmit={onSubmitHandler}>
+      <StyledForm>
         <StyledFlex>
           <h2>Ask a public question</h2>
           <img src={process.env.PUBLIC_URL + "/2023-06-18 15 46 02.png"}></img>
@@ -135,6 +158,7 @@ const CreateQuestion = () => {
                 onBlur={titleBlurHandler}
                 onChange={titleOnchangeHandler}
                 onFocus={titleFocusHandler}
+                value={title}
               ></Titleinput>
               {invalid && <Redcolor>제목을 입력해주세요!</Redcolor>}
             </div>
@@ -156,11 +180,11 @@ const CreateQuestion = () => {
                 onFocus={bodyFocusHandler}
                 onBlur={bodyBlurHandler}
                 onChange={bodyOnchangeHandler}
+                value={content}
               ></Bodyinput>
               {bodyInvalid && <Redcolor>20자 이상 입력해주세요!</Redcolor>}
               <Submitbutton
-                type="submit"
-                onClick={() => console.log("테스트통과했습니다.")}
+                onClick={onSubmitHandler}
                 disabled={validtest ? false : true}
               >
                 Submit
@@ -223,7 +247,7 @@ const Margin = tw.div`
 mt-[10px]
 `;
 
-const StyledForm = tw.form`
+const StyledForm = tw.div`
 ml-[310px]
 mt-[10px]
     
