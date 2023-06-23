@@ -41,19 +41,31 @@ export default function Join() {
       <JoinExplanationContent>
         <ExplanationTitle>Join the Stack Overflow community</ExplanationTitle>
         <Explanation>
-          <RiQuestionnaireFill size={26} color="#0a95ff" />
+          <RiQuestionnaireFill
+            size={26}
+            color="#0a95ff"
+            style={{ marginRight: "5px" }}
+          />
           Get unstuck — ask a question
         </Explanation>
         <Explanation>
-          <LuChevronsUpDown size={26} color="#0a95ff" />
+          <LuChevronsUpDown
+            size={26}
+            color="#0a95ff"
+            style={{ marginRight: "5px" }}
+          />
           Unlock new privileges like voting and commenting
         </Explanation>
         <Explanation>
-          <ImPriceTags size={26} color="#0a95ff" />
+          <ImPriceTags
+            size={26}
+            color="#0a95ff"
+            style={{ marginRight: "5px" }}
+          />
           Save your favorite questions, answers, watch tags, and more
         </Explanation>
         <Explanation>
-          <FaTrophy size={26} color="#0a95ff" />
+          <FaTrophy size={26} color="#0a95ff" style={{ marginRight: "5px" }} />
           Earn reputation and badges
         </Explanation>
         <ExplanationSmall>
@@ -124,7 +136,7 @@ export default function Join() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {passwordError && <ExclamationMark />}
+              {(passwordError || passwordRegexError) && <ExclamationMark />}
             </PasswordInputBox>
             {passwordError && <ErrorMsg>Password cannot be empty.</ErrorMsg>}
             <PasswordExplanation passwordRegexError={passwordRegexError}>

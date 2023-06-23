@@ -182,7 +182,9 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
         <p>{data[i].views} views</p>
       </Shortinfo>
       <div>
-        <Styledtitle>{data[i].title}</Styledtitle>
+        <Link to="/detail/1">
+          <Styledtitle>{data[i].title}</Styledtitle>
+        </Link>
         <Styledcontent>{data[i].content}</Styledcontent>
         <Styledbottom>
           <div className="tag">

@@ -7,29 +7,36 @@ import tw from "tailwind-styled-components";
 
 export default function AnswerModifyDetail() {
   return (
-    <div>
-      <NavMenu />
-      <AnswerModifyDetailForm>
-        <AnswerContainer>
-          <Answer>Answer</Answer>
-          <AnswerInputBox>
-            <AnswerInput></AnswerInput>
-          </AnswerInputBox>
-        </AnswerContainer>
-        <ButtonContainer>
-          <SaveButton>Save edits</SaveButton>
-          <CancelLink to="/detail/">Cancel</CancelLink>
-        </ButtonContainer>
-      </AnswerModifyDetailForm>
-      <SideMenu />
+    <>
+      <Container>
+        <NavMenu />
+        <AnswerModifyDetailForm>
+          <AnswerContainer>
+            <Answer>Answer</Answer>
+            <AnswerInputBox>
+              <AnswerInput></AnswerInput>
+            </AnswerInputBox>
+          </AnswerContainer>
+          <ButtonContainer>
+            <SaveButton>Save edits</SaveButton>
+            <CancelLink to="/detail/">Cancel</CancelLink>
+          </ButtonContainer>
+        </AnswerModifyDetailForm>
+        <SideMenu />
+      </Container>
       <Footer />
-    </div>
+    </>
   );
 }
 
+const Container = tw.div`
+flex
+justify-center
+`;
 const AnswerModifyDetailForm = tw.div`
 flex flex-col
 w-[950px]
+p-[24px]
 `;
 const AnswerContainer = tw.div`
 w-[100%]

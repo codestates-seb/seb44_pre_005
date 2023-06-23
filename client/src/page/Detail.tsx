@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
 import SideMenu from "../components/SideMenu";
@@ -8,13 +8,15 @@ import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri";
 import { MdBookmarkBorder, MdHistory } from "react-icons/md";
 
 export default function Detail() {
+  const { id } = useParams();
   const getData = async () => {
     const response = await preApi.getUserList();
     const json = await response.json();
     console.log(json);
   };
   useEffect(() => {
-    getData();
+    // getData();
+    console.log(id);
   }, []);
 
   return (
@@ -64,7 +66,7 @@ export default function Detail() {
                   <EditQustion>
                     <EditP>Share</EditP>
                     <EditP>Follow</EditP>
-                    <Link to="/modifydetail">
+                    <Link to="/modifydetail/1">
                       <EditP>Edit</EditP>
                     </Link>
                     <EditP>delete</EditP>
@@ -107,7 +109,7 @@ export default function Detail() {
                           <EditQustion>
                             <EditP>Share</EditP>
                             <EditP>Follow</EditP>
-                            <Link to="/modifydetail">
+                            <Link to="/answermodify/1">
                               <EditP>Edit</EditP>
                             </Link>
                             <EditP>delete</EditP>
