@@ -22,33 +22,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
     private final QuestionMapper questionMapper;
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
 
-    public QuestionService(QuestionMapper questionMapper, QuestionRepository questionRepository, MemberService memberService) {
-        this.questionMapper = questionMapper;
-        this.questionRepository = questionRepository;
-        this.memberService = memberService;
-    }
-
     //게시글 등록
     public Question createQuestion(QuestionDto.Post postDto, long memberId){
-        Question question = questionMapper.postDtoToQuestion(postDto);
         Member member = memberService.findVerifiedMember(memberId);
+        Question question = questionMapper.postDtoToQuestion(postDto);
+        question.setQuestionStatus(Question.QuestionStatus.ACTIVE);
         question.setMember(member);
         questionRepository.save(question);
         return question;
     }
 
     //게시글 수정
-    public Question updateQuestion(QuestionDto.Patch patchDto){
-        Question question = questionMapper.patchDtoToQuestion(patchDto);
-        questionRepository.save(question);
-        return question;
+    public Question updateQuestion(QuestionDto.Patch patchDto, long memberId){
+        Question findedQuestion = findVerifiedQuestion(patchDto.getQuestionId());
+        Member member = memberService.findVerifiedMember(memberId);
+        findedQuestion.setTitle(patchDto.getTitle());
+        findedQuestion.setContent(patchDto.getContent());
+        questionRepository.save(findedQuestion);
+        return findedQuestion;
 
-        //작성자확인, 예외처리
     }
 
 
@@ -62,21 +60,18 @@ public class QuestionService {
         return question;
     }
 
-//    public List<Question> getAllQuestions() {
-//        return questionRepository.findAll();
-//    }
 
     public Page<Question> findquestions(int page, int size) {
         return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()), Question.QuestionStatus.ACTIVE);
     }
 
     //게시글 삭제
-    public void deleteQuestion(long questionId){
+    public void deleteQuestion(long questionId, long memberId){
         Question question =
         questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
+        questionRepository.save(question);
 
-        //작성자 확인, 예외처리
     }
 
     //회원이 존재하는지 확인

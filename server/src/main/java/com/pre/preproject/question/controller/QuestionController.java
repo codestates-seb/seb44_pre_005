@@ -2,13 +2,19 @@ package com.pre.preproject.question.controller;
 
 import com.pre.preproject.dto.MultiResponseDto;
 import com.pre.preproject.dto.SingleResponseDto;
+import com.pre.preproject.exception.BusinessLogicException;
+import com.pre.preproject.exception.ExceptionCode;
 import com.pre.preproject.member.entity.Member;
+import com.pre.preproject.member.entity.RefreshToken;
+import com.pre.preproject.member.repository.RefreshTokenRepository;
 import com.pre.preproject.question.dto.QuestionDto;
 import com.pre.preproject.question.entity.Question;
 import com.pre.preproject.question.mapper.QuestionMapper;
+import com.pre.preproject.question.repository.QuestionRepository;
 import com.pre.preproject.question.service.QuestionService;
 import com.pre.preproject.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,43 +22,48 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Validated
 @RestController
 @RequestMapping("/questions")
+@RequiredArgsConstructor
+@Slf4j
 public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
     private final static String QUESTION_DEFAULT_URL = "/questions";
-
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper) {
-        this.questionService = questionService;
-        this.questionMapper = questionMapper;
-    }
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @PostMapping
-    public ResponseEntity postQuestion(@RequestBody QuestionDto.Post postDto, Authentication authentication) {
-        //멤버 확인해줘야하는데 문제가 생김
-        Map<String,Object> principal = (Map) authentication.getPrincipal();
-        long memberId = ((Number) principal.get("memberId")).longValue();
-        System.out.println(memberId+"################################################################");
-//        Member member = (Member) authentication.getPrincipal();
-        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, memberId));
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, responseDto.getQuestionId());
+    public ResponseEntity postQuestion(@RequestHeader(name = "Refresh") String token,
+                                       @Valid @RequestBody QuestionDto.Post postDto) {
+//        //멤버 확인해줘야하는데 문제가 생김
+//        Map<String,Object> principal = (Map) authentication.getPrincipal();
+//        long memberId = ((Number) principal.get("memberId")).longValue();
+//        System.out.println(memberId+"################################################################");
+////        Member member = (Member) authentication.getPrincipal();
+//        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, memberId));
+        Long memberId = findmemberId(token);
+        Question question = questionService.createQuestion(postDto, memberId);
+        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, question.getQuestionId());
         return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
-                                        @RequestBody QuestionDto.Patch patchDto){
-        //작성자만 수정할 수 있게끔
-        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.updateQuestion(patchDto));
-        return ResponseEntity.ok().build();
+                                        @RequestHeader(name = "Refresh") String token,
+                                        @Valid @RequestBody QuestionDto.Patch patchDto){
+        Long memberId = findmemberId(token);
+        patchDto.setQuestionId(questionId);
+        questionService.updateQuestion(patchDto, memberId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     //질문 상세 조회, 뷰 카운트
     @GetMapping("/{question-id}")
@@ -65,17 +76,24 @@ public class QuestionController {
     //전체게시글 조회
     @GetMapping
     public ResponseEntity getQuestions(@RequestParam("page") int page,
-                                       @RequestParam("size") int size) {
+                                       @RequestParam("size") int size,
+                                       @RequestParam(required = false) String keyword) {
         //size 값 변경 가능
         Page<Question> pageQuestions = questionService.findquestions(page-1,size);
         List<Question> questions = pageQuestions.getContent();
-        return ResponseEntity.ok(questions);
+        for (int i = 0; i < questions.size(); i++) {
+            System.out.println(questions.get(i).toString());
+
+        }
+        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionToResponseDto(questions),pageQuestions),HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{question-id}")
-    public ResponseEntity deleteQuestion(@PathVariable("question-id") long questionId){
-        //작성자 확인
-        questionService.deleteQuestion(questionId);
+    public ResponseEntity deleteQuestion(@Positive @PathVariable("question-id") long questionId,
+                                         @RequestHeader(name = "Refresh") String token){
+        Long memberId = findmemberId(token);
+        questionService.deleteQuestion(questionId, memberId);
         return ResponseEntity.noContent().build();
     }
 
@@ -84,6 +102,12 @@ public class QuestionController {
         Map<String,Long> count = new HashMap<>();
         count.put("questionCount", questionService.getTotalQuestionCount());
         return ResponseEntity.ok(count);
+    }
+
+    public Long findmemberId(String token) {
+        Optional<RefreshToken> refresht = refreshTokenRepository.findByValue(token);
+        RefreshToken findtoken = refresht.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findtoken.getMemberId();
     }
 
 

@@ -37,6 +37,7 @@ public class Question extends Auditable {
         this.member = member;
     }
 
+
     public enum QuestionStatus {
         INACTIVE(0,"비활성"),
         ACTIVE(1,"활성");
@@ -59,9 +60,9 @@ public class Question extends Auditable {
     private Member member;
     
 
-    //답변 가져오기
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<Answer> answers = new ArrayList<>();
-    
+//    //답변 가져오기
+//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+//    private List<Answer> answers = new ArrayList<>();
+//
 
 }
