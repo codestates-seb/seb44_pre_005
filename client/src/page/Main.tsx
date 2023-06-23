@@ -89,22 +89,40 @@ const Main = () => {
   ];
 
   return (
-    <div style={{ position: "relative" }}>
-      <div style={{ position: "absolute", top: "0px", width: "100%" }}>
-        <Mainheader></Mainheader>
-        {dummydata.map((item, i) => {
-          return <DataCard data={dummydata} i={i}></DataCard>;
-        })}
-        <Pagenation></Pagenation>
-        <div style={{ position: "relative", top: "300px" }}>
-          <Footer></Footer>
+    <div style={{ position: "relative", minHeight: "1600px" }}>
+      <div
+        style={{ position: "relative", width: "1000px", marginLeft: "200px" }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "0px",
+            width: "100%",
+          }}
+        >
+          <Mainheader></Mainheader>
+          <div style={{ position: "absolute", top: "0px", left: "90px" }}>
+            <NavMenu></NavMenu>
+          </div>
+          {dummydata.map((item, i) => {
+            return (
+              <div>
+                <DataCard data={dummydata} i={i}></DataCard>
+              </div>
+            );
+          })}
+
+          <div style={{ position: "absolute", right: "100px" }}>
+            <Pagenation></Pagenation>
+          </div>
+        </div>
+        <div style={{ position: "absolute", top: "0px", left: "1200px" }}>
+          <SideMenu></SideMenu>
         </div>
       </div>
-      <div style={{ position: "absolute", top: "0px", left: "1500px" }}>
-        <SideMenu></SideMenu>
-      </div>
-      <div style={{ marginLeft: "303px" }}>
-        <NavMenu></NavMenu>
+
+      <div style={{ position: "absolute", bottom: "0px", width: "100vw" }}>
+        <Footer></Footer>
       </div>
     </div>
   );
