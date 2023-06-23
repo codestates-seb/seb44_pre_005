@@ -80,10 +80,15 @@ export default function Header() {
                 variant="outlined"
                 size="small"
                 onClick={() => setlogIn(true)}
+                style={{ width: "100px", height: "30px" }}
               >
                 Log in
               </Button>
-              <Button variant="contained" size="small">
+              <Button
+                variant="contained"
+                size="small"
+                style={{ width: "100px", height: "30px" }}
+              >
                 Sign up
               </Button>
             </>

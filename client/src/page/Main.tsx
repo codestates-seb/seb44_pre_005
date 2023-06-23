@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
 import Pagenation from "../components/Pagenation";
+import Footer from "../components/Footer";
 import tw from "tailwind-styled-components";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import NavMenu from "../components/NavMenu";
+import SideMenu from "../components/SideMenu";
 
 interface DataItem {
   id: number;
@@ -82,27 +86,27 @@ const Main = () => {
       reputation: 3,
       date: new Date("2023-06-19 05:00:05"),
     },
-    {
-      id: Math.random(),
-      votes: 2,
-      answers: 5,
-      views: 3,
-      title: "순수 테스트용입니다5.",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-15 14:00:05"),
-    },
   ];
+
   return (
-    <>
-      <Mainheader></Mainheader>
-      {dummydata.map((item, i) => {
-        return <DataCard data={dummydata} i={i}></DataCard>;
-      })}
-      <Pagenation></Pagenation>
-    </>
+    <div style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: "0px", width: "100%" }}>
+        <Mainheader></Mainheader>
+        {dummydata.map((item, i) => {
+          return <DataCard data={dummydata} i={i}></DataCard>;
+        })}
+        <Pagenation></Pagenation>
+        <div style={{ position: "relative", top: "300px" }}>
+          <Footer></Footer>
+        </div>
+      </div>
+      <div style={{ position: "absolute", top: "0px", left: "1500px" }}>
+        <SideMenu></SideMenu>
+      </div>
+      <div style={{ marginLeft: "303px" }}>
+        <NavMenu></NavMenu>
+      </div>
+    </div>
   );
 };
 
@@ -116,7 +120,9 @@ const Mainheader = () => {
         <div>23,753,867 questions</div>
       </StyledHeaderRL>
       <StyledHeaderRL>
-        <Filter>Ask Question</Filter>
+        <Link to="/create">
+          <Filter>Ask Question</Filter>
+        </Link>
         <div>
           <ToggleButtonGroup color="primary" exclusive aria-label="Platform">
             <ToggleButton value="web">Newest</ToggleButton>
