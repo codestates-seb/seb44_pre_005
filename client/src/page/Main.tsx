@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Pagenation from "../components/Pagenation";
 import Footer from "../components/Footer";
@@ -6,6 +7,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
+import { relative } from "path";
 
 interface DataItem {
   id: number;
@@ -20,73 +22,72 @@ interface DataItem {
 }
 
 interface Props {
-  data: DataItem[];
+  data: QuestionData[];
   i: number;
 }
+interface Member {
+  memberId: number;
+  name: string;
+  email: string;
+  birthday: string;
+  phone: string;
+}
+
+interface QuestionData {
+  questionId: number;
+  title: string;
+  content: string;
+  view: number;
+  dateCreated: string;
+  dateModified: string;
+  member: Member;
+  answer: number;
+}
+
+interface PageInfo {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+interface QuestionList {
+  data: QuestionData[];
+  pageInfo: PageInfo;
+}
+
+interface MainHeaderProps {
+  number: number;
+}
+
 const Main = () => {
-  const dummydata: DataItem[] = [
-    {
-      id: Math.random(),
-      votes: 0,
-      answers: 0,
-      views: 3,
-      title:
-        "Connection timeout connecting to Redis Docker container on another host",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-20 14:00:05"),
-    },
-    {
-      id: Math.random(),
-      votes: 2,
-      answers: 5,
-      views: 3,
-      title: "순수 테스트용입니다1.",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-19 14:00:05"),
-    },
-    {
-      id: Math.random(),
-      votes: 2,
-      answers: 5,
-      views: 3,
-      title: "순수 테스트용입니다2.",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-19 14:00:05"),
-    },
-    {
-      id: Math.random(),
-      votes: 2,
-      answers: 5,
-      views: 3,
-      title: "순수 테스트용입니다3.",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-19 14:00:05"),
-    },
-    {
-      id: Math.random(),
-      votes: 2,
-      answers: 5,
-      views: 3,
-      title: "순수 테스트용입니다4.",
-      content:
-        " I have a Redis cluster (containerised) on my host 10.20.80.200, and I'm trying to connect to it on another host with an IP of 10.20.80.201. I keep getting a 'Connection timeout' error on my10.20.80....",
-      infoname: "Ben Whitely",
-      reputation: 3,
-      date: new Date("2023-06-19 05:00:05"),
-    },
-  ];
+  const [questionList, setQuestionList] = useState<QuestionList>({
+    data: [],
+    pageInfo: { page: 0, size: 0, totalElements: 0, totalPages: 0 },
+  });
+
+  const [page, setPage] = useState(1);
+  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page${page}&size=15`;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        const questions = await response.json();
+        console.log(questions);
+        setQuestionList(questions);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div style={{ position: "relative", minHeight: "1600px" }}>
@@ -100,20 +101,24 @@ const Main = () => {
             width: "100%",
           }}
         >
-          <Mainheader></Mainheader>
+          <Mainheader number={questionList.pageInfo.totalElements}></Mainheader>
           <div style={{ position: "absolute", top: "0px", left: "90px" }}>
             <NavMenu></NavMenu>
           </div>
-          {dummydata.map((item, i) => {
+          {questionList.data.map((item, i) => {
             return (
               <div>
-                <DataCard data={dummydata} i={i}></DataCard>
+                <DataCard data={questionList.data} i={i}></DataCard>
               </div>
             );
           })}
 
           <div style={{ position: "absolute", right: "100px" }}>
-            <Pagenation></Pagenation>
+            <Pagenation
+              page={page}
+              setPage={setPage}
+              totalquestion={questionList.pageInfo.totalElements}
+            ></Pagenation>
           </div>
         </div>
         <div style={{ position: "absolute", top: "0px", left: "1200px" }}>
@@ -130,12 +135,12 @@ const Main = () => {
 
 export default Main;
 
-const Mainheader = () => {
+const Mainheader: React.FC<MainHeaderProps> = ({ number }) => {
   return (
     <StyledHeader>
       <StyledHeaderRL>
         <h2>All Questions</h2>
-        <div>23,753,867 questions</div>
+        <div>{number}</div>
       </StyledHeaderRL>
       <StyledHeaderRL>
         <Link to="/create">
@@ -154,47 +159,53 @@ const Mainheader = () => {
 };
 
 const DataCard: React.FC<Props> = ({ data, i }) => {
-  const getMinutes = (postDate: Date): string => {
+  const getMinutes = (): string => {
     const currentDate: Date = new Date();
-    const timeDiffMinutes: number = Math.round(
-      (currentDate.getTime() - postDate.getTime()) / (1000 * 60)
+    const modifiedDate = new Date(data[i].dateModified);
+    const timeDifference = Math.floor(
+      (currentDate.getTime() - modifiedDate.getTime()) / 60000
     );
 
-    if (timeDiffMinutes < 1) {
+    if (timeDifference < 1) {
       return "just before";
-    } else if (timeDiffMinutes < 60) {
-      return `${timeDiffMinutes}min ago`;
-    } else if (timeDiffMinutes < 1440) {
-      const hours: number = Math.floor(timeDiffMinutes / 60);
+    } else if (timeDifference < 60) {
+      return `${timeDifference}min ago`;
+    } else if (timeDifference < 1440) {
+      const hours: number = Math.floor(timeDifference / 60);
       return `${hours}hour ago `;
     } else {
-      const days: number = Math.floor(timeDiffMinutes / 1440);
+      const days: number = Math.floor(timeDifference / 1440);
       return `${days}days ago`;
     }
   };
 
-  console.log(data);
+  const detailurl = "/detail/" + data[i].questionId;
   return (
     <StyledCard>
       <Shortinfo>
-        <p>{data[i].votes} votes</p>
-        <p>{data[i].answers} answers</p>
-        <p>{data[i].views} views</p>
+        <p>3 votes</p>
+        <p>0 answers</p>
+        <p>{data[i].view} views</p>
       </Shortinfo>
-      <div>
-        <Link to="/detail/1">
-          <Styledtitle>{data[i].title}</Styledtitle>
-        </Link>
-        <Styledcontent>{data[i].content}</Styledcontent>
+      <div style={{ position: "relative", left: "-250px" }}>
+        <div>
+          <Link to="/detail/1">
+            <Link to={detailurl}>
+              <Styledtitle>{data[i].title}</Styledtitle>
+            </Link>
+          </Link>
+          <Styledcontent>{data[i].content}</Styledcontent>
+        </div>
+        <div></div>
         <Styledbottom>
           <div className="tag">
             <Styledtag>Spring-boot</Styledtag> <Styledtag>docker</Styledtag>{" "}
             <Styledtag>docker-compose</Styledtag>
           </div>
           <Questioninfo>
-            <p>name</p>
+            <p>{data[i].member.name}</p>
             <p>5 asked</p>
-            <p>{getMinutes(data[i].date)}</p>
+            <p>{getMinutes()}</p>
           </Questioninfo>
         </Styledbottom>
       </div>
@@ -205,7 +216,8 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
 const Questioninfo = tw.div`
 flex
 gap-[10px]
-ml-auto
+relative
+left-[240px]
 `;
 
 const Styledtag = tw.div`
@@ -218,8 +230,8 @@ p-[3px]
 
 const Styledbottom = tw.div`
 flex
-mt-[10px]
-justify-between 
+mt-[40px]
+
 `;
 
 const Styledtitle = tw.div`
