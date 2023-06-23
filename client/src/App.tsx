@@ -17,16 +17,19 @@ function App() {
       <Header />
       <Container>
         <Routes>
-          <Route path="/answermodify" element={<AnswerModifyDetail />}></Route>
+          <Route
+            path="/answermodify/:id"
+            element={<AnswerModifyDetail />}
+          ></Route>
           <Route
             path="/create"
             element={<CreateQuestion></CreateQuestion>}
           ></Route>
-          <Route path="/detail" element={<Detail />}></Route>
+          <Route path="/detail/:id" element={<Detail />}></Route>
           <Route path="/join" element={<Join />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/" element={<Main />}></Route>
-          <Route path="/modifydetail" element={<ModifyDetail />}></Route>
+          <Route path="/modifydetail/:id" element={<ModifyDetail />}></Route>
           <Route path="/user" element={<User />}></Route>
         </Routes>
       </Container>
