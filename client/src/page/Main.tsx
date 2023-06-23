@@ -54,7 +54,7 @@ const Main = () => {
   });
 
   const [page, setPage] = useState(1);
-  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page=${page}&size=15`;
+  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page=${page}&size=7`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +74,7 @@ const Main = () => {
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
     <div style={{ position: "relative", minHeight: "1600px" }}>

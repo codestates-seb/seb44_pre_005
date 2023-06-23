@@ -11,7 +11,7 @@ const Pagenation: React.FC<PagenationProps> = ({
   setPage,
   totalquestion,
 }) => {
-  const numPages = Math.ceil(totalquestion / 15);
+  const numPages = Math.ceil(totalquestion / 7);
   return (
     <Nav>
       <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
