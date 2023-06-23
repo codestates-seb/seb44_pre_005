@@ -44,12 +44,6 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity postQuestion(@RequestHeader(name = "Refresh") String token,
                                        @Valid @RequestBody QuestionDto.Post postDto) {
-//        //멤버 확인해줘야하는데 문제가 생김
-//        Map<String,Object> principal = (Map) authentication.getPrincipal();
-//        long memberId = ((Number) principal.get("memberId")).longValue();
-//        System.out.println(memberId+"################################################################");
-////        Member member = (Member) authentication.getPrincipal();
-//        QuestionDto.Response responseDto = questionMapper.questionToResponseDto(questionService.createQuestion(postDto, memberId));
         Long memberId = findmemberId(token);
         Question question = questionService.createQuestion(postDto, memberId);
         URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, question.getQuestionId());
