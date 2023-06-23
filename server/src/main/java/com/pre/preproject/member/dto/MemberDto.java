@@ -17,7 +17,7 @@ public class MemberDto {
         private Long memberId;
         private String name;
         private String email;
-        //private LocalDate birthday;
+        private LocalDate birthday;
         private String phone;
     }
 

@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -20,16 +22,16 @@ public class Question {
     private String title;
     @Column(nullable = false)
     private String content;
-    private long view;
+    private int view;
     private QuestionStatus questionStatus;
-    public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, LocalDateTime date_created, LocalDateTime date_modified, Member member) {
+    public Question(long questionId, String title, String content, int view, QuestionStatus questionStatus, LocalDateTime dateCreated, LocalDateTime dateModified, Member member) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
         this.view = view;
         this.questionStatus = questionStatus == null ? questionStatus.ACTIVE : questionStatus;
-        this.date_created = date_created;
-        this.date_modified = date_modified;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
         this.member = member;
     }
 
@@ -51,11 +53,14 @@ public class Question {
 //    private long like;
 
     //auditable 상속받을 시 제거
-    private LocalDateTime date_created = LocalDateTime.now();
-    private LocalDateTime date_modified = LocalDateTime.now();
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateModified;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
 }

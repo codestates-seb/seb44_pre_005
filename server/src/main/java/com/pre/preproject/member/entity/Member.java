@@ -51,6 +51,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<> comments =
     */
+    public void addQuestion(Question question){
+        this.questions.add(question);
+    }
 
 
 }

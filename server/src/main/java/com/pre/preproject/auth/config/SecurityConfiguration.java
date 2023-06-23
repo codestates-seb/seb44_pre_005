@@ -77,7 +77,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .antMatchers(HttpMethod.GET, "/members").permitAll()
                         .antMatchers(HttpMethod.GET, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/member/**").hasRole("USER")
-                        .antMatchers(HttpMethod.POST, "/questions").authenticated()
+                        .antMatchers(HttpMethod.POST, "/questions").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
                         .antMatchers(HttpMethod.GET, "/questions").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/questions/**").hasRole("USER")
