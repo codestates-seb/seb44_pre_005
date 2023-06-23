@@ -7,19 +7,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
-import { relative } from "path";
-
-interface DataItem {
-  id: number;
-  votes: number;
-  answers: number;
-  views: number;
-  title: string;
-  content: string;
-  infoname: string;
-  reputation: number;
-  date: Date;
-}
 
 interface Props {
   data: QuestionData[];
@@ -67,7 +54,7 @@ const Main = () => {
   });
 
   const [page, setPage] = useState(1);
-  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page${page}&size=15`;
+  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page=${page}&size=15`;
 
   useEffect(() => {
     const fetchData = async () => {
