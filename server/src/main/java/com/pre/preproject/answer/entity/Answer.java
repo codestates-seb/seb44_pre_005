@@ -21,7 +21,7 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long answerId;
 
-    @Column(nullable = false) // TODO length
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @ManyToOne
@@ -32,6 +32,6 @@ public class Answer extends Auditable {
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    @OneToMany(mappedBy = "answer")
-    private List<Comment> comments = new ArrayList<>();
+//    @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    private List<Comment> comments = new ArrayList<>();
 }
