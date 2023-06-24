@@ -16,7 +16,6 @@ interface Member {
   memberId: number;
   name: string;
   email: string;
-  birthday: string;
   phone: string;
 }
 
@@ -54,19 +53,15 @@ const Main = () => {
   });
 
   const [page, setPage] = useState(1);
-  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page=${page}&size=7`;
+  const url = `http://ec2-43-200-88-48.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${page}&size=7`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
           method: "GET",
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
         });
         const questions = await response.json();
-        console.log(questions);
         setQuestionList(questions);
       } catch (error) {
         console.error("Error:", error);
@@ -176,10 +171,8 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
       </Shortinfo>
       <div style={{ position: "relative", left: "-250px" }}>
         <div>
-          <Link to="/detail/1">
-            <Link to={detailurl}>
-              <Styledtitle>{data[i].title}</Styledtitle>
-            </Link>
+          <Link to={detailurl}>
+            <Styledtitle>{data[i].title}</Styledtitle>
           </Link>
           <Styledcontent>{data[i].content}</Styledcontent>
         </div>
