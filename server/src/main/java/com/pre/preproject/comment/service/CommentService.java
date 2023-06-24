@@ -1,11 +1,16 @@
 package com.pre.preproject.comment.service;
 
+import com.pre.preproject.answer.entity.Answer;
 import com.pre.preproject.answer.service.AnswerService;
+import com.pre.preproject.comment.dto.CommentDto;
 import com.pre.preproject.comment.entity.Comment;
+import com.pre.preproject.comment.mapper.CommentMapper;
 import com.pre.preproject.comment.repository.CommentRepository;
 import com.pre.preproject.exception.BusinessLogicException;
 import com.pre.preproject.exception.ExceptionCode;
+import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,33 +19,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
+//@Transactional
 @Service
+@RequiredArgsConstructor
 public class CommentService {
     private final MemberService memberService;
     private final AnswerService answerService;
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
-    public CommentService(MemberService memberService, AnswerService answerService, CommentRepository commentRepository) {
-        this.memberService = memberService;
-        this.answerService = answerService;
-        this.commentRepository = commentRepository;
+    public Comment createComment(CommentDto.Post postDto, long memberId, long answerId) {
+        Member member = memberService.findVerifiedMember(memberId);
+        Answer answer = answerService.findVerifiedAnswer(answerId);
+
+        Comment comment = commentMapper.commentPostDtoToComment(postDto);
+        comment.setMember(member);
+        comment.setAnswer(answer);
+
+        commentRepository.save(comment);
+
+        return comment;
     }
 
-    public Comment createComment(Comment comment) {
-        verifyComment(comment);
-        return commentRepository.save(comment);
+    public Comment updateComment(CommentDto.Patch patchDto, long memberId, long answerId) {
+        Comment findComment = findVerifiedComment(patchDto.getCommentId());
+        Member member = memberService.findVerifiedMember(memberId);
+        Answer answer = answerService.findVerifiedAnswer(answerId);
+
+        findComment.setContent(patchDto.getContent());
+
+        commentRepository.save(findComment);
+
+        return findComment;
     }
 
-    public Comment updateComment(Comment comment) {
-        Comment findComment = findVerifiedComment(comment.getCommentId());
-
-        Optional.ofNullable(comment.getContent()).ifPresent(content -> findComment.setContent(comment.getContent()));
-
-        return commentRepository.save(findComment);
-    }
-
-    public Comment findComment(long commentId) {
+    public Comment selectComment(long commentId) {
         return findVerifiedComment(commentId);
     }
 
@@ -48,7 +61,7 @@ public class CommentService {
         return commentRepository.findAll(PageRequest.of(page, size, Sort.by("commentId").descending()));
     }
 
-    public void deleteComment(long commentId) {
+    public void deleteComment(long commentId, long memberId) {
         Comment findComment = findVerifiedComment(commentId);
         commentRepository.delete(findComment);
     }
@@ -57,10 +70,5 @@ public class CommentService {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment findComment = optionalComment.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
         return findComment;
-    }
-
-    private void verifyComment(Comment comment) {
-        memberService.findVerifiedMember(comment.getMember().getMemberId());
-        answerService.findVerifiedAnswer(comment.getAnswer().getAnswerId());
     }
 }
