@@ -59,12 +59,14 @@ export default function Join() {
       // const hashedPassword = HmacSHA256(password, "fighting").toString();
       // const data = { name, phone, email, password: hashedPassword, birthday };
       const data = { name, phone, email, password, birthday };
-      console.log(data);
+
       try {
         const response = await preApi.postMember(data);
         if (response.ok) {
           console.log("성공");
           navigate("/login");
+        } else if (response.status === 500) {
+          alert("You are already a registered member.");
         } else {
           console.log("실패");
         }
