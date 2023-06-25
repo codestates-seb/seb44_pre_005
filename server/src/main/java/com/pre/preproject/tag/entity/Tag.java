@@ -22,18 +22,9 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String info;
-
-    //추가
-    @Column(nullable = false)
-    private int count;
-    @JsonIgnore
-    @OneToMany(mappedBy = "tag")
-    private List<QuestionTag> questionTagList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "tag")
-//    private List<UserTag> userTagList = new ArrayList<>();
+    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+    @JoinColumn(name = "tag_id")
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
 
 }

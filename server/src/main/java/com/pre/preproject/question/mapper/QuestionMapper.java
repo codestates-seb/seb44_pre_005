@@ -4,7 +4,9 @@ import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.entity.Member;
 import com.pre.preproject.member.mapper.MemberMapper;
 import com.pre.preproject.question.dto.QuestionDto;
+import com.pre.preproject.question.dto.QuestionTagDto;
 import com.pre.preproject.question.entity.Question;
+import com.pre.preproject.question.entity.QuestionTag;
 import org.mapstruct.Mapper;
 
 import java.time.LocalDateTime;
@@ -47,4 +49,7 @@ public interface QuestionMapper {
 
         return list;
     }
+
+    List<QuestionTagDto> questionTagListToQuestionTagDtoList(List<QuestionTag> list);
+    QuestionTagDto QuestionTagToQuestionTagDto(QuestionTag questionTag);
 }

@@ -3,6 +3,7 @@ package com.pre.preproject.question.entity;
 import com.pre.preproject.answer.entity.Answer;
 import com.pre.preproject.audit.Auditable;
 import com.pre.preproject.member.entity.Member;
+import com.pre.preproject.tag.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,11 +59,12 @@ public class Question extends Auditable {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    
 
-//    //답변 가져오기
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Answer> answers = new ArrayList<>();
-//
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+//    private List<Tag> tags = new ArrayList<>();
 
 }
