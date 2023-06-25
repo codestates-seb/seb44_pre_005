@@ -94,14 +94,6 @@ const Main = () => {
               </div>
             );
           })}
-
-          <div style={{ position: "absolute", right: "100px" }}>
-            <Pagenation
-              page={page}
-              setPage={setPage}
-              totalquestion={questionList.pageInfo.totalElements}
-            ></Pagenation>
-          </div>
         </div>
         <div style={{ position: "absolute", top: "0px", left: "1200px" }}>
           <SideMenu></SideMenu>
@@ -109,6 +101,13 @@ const Main = () => {
       </div>
 
       <div style={{ position: "absolute", bottom: "0px", width: "100vw" }}>
+        <div style={{ position: "absolute", top: "-70px", right: "50%" }}>
+          <Pagenation
+            page={page}
+            setPage={setPage}
+            totalquestion={questionList.pageInfo.totalElements}
+          ></Pagenation>
+        </div>
         <Footer></Footer>
       </div>
     </div>
