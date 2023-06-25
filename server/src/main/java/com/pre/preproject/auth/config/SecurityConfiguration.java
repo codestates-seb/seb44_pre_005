@@ -101,6 +101,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Refresh");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
@@ -134,6 +135,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .exposedHeaders("Authorization")
+                .exposedHeaders("Refresh")
                 .maxAge(3000);
     }
 
