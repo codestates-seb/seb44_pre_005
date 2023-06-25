@@ -60,7 +60,8 @@ public class Question extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany
+    //(mappedBy = "question", fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private List<QuestionTag> questionTags = new ArrayList<>();
 

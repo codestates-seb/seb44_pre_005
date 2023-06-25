@@ -1,6 +1,5 @@
 package com.pre.preproject.tag.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pre.preproject.question.entity.QuestionTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,8 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+    @OneToMany
+    //(mappedBy = "tag", fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private List<QuestionTag> questionTags = new ArrayList<>();
 

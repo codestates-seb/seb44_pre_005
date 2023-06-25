@@ -2,24 +2,16 @@ package com.pre.preproject.tag.controller;
 
 import com.pre.preproject.dto.MultiResponseDto;
 import com.pre.preproject.question.entity.Question;
-import com.pre.preproject.question.entity.QuestionTag;
 import com.pre.preproject.question.mapper.QuestionMapper;
-import com.pre.preproject.question.repository.QuestionRepository;
-import com.pre.preproject.tag.dto.TagDto;
-import com.pre.preproject.tag.entity.Tag;
-import com.pre.preproject.tag.mapper.TagMapper;
-import com.pre.preproject.tag.repository.TagRepository;
 import com.pre.preproject.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
