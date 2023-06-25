@@ -18,7 +18,7 @@ public class Comment extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long commentId;
 
-    @Column(nullable = false) // length 설정
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @ManyToOne

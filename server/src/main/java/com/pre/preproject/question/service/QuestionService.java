@@ -22,34 +22,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
     private final QuestionMapper questionMapper;
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
 
-    public QuestionService(QuestionMapper questionMapper, QuestionRepository questionRepository, MemberService memberService) {
-        this.questionMapper = questionMapper;
-        this.questionRepository = questionRepository;
-        this.memberService = memberService;
-    }
-
     //게시글 등록
-    public Question createQuestion(QuestionDto.Post postDto){
+    public Question createQuestion(QuestionDto.Post postDto, long memberId){
+        Member member = memberService.findVerifiedMember(memberId);
         Question question = questionMapper.postDtoToQuestion(postDto);
+        question.setQuestionStatus(Question.QuestionStatus.ACTIVE);
+        question.setMember(member);
         questionRepository.save(question);
         return question;
     }
 
     //게시글 수정
-    public Question updateQuestion(QuestionDto.Patch patchDto){
-        Question question = questionMapper.patchDtoToQuestion(patchDto);
-        questionRepository.save(question);
-        return question;
+    public Question updateQuestion(QuestionDto.Patch patchDto, long memberId){
+        Question findedQuestion = findVerifiedQuestion(patchDto.getQuestionId());
+        Member member = memberService.findVerifiedMember(memberId);
+        findedQuestion.setTitle(patchDto.getTitle());
+        findedQuestion.setContent(patchDto.getContent());
+        questionRepository.save(findedQuestion);
+        return findedQuestion;
 
     }
 
-    //질문 전체조회 ACTIVE question 가져오기
-//    public List<Question>
 
     //상세질문조회
     public Question selectQuestion(long questionId) {
@@ -61,20 +60,20 @@ public class QuestionService {
         return question;
     }
 
-    public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
-    }
 
     public Page<Question> findquestions(int page, int size) {
-        return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()), Question.QuestionStatus.ACTIVE);
     }
 
     //게시글 삭제
-    public void deleteQuestion(long questionId){
+    public void deleteQuestion(long questionId, long memberId){
         Question question =
         questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
+        questionRepository.save(question);
+
     }
+
     //회원이 존재하는지 확인
     private void verifyQuestion(Question question) {
         memberService.findVerifiedMember(question.getMember().getMemberId());
@@ -91,6 +90,12 @@ public class QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question findQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
         return findQuestion;
+    }
+
+    //총 질문 수 카운트
+    public long getTotalQuestionCount() {
+        long questionCount = questionRepository.count();
+        return  questionCount;
     }
 
 }
