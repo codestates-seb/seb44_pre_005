@@ -51,7 +51,7 @@ public class QuestionController {
     }
 
     @PatchMapping("/{question-id}")
-    public ResponseEntity patchQuestion(@PathVariable("question-id") Long questionId,
+    public ResponseEntity patchQuestion(@PathVariable("question-id") long questionId,
                                         @RequestHeader(name = "Refresh") String token,
                                         @Valid @RequestBody QuestionDto.Patch patchDto){
         Long memberId = findmemberId(token);
@@ -61,10 +61,10 @@ public class QuestionController {
     }
     //질문 상세 조회, 뷰 카운트
     @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") Long questionId){
+    public ResponseEntity getQuestion(@PathVariable("question-id") long questionId){
         Question question = questionService.selectQuestion(questionId);
         questionService.increaseViews(question);
-        return new ResponseEntity<>(new SingleResponseDto<>(questionMapper.questionToResponseDto(question)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(questionMapper.questionToResponseAnswerDto(question)), HttpStatus.OK);
     }
 
     //전체게시글 조회
