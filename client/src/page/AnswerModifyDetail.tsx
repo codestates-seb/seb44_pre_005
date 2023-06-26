@@ -77,7 +77,7 @@ export default function AnswerModifyDetail() {
       console.log(error);
     }
     if (answerId) {
-      navigate(`/detail/${answerId}`);
+      navigate(`/detail/${questionId}`);
     }
   };
 
@@ -97,7 +97,7 @@ export default function AnswerModifyDetail() {
           </AnswerContainer>
           <ButtonContainer>
             <SaveButton onClick={handleEdit}>Save edits</SaveButton>
-            <CancelLink to={`/detail/${answerId}`}>Cancel</CancelLink>
+            <CancelLink to={`/detail/${questionId}`}>Cancel</CancelLink>
           </ButtonContainer>
         </AnswerModifyDetailForm>
         <SideMenu />
