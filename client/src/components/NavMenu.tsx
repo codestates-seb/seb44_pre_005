@@ -92,6 +92,7 @@ export default NavMenu;
 
 const Container = tw.div`
 min-h-full
+min-w-[160px]
 w-40
 pt-6
 pb-2

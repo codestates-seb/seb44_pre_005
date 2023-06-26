@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavMenu from "../components/NavMenu";
+import preApi from "../api/preApi";
 import tw from "tailwind-styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
+
+type UserType = {
+  memberId: number;
+  name: string;
+  email: string;
+  phone: string;
+};
 
 const User: React.FC = () => {
   const filterList = [
@@ -11,6 +19,16 @@ const User: React.FC = () => {
     { id: 4, text: "Editors" },
     { id: 5, text: "Moderators" },
   ];
+  const [users, setUsers] = useState<UserType[]>([]);
+  const getUsers = async () => {
+    const response = await preApi.getUserList();
+    const json = await response.json();
+    console.log(json.data);
+    setUsers(json.data);
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <Container>
@@ -38,6 +56,21 @@ const User: React.FC = () => {
                 <UserInfo>
                   <UserTitle>{people.name}</UserTitle>
                   <p>{people.birthday}</p>
+                </UserInfo>
+              </UserEle>
+            );
+          })}
+          {users.map((people) => {
+            return (
+              <UserEle key={people.memberId}>
+                <img
+                  src="https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1"
+                  height={48}
+                  width={48}
+                />
+                <UserInfo>
+                  <UserTitle>{people.name}</UserTitle>
+                  <p>{people.email}</p>
                 </UserInfo>
               </UserEle>
             );
