@@ -52,7 +52,6 @@ public class QuestionService {
 
     //상세질문조회
     public Question selectQuestion(long questionId) {
-        //runtimeException을 다른 예외처리로 변경해야함
         Question question = questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         //뷰수 추가
         question.setView(question.getView()+1);
