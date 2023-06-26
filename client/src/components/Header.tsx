@@ -48,7 +48,7 @@ export default function Header() {
 
   return (
     <nav>
-      <Navbar className="navbar">
+      <Navbar className="navbar dark:bg-slate-800">
         <LogoContainer>
           <Link to="/">
             <LogoImage

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
 import tw from "tailwind-styled-components";
@@ -61,6 +62,7 @@ const User: React.FC = () => {
             );
           })}
           {users.map((people) => {
+            const url = `/User/${people.memberId}`;
             return (
               <UserEle key={people.memberId}>
                 <img
@@ -69,7 +71,9 @@ const User: React.FC = () => {
                   width={48}
                 />
                 <UserInfo>
-                  <UserTitle>{people.name}</UserTitle>
+                  <Link to={url}>
+                    <UserTitle>{people.name}</UserTitle>
+                  </Link>
                   <p>{people.birthday}</p>
                 </UserInfo>
               </UserEle>
