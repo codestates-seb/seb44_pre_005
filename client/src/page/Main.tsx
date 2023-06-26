@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../store/store";
 import Pagenation from "../components/Pagenation";
 import Footer from "../components/Footer";
 import tw from "tailwind-styled-components";
@@ -51,7 +53,6 @@ const Main = () => {
     data: [],
     pageInfo: { page: 0, size: 0, totalElements: 0, totalPages: 0 },
   });
-
   const [page, setPage] = useState(1);
   const url = `http://ec2-43-200-88-48.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${page}&size=7`;
 
@@ -117,6 +118,7 @@ const Main = () => {
 export default Main;
 
 const Mainheader: React.FC<MainHeaderProps> = ({ number }) => {
+  const logIn = useSelector((state: RootState) => state.counter.value);
   return (
     <StyledHeader>
       <StyledHeaderRL>
@@ -125,7 +127,11 @@ const Mainheader: React.FC<MainHeaderProps> = ({ number }) => {
       </StyledHeaderRL>
       <StyledHeaderRL>
         <Link to="/create">
-          <Filter>Ask Question</Filter>
+          {logIn ? (
+            <Filter>Ask Question</Filter>
+          ) : (
+            <Disabled disabled={true}>Ask Question</Disabled>
+          )}
         </Link>
         <div>
           <ToggleButtonGroup color="primary" exclusive aria-label="Platform">
@@ -284,4 +290,9 @@ left-[180px]
 bg-blue-600
 text-gray-200
 p-[2px]
+`;
+
+const Disabled = tw(Filter)`
+border-[rgb(78, 78, 78)]
+bg-slate-500
 `;

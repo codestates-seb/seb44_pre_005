@@ -81,6 +81,10 @@ const CreateQuestion = () => {
   };
 
   const onSubmitHandler = () => {
+    const cookie = document.cookie.split(";");
+    const access = cookie[0].split("=")[1];
+    const refresh = cookie[1].split("=")[1];
+
     const data = {
       title: title,
       content: content,
@@ -93,10 +97,8 @@ const CreateQuestion = () => {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoidGVzdDExMTFAZ21haWwuY29tIiwic3ViIjoidGVzdDExMTFAZ21haWwuY29tIiwiaWF0IjoxNjg3NTY5MDY1LCJleHAiOjE2ODc1NzA4NjR9.dEtv-tJdjmd_8JPZ1_JfU7H6duXYfKd1He8LvVTjh3GA6sEOhcIHvzYN1Qb6jnIY",
-          Refresh:
-            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTExMUBnbWFpbC5jb20iLCJpYXQiOjE2ODc1NjkwNjUsImV4cCI6MTY4NzU5NDI2NX0.laOapHXPKcB97isMBS-srObgIuBQGauKVSc_iCN1MNFp4xnbTtUhcTZNaE1S9kSi",
+          Authorization: `${access}`,
+          Refresh: `${refresh}`,
         },
       }
     );
