@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../store/loginSlice";
 import preApi from "../api/preApi";
 import tw from "tailwind-styled-components";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
@@ -10,6 +12,7 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     if (!email.includes("@")) {
@@ -35,6 +38,7 @@ export default function Login() {
 
           document.cookie = `authorization=${authorization}; path=/;`;
           document.cookie = `refresh=${refresh}; path=/; SameSite=none; Secure`;
+          dispatch(login());
         } else if (response.status === 401) {
           alert("The email or password is incorrect.");
         } else {

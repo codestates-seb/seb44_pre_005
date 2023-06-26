@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../store/store";
+import { login, logout } from "../store/loginSlice";
 import tw from "tailwind-styled-components";
 import { BsSearch } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
@@ -10,15 +13,37 @@ import { Button } from "@mui/material";
 
 export default function Header() {
   const [product, setProduct] = useState(false);
-  const [logIn, setlogIn] = useState(false);
   const [outMenu, setOutMenu] = useState(false);
+  const logIn = useSelector((state: RootState) => state.counter.value);
+  const dispatch = useDispatch();
   const logOutMenu: React.MouseEventHandler<SVGElement> = () => {
     setOutMenu(!outMenu);
   };
 
+  const deleteCookie = (name: string) => {
+    document.cookie =
+      name +
+      "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;";
+  };
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const cookie = document.cookie;
+      if (cookie) {
+        dispatch(login());
+      } else {
+        dispatch(logout());
+      }
+    };
+
+    checkLoginStatus();
+  }, [dispatch]);
+
   const logOutHandler = () => {
-    setlogIn(false);
     setOutMenu(false);
+    deleteCookie("refresh");
+    deleteCookie("authorization");
+    location.reload();
   };
 
   return (
@@ -76,21 +101,24 @@ export default function Header() {
           </SearchContainer>
           {!logIn ? (
             <>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => setlogIn(true)}
-                style={{ width: "100px", height: "30px" }}
-              >
-                Log in
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                style={{ width: "100px", height: "30px" }}
-              >
-                Sign up
-              </Button>
+              <Link to="/login">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  style={{ width: "100px", height: "30px" }}
+                >
+                  Log in
+                </Button>
+              </Link>
+              <Link to="/join">
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{ width: "100px", height: "30px" }}
+                >
+                  Sign up
+                </Button>
+              </Link>
             </>
           ) : (
             <StyledIcon>
