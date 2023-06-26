@@ -52,5 +52,4 @@ public class Member {
     private List<Comment> comments = new ArrayList();
 
 
-
 }

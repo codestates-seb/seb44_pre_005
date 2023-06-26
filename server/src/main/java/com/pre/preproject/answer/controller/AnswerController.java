@@ -75,6 +75,14 @@ public class AnswerController {
         return new ResponseEntity<>(new MultiResponseDto<>(answerMapper.answerToAnswerResponseDto(answers), pageAnswers), HttpStatus.OK);
     }
 
+    // 답변별 댓글 조회
+    @GetMapping("/{answer-id}/comments")
+    public ResponseEntity getCommentsByAnswer(@PathVariable("answer-id") @Positive long answerId) {
+        Answer answer = answerService.selectAnswer(answerId);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(answerMapper.commentsToCommentResponseDtos(answer)), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId,
                                        @RequestHeader(name = "Refresh") String token) {
