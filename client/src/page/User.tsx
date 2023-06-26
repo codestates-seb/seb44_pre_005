@@ -9,6 +9,7 @@ type UserType = {
   name: string;
   email: string;
   phone: string;
+  birthday: string;
 };
 
 const User: React.FC = () => {
@@ -23,7 +24,6 @@ const User: React.FC = () => {
   const getUsers = async () => {
     const response = await preApi.getUserList();
     const json = await response.json();
-    console.log(json.data);
     setUsers(json.data);
   };
   useEffect(() => {
@@ -70,7 +70,7 @@ const User: React.FC = () => {
                 />
                 <UserInfo>
                   <UserTitle>{people.name}</UserTitle>
-                  <p>{people.email}</p>
+                  <p>{people.birthday}</p>
                 </UserInfo>
               </UserEle>
             );
@@ -85,9 +85,10 @@ export default User;
 
 const Container = tw.div`
 flex
+mx-28
 `;
 const UserContainer = tw.div`
-w-[calc(100%-10rem)]
+w-[calc(100%-10rem)] min-w-[550px]
 p-6
 border-l
 border-[#D6D9DC]
@@ -156,71 +157,6 @@ const userList = [
   {
     img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
     name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
-  },
-  {
-    img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-    name: "VonC",
-    birthday: "199701",
+    birthday: "1997-01-01",
   },
 ];

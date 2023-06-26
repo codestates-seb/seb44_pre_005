@@ -12,6 +12,7 @@ type Question = {
   content: string;
   dateCreated: string;
   dataModified: string;
+  member: Member;
 };
 type Answer = {
   answerId: number;
@@ -34,6 +35,12 @@ export default function Detail() {
     content: "",
     dateCreated: "",
     dataModified: "",
+    member: {
+      email: "",
+      memeberId: 1,
+      name: "",
+      phone: "",
+    },
   });
   const [answerInfo, setAnswerInfo] = useState<Answer[]>([]);
   const getQuestion = async (id = "1") => {
@@ -47,6 +54,18 @@ export default function Detail() {
     console.log(json.data);
     setAnswerInfo(json.data);
   };
+  const getTime = (createdTime = ""): string => {
+    const currentTime = Date.now();
+    const targetTime = new Date(createdTime).getTime();
+    const minutesDifference = Math.floor(
+      (currentTime - targetTime) / (1000 * 60)
+    );
+    return minutesDifference.toString();
+  };
+  useEffect(() => {
+    getQuestion(id);
+    // getAnswers();
+  }, []);
   useEffect(() => {
     getQuestion(id);
     // getAnswers();
@@ -99,10 +118,14 @@ export default function Detail() {
                     <EditP>delete</EditP>
                   </EditQustion>
                   <WriterContainer>
-                    <p>asked 5hours</p>
+                    <p>asked {getTime(questionInfo.dateCreated)}</p>
                     <WriterInfo className="flex">
-                      <img src={userList.img} width={32} height={32} />
-                      <WriterP>{userList.name}</WriterP>
+                      <img
+                        src="https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG"
+                        width={32}
+                        height={32}
+                      />
+                      <WriterP>{questionInfo.member.name}</WriterP>
                     </WriterInfo>
                   </WriterContainer>
                 </QuestionInfo>
