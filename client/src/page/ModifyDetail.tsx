@@ -20,6 +20,9 @@ export default function ModifyDetail() {
   const [title, setTitle] = useState(question.title);
   const [body, setBody] = useState(question.content);
   const navigate = useNavigate();
+  const cookie = document.cookie.split(";");
+  const access = cookie[0].split("=")[1];
+  const refresh = cookie[1].split("=")[1];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,11 +38,10 @@ export default function ModifyDetail() {
     };
     fetchData();
   }, [id]);
-
   const handleEdit = async () => {
     try {
       const data = { title, content: body };
-      const response = await preApi.updateQuestion(id, data);
+      const response = await preApi.updateQuestion(id, data, access, refresh);
       console.log(response);
     } catch (error) {
       console.log(error);
