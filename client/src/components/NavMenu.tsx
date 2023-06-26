@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { IoEarth } from "react-icons/io5";
@@ -7,6 +7,10 @@ import { FaLock } from "react-icons/fa";
 
 const NavMenu: React.FC = () => {
   const location = useLocation().pathname;
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   return (
     <Container>
@@ -22,7 +26,7 @@ const NavMenu: React.FC = () => {
         <Innerli>
           <ContentOl>
             <OriginLi>
-              {location === "/" || location === "/detail" ? (
+              {location === "/" || location.indexOf("/detail") === 1 ? (
                 <Selected></Selected>
               ) : (
                 ""

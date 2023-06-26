@@ -13,6 +13,11 @@ interface Login {
   password: string;
 }
 
+type Answer = {
+  questionId: number;
+  content: string;
+};
+
 export default {
   // 유저 목록 가져오기
   async getUserList(page = 1, size = 10) {
@@ -48,6 +53,7 @@ export default {
     });
     return response;
   },
+  // 질문 가져오기
   async getQuestion(id = "1") {
     const response = await fetch(`${API_BASE}/questions/${id}`, {
       method: "GET",
@@ -57,9 +63,19 @@ export default {
     });
     return response;
   },
+  // 답변 가져오기
   async getAnswer() {
     const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
       method: "GET",
+    });
+    return response;
+  },
+  // 답변 등록
+  async postAnswer(data: Answer) {
+    const response = await fetch(`${API_BASE}/answer`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
     return response;
   },

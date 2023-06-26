@@ -51,6 +51,7 @@ export default function Detail() {
   const getAnswers = async () => {
     const response = await preApi.getAnswer();
     const json = await response.json();
+    console.log(json.data);
     setAnswerInfo(json.data);
   };
   const getTime = (createdTime = ""): string => {
@@ -90,7 +91,7 @@ export default function Detail() {
             Asked 13 years, 7 months ago Modified 3 months ago Viewed 3.6m times
           </TitleInfo>
           <div>
-            <Link to="/createqustion">
+            <Link to="/create">
               <Ask>Ask Question</Ask>
             </Link>
           </div>
