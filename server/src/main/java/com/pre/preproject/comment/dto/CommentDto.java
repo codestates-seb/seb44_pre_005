@@ -2,6 +2,7 @@ package com.pre.preproject.comment.dto;
 
 import com.pre.preproject.member.dto.MemberDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +33,18 @@ public class CommentDto {
     @Setter
     public static class Response {
         private long commentId;
-        private String Content;
+        private String content;
+        private LocalDateTime dateCreated;
+        private LocalDateTime dateModified;
+        private MemberDto.Response member;
+    }
+
+    // 답변별 댓글
+    @Getter
+    @Builder
+    public static class CommentResponseList {
+        private long commentId;
+        private String content;
         private LocalDateTime dateCreated;
         private LocalDateTime dateModified;
         private MemberDto.Response member;
