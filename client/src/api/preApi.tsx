@@ -15,7 +15,7 @@ interface Login {
 
 export default {
   // 유저 목록 가져오기
-  async getUserList(page = 1, size = 5) {
+  async getUserList(page = 1, size = 10) {
     const response = await fetch(
       `${API_BASE}/members?page=${page}&size=${size}`,
       {
@@ -45,6 +45,21 @@ export default {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+    });
+    return response;
+  },
+  async getQuestion(id = "1") {
+    const response = await fetch(`${API_BASE}/questions/${id}`, {
+      method: "GET",
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+    return response;
+  },
+  async getAnswer() {
+    const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
+      method: "GET",
     });
     return response;
   },

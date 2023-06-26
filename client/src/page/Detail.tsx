@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
@@ -7,16 +7,75 @@ import tw from "tailwind-styled-components";
 import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri";
 import { MdBookmarkBorder, MdHistory } from "react-icons/md";
 
+type Question = {
+  answer: number;
+  content: string;
+  dateCreated: string;
+  dataModified: string;
+  member: Member;
+};
+type Answer = {
+  answerId: number;
+  content: string;
+  dateCreated: string;
+  dataModified: string;
+  member: Member;
+};
+type Member = {
+  email: string;
+  memeberId: number;
+  name: string;
+  phone: string;
+};
+
 export default function Detail() {
   const { id } = useParams();
-  const getData = async () => {
-    const response = await preApi.getUserList();
+  const [questionInfo, setQuestionInfo] = useState<Question>({
+    answer: 1,
+    content: "",
+    dateCreated: "",
+    dataModified: "",
+    member: {
+      email: "",
+      memeberId: 1,
+      name: "",
+      phone: "",
+    },
+  });
+  const [answerInfo, setAnswerInfo] = useState<Answer[]>([]);
+  const getQuestion = async (id = "1") => {
+    const response = await preApi.getQuestion(id);
     const json = await response.json();
-    console.log(json);
+    setQuestionInfo(json.data);
+  };
+  const getAnswers = async () => {
+    const response = await preApi.getAnswer();
+    const json = await response.json();
+    setAnswerInfo(json.data);
+  };
+  const getTime = (createdTime = ""): string => {
+    const currentTime = Date.now();
+    const targetTime = new Date(createdTime).getTime();
+    const minutesDifference = Math.floor(
+      (currentTime - targetTime) / (1000 * 60)
+    );
+
+    if (minutesDifference < 1) {
+      return "now";
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference} min ago`;
+    } else if (minutesDifference < 1440) {
+      return `${Math.floor(minutesDifference / 60)} min ago`;
+    }
+    return `${Math.floor(minutesDifference / 1440)} days ago`;
   };
   useEffect(() => {
-    // getData();
-    console.log(id);
+    getQuestion(id);
+    // getAnswers();
+  }, []);
+  useEffect(() => {
+    getQuestion(id);
+    // getAnswers();
   }, []);
 
   return (
@@ -54,14 +113,8 @@ export default function Detail() {
                   <MdHistory />
                 </EtcEmoji>
               </RemoteContainer>
-              <div>
-                <Question>
-                  there is an example, when you click on the button, Backdrop is
-                  shown. How can we manage the Backdrop state (setOpen(false); /
-                  setOpen(true); ) outside function I don't know how to
-                  implement it How change state backdrop from another reactjs
-                  file
-                </Question>
+              <QuestionContent>
+                <p>{questionInfo.content}</p>
                 <QuestionInfo>
                   <EditQustion>
                     <EditP>Share</EditP>
@@ -72,14 +125,18 @@ export default function Detail() {
                     <EditP>delete</EditP>
                   </EditQustion>
                   <WriterContainer>
-                    <p>asked 5hours</p>
+                    <p>asked {getTime(questionInfo.dateCreated)}</p>
                     <WriterInfo className="flex">
-                      <img src={userList.img} width={32} height={32} />
-                      <WriterP>{userList.name}</WriterP>
+                      <img
+                        src="https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG"
+                        width={32}
+                        height={32}
+                      />
+                      <WriterP>{questionInfo.member.name}</WriterP>
                     </WriterInfo>
                   </WriterContainer>
                 </QuestionInfo>
-              </div>
+              </QuestionContent>
             </QustionContainer>
             <AnswerContainer>
               <NumAnswers>{answers.length} Answers</NumAnswers>
@@ -103,8 +160,8 @@ export default function Detail() {
                           <MdHistory />
                         </EtcEmoji>
                       </RemoteContainer>
-                      <div>
-                        <Question>{ele.answer}</Question>
+                      <QuestionContent>
+                        <p>{ele.answer}</p>
                         <QuestionInfo>
                           <EditQustion>
                             <EditP>Share</EditP>
@@ -122,7 +179,7 @@ export default function Detail() {
                             </WriterInfo>
                           </AnswererContainer>
                         </QuestionInfo>
-                      </div>
+                      </QuestionContent>
                     </AnswerInfo>
                     {reply.length !== 0 && (
                       <CommentContaier key={ele.id}>
@@ -165,7 +222,7 @@ flex
 mx-28
 `;
 const DetailContainer = tw.div`
-w-[calc(100%-160px)]
+w-[calc(100%-160px)] min-w-[900px]
 border-l border-[#D6D9DC]
 p-6
 `;
@@ -220,8 +277,8 @@ const EtcEmoji = tw.div`
 text-xl text-[#BABFC4]
 mx-auto mt-2
 `;
-const Question = tw.p`
-  
+const QuestionContent = tw.div`
+w-full
 `;
 const QuestionInfo = tw.div`
 mt-4
