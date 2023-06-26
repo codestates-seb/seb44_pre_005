@@ -139,7 +139,7 @@ export default function Join() {
         <FormContainer>
           <NameContainer>
             <InputLabel>Display name</InputLabel>
-            <NameInputBox nameError={nameError}>
+            <NameInputBox $nameError={nameError}>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
               {nameError && <ExclamationMark />}
             </NameInputBox>
@@ -147,7 +147,7 @@ export default function Join() {
           </NameContainer>
           <PhoneContainer>
             <InputLabel>Phone</InputLabel>
-            <PhoneInputBox phoneError={phoneError}>
+            <PhoneInputBox $phoneError={phoneError}>
               <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
               {phoneError && <ExclamationMark />}
             </PhoneInputBox>
@@ -160,7 +160,7 @@ export default function Join() {
           </PhoneContainer>
           <BirthdayContainer>
             <InputLabel>Birthday</InputLabel>
-            <BirthdayInputBox birthdayError={birthdayError}>
+            <BirthdayInputBox $birthdayError={birthdayError}>
               <Input
                 type="date"
                 value={birthday}
@@ -172,7 +172,7 @@ export default function Join() {
           </BirthdayContainer>
           <EmailContainer>
             <InputLabel>Email</InputLabel>
-            <EmailInputBox emailError={emailError}>
+            <EmailInputBox $emailError={emailError}>
               <Input value={email} onChange={(e) => setEmail(e.target.value)} />
               {emailError && <ExclamationMark />}
             </EmailInputBox>
@@ -185,7 +185,7 @@ export default function Join() {
               <InputLabel>Password</InputLabel>
               <PasswordForgot>Forgot password?</PasswordForgot>
             </PasswordContent>
-            <PasswordInputBox passwordError={passwordError}>
+            <PasswordInputBox $passwordError={passwordError}>
               <Input
                 type="password"
                 value={password}
@@ -194,7 +194,7 @@ export default function Join() {
               {(passwordError || passwordRegexError) && <ExclamationMark />}
             </PasswordInputBox>
             {passwordError && <ErrorMsg>Password cannot be empty.</ErrorMsg>}
-            <PasswordExplanation passwordRegexError={passwordRegexError}>
+            <PasswordExplanation $passwordRegexError={passwordRegexError}>
               Passwords must contain at least eight characters, including at
               least 1 letter and 1 number.
             </PasswordExplanation>
@@ -322,10 +322,10 @@ flex
 flex-col
 my-[6px]
 `;
-const NameInputBox = tw.div<{ nameError: boolean }>`
+const NameInputBox = tw.div<{ $nameError: boolean }>`
 my-[2px]
 border-solid border 
-${(props) => (props.nameError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$nameError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -335,10 +335,10 @@ flex
 flex-col
 my-[6px]
 `;
-const PhoneInputBox = tw.div<{ phoneError: boolean }>`
+const PhoneInputBox = tw.div<{ $phoneError: boolean }>`
 my-[2px]
 border-solid border 
-${(props) => (props.phoneError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$phoneError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -348,10 +348,10 @@ flex
 flex-col
 my-[6px]
 `;
-const BirthdayInputBox = tw.div<{ birthdayError: boolean }>`
+const BirthdayInputBox = tw.div<{ $birthdayError: boolean }>`
 my-[2px]
 border-solid border
-${(props) => (props.birthdayError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$birthdayError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -366,10 +366,10 @@ font-[600]
 text-[15px]
 my-[2px]
 `;
-const EmailInputBox = tw.div<{ emailError: boolean }>`
+const EmailInputBox = tw.div<{ $emailError: boolean }>`
 my-[2px]
 border-solid border
-${(props) => (props.emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -396,19 +396,19 @@ text-xs text-[#0074cc]
   cursor-pointer
 }
 `;
-const PasswordInputBox = tw.div<{ passwordError: boolean }>`
+const PasswordInputBox = tw.div<{ $passwordError: boolean }>`
 my-[2px]
 border-solid border
-${(props) => (props.passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
 items-center
 `;
-const PasswordExplanation = tw.div<{ passwordRegexError: boolean }>`
+const PasswordExplanation = tw.div<{ $passwordRegexError: boolean }>`
 w-[256px]
 text-[13px] 
-${(props) => (props.passwordRegexError ? "text-[#de4f54]" : "text-[#6a737c]")}
+${(props) => (props.$passwordRegexError ? "text-[#de4f54]" : "text-[#6a737c]")}
 `;
 const Input = tw.input`
 outline-none
