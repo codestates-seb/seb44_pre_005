@@ -168,7 +168,7 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
         <p>0 answers</p>
         <p>{data[i].view} views</p>
       </Shortinfo>
-      <div style={{ position: "relative", left: "-250px" }}>
+      <div style={{ position: "relative", left: "-220px" }}>
         <div>
           <Link to={detailurl}>
             <Styledtitle>{data[i].title}</Styledtitle>
@@ -196,7 +196,7 @@ const Questioninfo = tw.div`
 flex
 gap-[10px]
 relative
-left-[240px]
+left-[200px]
 `;
 
 const Styledtag = tw.div`
