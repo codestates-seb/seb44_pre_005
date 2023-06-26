@@ -8,6 +8,10 @@ interface Join {
   password: string;
   birthday: string;
 }
+interface Login {
+  username: string;
+  password: string;
+}
 
 export default {
   // 유저 목록 가져오기
@@ -31,6 +35,15 @@ export default {
         "Content-Type": "application/json",
         "ngrok-skip-browser-warning": "true",
       },
+      body: JSON.stringify(data),
+    });
+    return response;
+  },
+  // 로그인
+  async postLogin(data: Login) {
+    const response = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     return response;

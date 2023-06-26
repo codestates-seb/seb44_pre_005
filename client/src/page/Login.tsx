@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import preApi from "../api/preApi";
 import tw from "tailwind-styled-components";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 
@@ -8,8 +9,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.includes("@")) {
       setEmailError(true);
     } else {
@@ -19,6 +21,28 @@ export default function Login() {
       setPasswordError(true);
     } else {
       setPasswordError(false);
+    }
+    if (!emailError && !passwordError) {
+      const data = { username: email, password };
+      try {
+        const response = await preApi.postLogin(data);
+        if (response.ok) {
+          console.log("성공");
+          navigate("/");
+          console.log(response);
+          const authorization = response.headers.get("authorization");
+          const refresh = response.headers.get("refresh");
+
+          document.cookie = `authorization=${authorization}; path=/;`;
+          document.cookie = `refresh=${refresh}; path=/; SameSite=none; Secure`;
+        } else if (response.status === 401) {
+          alert("The email or password is incorrect.");
+        } else {
+          console.log("실패");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
