@@ -12,6 +12,10 @@ interface Login {
   username: string;
   password: string;
 }
+interface UpdateQuestion {
+  title: string;
+  content: string;
+}
 
 export default {
   // 유저 목록 가져오기
@@ -60,6 +64,25 @@ export default {
   async getAnswer() {
     const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
       method: "GET",
+    });
+    return response;
+  },
+  // 질문 수정
+  async updateQuestion(
+    id: string,
+    data: UpdateQuestion,
+    access: string,
+    refresh: string
+  ) {
+    const response = await fetch(`${API_BASE}/questions/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify(data),
     });
     return response;
   },
