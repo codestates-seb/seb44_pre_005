@@ -1,11 +1,53 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import preApi from "../api/preApi";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
 import Footer from "../components/Footer";
 import tw from "tailwind-styled-components";
 
+interface Question {
+  title: string;
+  content: string;
+}
+
 export default function ModifyDetail() {
+  const { id } = useParams() as { id: string };
+  const [question, setQuestion] = useState<Question>({
+    title: "",
+    content: "",
+  });
+  const [title, setTitle] = useState(question.title);
+  const [body, setBody] = useState(question.content);
+  const navigate = useNavigate();
+  const cookie = document.cookie.split(";");
+  const access = cookie[0].split("=")[1];
+  const refresh = cookie[1].split("=")[1];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await preApi.getQuestion(id);
+        const json = await response.json();
+        setQuestion(json.data);
+        setTitle(json.data.title);
+        setBody(json.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [id]);
+  const handleEdit = async () => {
+    try {
+      const data = { title, content: body };
+      const response = await preApi.updateQuestion(id, data, access, refresh);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    navigate(`/detail/${id}`);
+  };
   return (
     <>
       <Container>
@@ -14,18 +56,24 @@ export default function ModifyDetail() {
           <TitleContainer>
             <Title>Title</Title>
             <TitleInputBox>
-              <TitleInput></TitleInput>
+              <TitleInput
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              ></TitleInput>
             </TitleInputBox>
           </TitleContainer>
           <BodyContainer>
             <Body>Body</Body>
             <BodyInputBox>
-              <BodyInput></BodyInput>
+              <BodyInput
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              ></BodyInput>
             </BodyInputBox>
           </BodyContainer>
           <ButtonContainer>
-            <SaveButton>Save edits</SaveButton>
-            <CancelLink to="/detail/">Cancel</CancelLink>
+            <SaveButton onClick={handleEdit}>Save edits</SaveButton>
+            <CancelLink to={`/detail/${id}`}>Cancel</CancelLink>
           </ButtonContainer>
         </ModifyDetailForm>
         <SideMenu />
