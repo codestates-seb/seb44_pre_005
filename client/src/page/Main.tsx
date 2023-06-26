@@ -16,7 +16,6 @@ interface Member {
   memberId: number;
   name: string;
   email: string;
-  birthday: string;
   phone: string;
 }
 
@@ -54,19 +53,15 @@ const Main = () => {
   });
 
   const [page, setPage] = useState(1);
-  const url = `https://32c6-221-148-162-66.ngrok-free.app/questions?page=${page}&size=7`;
+  const url = `http://ec2-43-200-88-48.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${page}&size=7`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
           method: "GET",
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
         });
         const questions = await response.json();
-        console.log(questions);
         setQuestionList(questions);
       } catch (error) {
         console.error("Error:", error);
@@ -99,14 +94,6 @@ const Main = () => {
               </div>
             );
           })}
-
-          <div style={{ position: "absolute", right: "100px" }}>
-            <Pagenation
-              page={page}
-              setPage={setPage}
-              totalquestion={questionList.pageInfo.totalElements}
-            ></Pagenation>
-          </div>
         </div>
         <div style={{ position: "absolute", top: "0px", left: "1200px" }}>
           <SideMenu></SideMenu>
@@ -114,6 +101,13 @@ const Main = () => {
       </div>
 
       <div style={{ position: "absolute", bottom: "0px", width: "100vw" }}>
+        <div style={{ position: "absolute", top: "-70px", right: "50%" }}>
+          <Pagenation
+            page={page}
+            setPage={setPage}
+            totalquestion={questionList.pageInfo.totalElements}
+          ></Pagenation>
+        </div>
         <Footer></Footer>
       </div>
     </div>
@@ -167,23 +161,29 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
   };
 
   const detailurl = "/detail/" + data[i].questionId;
+  const content = data[i].content;
+  const Clength = content.length;
+  const shortcontent = content.substring(0, 80);
   return (
-    <StyledCard>
-      <Shortinfo>
-        <p>3 votes</p>
-        <p>0 answers</p>
-        <p>{data[i].view} views</p>
-      </Shortinfo>
-      <div style={{ position: "relative", left: "-250px" }}>
+    <Gridcard>
+      <div style={{ display: "flex" }}>
+        <Shortinfo>
+          <p>3 votes</p>
+          <p>0 answers</p>
+          <p>{data[i].view} views</p>
+        </Shortinfo>
         <div>
-          <Link to="/detail/1">
+          <div>
             <Link to={detailurl}>
               <Styledtitle>{data[i].title}</Styledtitle>
             </Link>
-          </Link>
-          <Styledcontent>{data[i].content}</Styledcontent>
+            <Styledcontent>
+              {Clength < 80 ? data[i].content : shortcontent + "..."}{" "}
+            </Styledcontent>
+          </div>
         </div>
-        <div></div>
+      </div>
+      <div style={{ marginTop: "10px" }}>
         <Styledbottom>
           <div className="tag">
             <Styledtag>Spring-boot</Styledtag> <Styledtag>docker</Styledtag>{" "}
@@ -196,15 +196,26 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
           </Questioninfo>
         </Styledbottom>
       </div>
-    </StyledCard>
+    </Gridcard>
   );
 };
+
+const Gridcard = tw.div`
+grid
+w-[850px]
+grid-rows-[80px_70px]
+relative
+left-[250px]
+border-[#E0E2E5]
+border-solid
+border-[1px]
+`;
 
 const Questioninfo = tw.div`
 flex
 gap-[10px]
+mr-[10px]
 relative
-left-[240px]
 `;
 
 const Styledtag = tw.div`
@@ -213,11 +224,12 @@ inline-block
 hover:bg-[#9dd3fa]
 rounded-md
 p-[3px]
+ml-[30px]
 `;
 
 const Styledbottom = tw.div`
 flex
-mt-[40px]
+justify-between
 
 `;
 
@@ -229,12 +241,13 @@ text-[19px]
 
 const Styledcontent = tw.div`
 text-[15px]
+
 `;
 
 const Shortinfo = tw.div`
 flex
 flex-col
-w-[150px]
+w-[100px]
 ml-[10px]
   
 `;
@@ -252,11 +265,7 @@ w-[850px]
 h-[130px]
 p-[10px]
 `;
-const StyledCard = tw(StyledHeader)`
-gap-[10px]
-h-[155px]
 
-`;
 const StyledHeaderRL = tw.div`
 flex
 flex-col

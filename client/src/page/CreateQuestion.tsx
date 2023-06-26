@@ -86,18 +86,20 @@ const CreateQuestion = () => {
       content: content,
     };
 
-    fetch("https://32c6-221-148-162-66.ngrok-free.app/questions", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoidGVzdDExMTFAZ21haWwuY29tIiwic3ViIjoidGVzdDExMTFAZ21haWwuY29tIiwiaWF0IjoxNjg3NTA4ODc3LCJleHAiOjE2ODc1MTA2Nzd9.HyINet_F-lKHqQiMhqgfbchc_0Z2cEHf2z_pPCOvLDuo21GQtf0IBUSJrW93uDa7",
-        Refresh:
-          "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTExMUBnbWFpbC5jb20iLCJpYXQiOjE2ODc1MDg4NzcsImV4cCI6MTY4NzUzNDA3N30.VXOiSintg2DCwv7TvYoetZTTIbPQXQUY-rQk1LeyIpGrcU4h88Q3pjewI3NUwc-T",
-      },
-    });
+    fetch(
+      " http://ec2-43-200-88-48.ap-northeast-2.compute.amazonaws.com:8080/questions",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoidGVzdDExMTFAZ21haWwuY29tIiwic3ViIjoidGVzdDExMTFAZ21haWwuY29tIiwiaWF0IjoxNjg3NTY5MDY1LCJleHAiOjE2ODc1NzA4NjR9.dEtv-tJdjmd_8JPZ1_JfU7H6duXYfKd1He8LvVTjh3GA6sEOhcIHvzYN1Qb6jnIY",
+          Refresh:
+            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTExMUBnbWFpbC5jb20iLCJpYXQiOjE2ODc1NjkwNjUsImV4cCI6MTY4NzU5NDI2NX0.laOapHXPKcB97isMBS-srObgIuBQGauKVSc_iCN1MNFp4xnbTtUhcTZNaE1S9kSi",
+        },
+      }
+    );
     setTitle("");
     setContent("");
   };
