@@ -3,6 +3,7 @@ package com.pre.preproject.question.dto;
 import com.pre.preproject.answer.dto.AnswerDto;
 import com.pre.preproject.member.dto.MemberDto;
 import com.pre.preproject.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,12 +41,27 @@ public class QuestionDto {
         private LocalDateTime dateCreated;
         private LocalDateTime dateModified;
         private MemberDto.Response member;
+
 //        private List<AnswerDto.Response> answers;
     }
 
     @Getter
     public static class CountResponse {
         private long questionCount;
+    }
+
+    @Getter
+    @Setter
+    public static class ResponseAnswer {
+        private long questionId;
+        private String title;
+        private String content;
+        private long view;
+        private LocalDateTime dateCreated;
+        private LocalDateTime dateModified;
+        private MemberDto.Response member;
+        private List<AnswerDto.ResponseComment> answers;
+
     }
 
 
