@@ -16,6 +16,10 @@ interface UpdateQuestion {
   title: string;
   content: string;
 }
+interface UpdateAnswer {
+  questionId: string;
+  content: string;
+}
 
 export default {
   // 유저 목록 가져오기
@@ -83,6 +87,31 @@ export default {
         Refresh: `${refresh}`,
       },
       body: JSON.stringify(data),
+    });
+    return response;
+  },
+  // 답변 수정
+  async updateAnswer(
+    id: string,
+    data: UpdateAnswer,
+    access: string,
+    refresh: string
+  ) {
+    const response = await fetch(`${API_BASE}/answers/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify(data),
+    });
+    return response;
+  },
+  // 개별 답변 가져오기
+  async getAnswerModify(id: string) {
+    const response = await fetch(`${API_BASE}/answers/${id}`, {
+      method: "GET",
     });
     return response;
   },
