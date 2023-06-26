@@ -2,6 +2,7 @@ package com.pre.preproject.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pre.preproject.answer.entity.Answer;
+import com.pre.preproject.comment.entity.Comment;
 import com.pre.preproject.question.entity.Question;
 import lombok.*;
 
@@ -43,14 +44,14 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question>  questions = new ArrayList<>();
-/*
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<> comments =
-    */
+    private List<Comment> comments = new ArrayList<>();
+
 
 
 }
