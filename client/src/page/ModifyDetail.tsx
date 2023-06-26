@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import preApi from "../api/preApi";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
@@ -19,6 +19,8 @@ export default function ModifyDetail() {
   });
   const [title, setTitle] = useState(question.title);
   const [body, setBody] = useState(question.content);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +44,7 @@ export default function ModifyDetail() {
     } catch (error) {
       console.log(error);
     }
+    navigate(`/detail/${id}`);
   };
   return (
     <>
@@ -68,7 +71,7 @@ export default function ModifyDetail() {
           </BodyContainer>
           <ButtonContainer>
             <SaveButton onClick={handleEdit}>Save edits</SaveButton>
-            <CancelLink to="/detail/">Cancel</CancelLink>
+            <CancelLink to={`/detail/${id}`}>Cancel</CancelLink>
           </ButtonContainer>
         </ModifyDetailForm>
         <SideMenu />
