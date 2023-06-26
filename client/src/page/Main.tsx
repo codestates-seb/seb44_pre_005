@@ -161,21 +161,29 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
   };
 
   const detailurl = "/detail/" + data[i].questionId;
+  const content = data[i].content;
+  const Clength = content.length;
+  const shortcontent = content.substring(0, 80);
   return (
-    <StyledCard>
-      <Shortinfo>
-        <p>3 votes</p>
-        <p>0 answers</p>
-        <p>{data[i].view} views</p>
-      </Shortinfo>
-      <div style={{ position: "relative", left: "-220px" }}>
+    <Gridcard>
+      <div style={{ display: "flex" }}>
+        <Shortinfo>
+          <p>3 votes</p>
+          <p>0 answers</p>
+          <p>{data[i].view} views</p>
+        </Shortinfo>
         <div>
-          <Link to={detailurl}>
-            <Styledtitle>{data[i].title}</Styledtitle>
-          </Link>
-          <Styledcontent>{data[i].content}</Styledcontent>
+          <div>
+            <Link to={detailurl}>
+              <Styledtitle>{data[i].title}</Styledtitle>
+            </Link>
+            <Styledcontent>
+              {Clength < 80 ? data[i].content : shortcontent + "..."}{" "}
+            </Styledcontent>
+          </div>
         </div>
-        <div></div>
+      </div>
+      <div style={{ marginTop: "10px" }}>
         <Styledbottom>
           <div className="tag">
             <Styledtag>Spring-boot</Styledtag> <Styledtag>docker</Styledtag>{" "}
@@ -188,15 +196,26 @@ const DataCard: React.FC<Props> = ({ data, i }) => {
           </Questioninfo>
         </Styledbottom>
       </div>
-    </StyledCard>
+    </Gridcard>
   );
 };
+
+const Gridcard = tw.div`
+grid
+w-[850px]
+grid-rows-[80px_70px]
+relative
+left-[250px]
+border-[#E0E2E5]
+border-solid
+border-[1px]
+`;
 
 const Questioninfo = tw.div`
 flex
 gap-[10px]
+mr-[10px]
 relative
-left-[200px]
 `;
 
 const Styledtag = tw.div`
@@ -205,11 +224,12 @@ inline-block
 hover:bg-[#9dd3fa]
 rounded-md
 p-[3px]
+ml-[30px]
 `;
 
 const Styledbottom = tw.div`
 flex
-mt-[40px]
+justify-between
 
 `;
 
@@ -221,12 +241,13 @@ text-[19px]
 
 const Styledcontent = tw.div`
 text-[15px]
+
 `;
 
 const Shortinfo = tw.div`
 flex
 flex-col
-w-[150px]
+w-[100px]
 ml-[10px]
   
 `;
@@ -244,11 +265,7 @@ w-[850px]
 h-[130px]
 p-[10px]
 `;
-const StyledCard = tw(StyledHeader)`
-gap-[10px]
-h-[155px]
 
-`;
 const StyledHeaderRL = tw.div`
 flex
 flex-col
