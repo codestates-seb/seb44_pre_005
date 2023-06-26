@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import tw from "tailwind-styled-components";
 
 //todo: codeSyntaxHighlight or backgroundcolor grey
@@ -15,6 +16,7 @@ const CreateQuestion = () => {
   const [Btouch, setBtouch] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const titleBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleModal(false);
@@ -104,6 +106,7 @@ const CreateQuestion = () => {
     );
     setTitle("");
     setContent("");
+    navigate("/");
   };
   return (
     <div style={{ marginLeft: "30px" }}>
