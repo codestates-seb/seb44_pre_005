@@ -51,7 +51,6 @@ export default function Detail() {
   const getAnswers = async () => {
     const response = await preApi.getAnswer();
     const json = await response.json();
-    console.log(json.data);
     setAnswerInfo(json.data);
   };
   const getTime = (createdTime = ""): string => {
@@ -60,7 +59,15 @@ export default function Detail() {
     const minutesDifference = Math.floor(
       (currentTime - targetTime) / (1000 * 60)
     );
-    return minutesDifference.toString();
+
+    if (minutesDifference < 1) {
+      return "now";
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference} min ago`;
+    } else if (minutesDifference < 1440) {
+      return `${Math.floor(minutesDifference / 60)} min ago`;
+    }
+    return `${Math.floor(minutesDifference / 1440)} days ago`;
   };
   useEffect(() => {
     getQuestion(id);
