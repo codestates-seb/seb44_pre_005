@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import preApi from "../api/preApi";
+// import { HmacSHA256 } from "crypto-js";
 import tw from "tailwind-styled-components";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { RiQuestionnaireFill } from "react-icons/ri";
@@ -12,27 +14,65 @@ interface Join {
 }
 
 export default function Join() {
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
+  const [birthday, setBirthday] = useState("");
+  const [birthdayError, setBirthdayError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordRegexError, setPasswordRegexError] = useState(false);
+  const navigate = useNavigate();
 
-  const handleJoin = () => {
-    if (!email.includes("@")) {
-      setEmailError(true);
-    } else {
-      setEmailError(false);
-    }
+  const handleJoin = async () => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+    const phoneRegex = /^010-?([0-9]{4})-?([0-9]{4})$/;
+
+    !email.includes("@") ? setEmailError(true) : setEmailError(false); // 이메일 유효성 검사
     if (password === "") {
+      // 패스워드 유효성 검사
       setPasswordError(true);
     } else if (!passwordRegex.test(password)) {
       setPasswordError(false);
       setPasswordRegexError(true);
     } else {
-      setPasswordError(false);
       setPasswordRegexError(false);
+      setPasswordError(false);
+    }
+    name === "" ? setNameError(true) : setNameError(false); // 이름 유효성 검사
+    phoneRegex.test(phone) && phone !== "" // 휴대폰 유효성 검사
+      ? setPhoneError(false)
+      : setPhoneError(true);
+    birthday === "" ? setBirthdayError(true) : setBirthdayError(false); // 생년월일 유효성 검사
+
+    if (
+      !emailError &&
+      !passwordError &&
+      !passwordRegexError &&
+      !nameError &&
+      !phoneError &&
+      !birthdayError
+    ) {
+      // const hashedPassword = HmacSHA256(password, "fighting").toString();
+      // const data = { name, phone, email, password: hashedPassword, birthday };
+      const data = { name, phone, email, password, birthday };
+
+      try {
+        const response = await preApi.postMember(data);
+        if (response.ok) {
+          console.log("성공");
+          navigate("/login");
+        } else if (response.status === 500) {
+          alert("You are already a registered member.");
+        } else {
+          console.log("실패");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -99,21 +139,36 @@ export default function Join() {
         <FormContainer>
           <NameContainer>
             <InputLabel>Display name</InputLabel>
-            <NameInputBox>
-              <Input />
+            <NameInputBox nameError={nameError}>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              {nameError && <ExclamationMark />}
             </NameInputBox>
+            {nameError && <ErrorMsg>Name cannot be empty.</ErrorMsg>}
           </NameContainer>
           <PhoneContainer>
             <InputLabel>Phone</InputLabel>
-            <PhoneInputBox>
-              <Input />
+            <PhoneInputBox phoneError={phoneError}>
+              <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
+              {phoneError && <ExclamationMark />}
             </PhoneInputBox>
+            {phoneError && (
+              <ErrorMsg>
+                The mobile phone number must consist of an 11-digit number
+                starting with 010 and a '-'.
+              </ErrorMsg>
+            )}
           </PhoneContainer>
           <BirthdayContainer>
             <InputLabel>Birthday</InputLabel>
-            <BirthdayInputBox>
-              <Input type="date" />
+            <BirthdayInputBox birthdayError={birthdayError}>
+              <Input
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+              />
+              {birthdayError && <ExclamationMark />}
             </BirthdayInputBox>
+            {birthdayError && <ErrorMsg>Birthday cannot be empty.</ErrorMsg>}
           </BirthdayContainer>
           <EmailContainer>
             <InputLabel>Email</InputLabel>
@@ -144,7 +199,7 @@ export default function Join() {
               least 1 letter and 1 number.
             </PasswordExplanation>
           </PasswordContainer>
-          <JoinButton onClick={handleJoin}>Sign in</JoinButton>
+          <JoinButton onClick={handleJoin}>Sign up</JoinButton>
           <JoinExplanation>
             By clicking “Sign up”, you agree to our terms of service and
             acknowledge that you have read and understand our privacy policy and
@@ -251,7 +306,7 @@ const FacebookIcon = tw.img`
 w-[22px] h-[22px]
 `;
 const FormContainer = tw.div`
-w-[300px] h-[670px]
+w-[300px] h-[900px]
 bg-white
 flex
 flex-col
@@ -267,9 +322,10 @@ flex
 flex-col
 my-[6px]
 `;
-const NameInputBox = tw.div`
+const NameInputBox = tw.div<{ nameError: boolean }>`
 my-[2px]
-border-solid border border-[#BABFC4]
+border-solid border 
+${(props) => (props.nameError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -279,9 +335,10 @@ flex
 flex-col
 my-[6px]
 `;
-const PhoneInputBox = tw.div`
+const PhoneInputBox = tw.div<{ phoneError: boolean }>`
 my-[2px]
-border-solid border border-[#BABFC4]
+border-solid border 
+${(props) => (props.phoneError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -291,9 +348,10 @@ flex
 flex-col
 my-[6px]
 `;
-const BirthdayInputBox = tw.div`
+const BirthdayInputBox = tw.div<{ birthdayError: boolean }>`
 my-[2px]
-border-solid border border-[#BABFC4]
+border-solid border
+${(props) => (props.birthdayError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
