@@ -67,13 +67,6 @@ export default {
     });
     return response;
   },
-  // 답변 가져오기
-  async getAnswer() {
-    const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
-      method: "GET",
-    });
-    return response;
-  },
   // 질문 수정
   async updateQuestion(
     id: string,
@@ -94,11 +87,40 @@ export default {
     return response;
   },
   // 답변 등록
-  async postAnswer(data: Answer) {
-    const response = await fetch(`${API_BASE}/answer`, {
+  async postAnswer(questionId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify({ questionId: questionId, content: content }),
+    });
+    return response;
+  },
+  // 답변 삭제
+  async deleteAnswer(answerId = 1, access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+    });
+    return response;
+  },
+  // 댓글 추가
+  async postComments(answerId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify({ answerId: answerId, content: content }),
     });
     return response;
   },

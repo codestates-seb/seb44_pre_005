@@ -8,10 +8,6 @@ import { FaLock } from "react-icons/fa";
 const NavMenu: React.FC = () => {
   const location = useLocation().pathname;
 
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
   return (
     <Container>
       <ContentOl>
@@ -26,7 +22,7 @@ const NavMenu: React.FC = () => {
         <Innerli>
           <ContentOl>
             <OriginLi>
-              {location === "/" || location.indexOf("/detail") === 1 ? (
+              {location === "/" || location.indexOf("/detail") === 0 ? (
                 <Selected></Selected>
               ) : (
                 ""
