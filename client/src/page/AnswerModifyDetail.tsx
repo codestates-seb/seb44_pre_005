@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import preApi from "../api/preApi";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
@@ -9,11 +9,35 @@ import tw from "tailwind-styled-components";
 interface Answer {
   content: string;
 }
+interface URLObject {
+  pathname: string;
+  search: string;
+  hash: string;
+  state: null;
+  key: string;
+}
 
 export default function AnswerModifyDetail() {
-  const { id } = useParams() as { id: string };
+  // const { answerId, questionId } = useParams() as {
+  //   answerId: string;
+  //   questionId: string;
+  // };
+  const location = useLocation();
+
+  const extractIds = (location: URLObject) => {
+    const searchParams = new URLSearchParams(location.search);
+    const answerId = searchParams.get("answerId");
+    const questionId = searchParams.get("questionId");
+
+    return { answerId, questionId };
+  };
+
+  const { answerId, questionId } = extractIds(location);
+  console.log(answerId);
+  console.log(questionId);
+
   const [answer, setAnswer] = useState<Answer>({ content: "" });
-  const [text, setText] = useState(answer.content);
+  const [text, setText] = useState(answerId ? answer.content : "");
   const navigate = useNavigate();
   const cookie = document.cookie.split(";");
   const access = cookie[0].split("=")[1];
@@ -22,28 +46,39 @@ export default function AnswerModifyDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await preApi.getAnswerModify(id);
-        const json = await response.json();
-        setAnswer(json.data);
-        setText(json.data.content);
+        if (answerId) {
+          const response = await preApi.getAnswerModify(answerId);
+          const json = await response.json();
+          setAnswer(json.data);
+          setText(json.data.content);
+          console.log(json.data.content);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [id]);
+  }, [answerId]);
 
   const handleEdit = async () => {
     try {
-      const questionId = "1";
-      const data = { questionId, content: text };
-      const response = await preApi.updateAnswer(id, data, access, refresh);
-      console.log(response);
-      console.log(data);
+      if (answerId && questionId) {
+        const data = { questionId, content: text };
+        const response = await preApi.updateAnswer(
+          answerId,
+          data,
+          access,
+          refresh
+        );
+        console.log(response);
+        console.log(data);
+      }
     } catch (error) {
       console.log(error);
     }
-    navigate(`/detail/${id}`);
+    if (answerId) {
+      navigate(`/detail/${answerId}`);
+    }
   };
 
   return (
@@ -62,7 +97,7 @@ export default function AnswerModifyDetail() {
           </AnswerContainer>
           <ButtonContainer>
             <SaveButton onClick={handleEdit}>Save edits</SaveButton>
-            <CancelLink to={`/detail/${id}`}>Cancel</CancelLink>
+            <CancelLink to={`/detail/${answerId}`}>Cancel</CancelLink>
           </ButtonContainer>
         </AnswerModifyDetailForm>
         <SideMenu />
