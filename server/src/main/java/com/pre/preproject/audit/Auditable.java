@@ -21,6 +21,4 @@ public abstract class Auditable {
     @LastModifiedDate
     @Column(name = "date_modified")
     private LocalDateTime dateModified;
-
-    // createdby 추가 가능
 }

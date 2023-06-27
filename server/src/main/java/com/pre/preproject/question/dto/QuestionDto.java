@@ -41,8 +41,6 @@ public class QuestionDto {
         private LocalDateTime dateCreated;
         private LocalDateTime dateModified;
         private MemberDto.Response member;
-
-//        private List<AnswerDto.Response> answers;
     }
 
     @Getter
@@ -61,9 +59,5 @@ public class QuestionDto {
         private LocalDateTime dateModified;
         private MemberDto.Response member;
         private List<AnswerDto.ResponseComment> answers;
-
     }
-
-
-
 }

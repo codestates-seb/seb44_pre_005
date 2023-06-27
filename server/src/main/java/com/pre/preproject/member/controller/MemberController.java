@@ -22,7 +22,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/members") //TODO 경로 바꾸기
+@RequestMapping("/members")
 @Slf4j
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
@@ -83,13 +83,10 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     @DeleteMapping("/logout")
     public ResponseEntity logout(@RequestHeader("Refresh") @Positive String refreshtoken) {
         log.info(refreshtoken);
         refreshTokenService.deleteRefreshToken(refreshtoken);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-
 }
