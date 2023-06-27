@@ -28,6 +28,7 @@ public class Question extends Auditable {
     private long view = 0L;
     @Enumerated(EnumType.STRING)
     private QuestionStatus questionStatus;
+
     public Question(long questionId, String title, String content, long view, QuestionStatus questionStatus, Member member) {
         this.questionId = questionId;
         this.title = title;
@@ -36,7 +37,6 @@ public class Question extends Auditable {
         this.questionStatus = questionStatus == null ? questionStatus.ACTIVE : questionStatus;
         this.member = member;
     }
-
 
     public enum QuestionStatus {
         INACTIVE(0,"비활성"),
@@ -51,18 +51,13 @@ public class Question extends Auditable {
             this.statusNumber = statusNumber;
             this.questionDescription = questionDescription;
         }
-
     }
-
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    
 
     //답변 가져오기
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Answer> answers = new ArrayList<>();
-
-
 }

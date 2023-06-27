@@ -38,7 +38,6 @@ public class AnswerDto {
         private LocalDateTime dateCreated;
         private LocalDateTime dateModified;
         private MemberDto.Response member;
-//        private List<CommentDto.Response> comments;
     }
 
     @Getter

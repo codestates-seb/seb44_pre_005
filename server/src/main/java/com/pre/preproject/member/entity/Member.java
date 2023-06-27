@@ -23,13 +23,9 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
-
     private String email;
-
     private String password;
-
     private String name;
-
     private LocalDate birthday;
     private String phone;
 
@@ -38,9 +34,9 @@ public class Member {
         this.name = name;
         this.password = password;
     }
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question>  questions = new ArrayList<>();
@@ -48,10 +44,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
-
-
-
 }
