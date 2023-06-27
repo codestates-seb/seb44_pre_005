@@ -23,7 +23,7 @@ export default function Header() {
   const deleteCookie = (name: string) => {
     document.cookie =
       name +
-      "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;";
+      "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=ec2-43-200-88-48.ap-northeast-2.compute.amazonaws.com;";
   };
 
   useEffect(() => {
