@@ -17,10 +17,7 @@ function App() {
       <Header />
       <Container>
         <Routes>
-          <Route
-            path="/answermodify/:id"
-            element={<AnswerModifyDetail />}
-          ></Route>
+          <Route path="/answermodify" element={<AnswerModifyDetail />}></Route>
           <Route
             path="/create"
             element={<CreateQuestion></CreateQuestion>}

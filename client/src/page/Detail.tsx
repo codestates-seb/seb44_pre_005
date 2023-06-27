@@ -264,7 +264,9 @@ export default function Detail() {
                               <EditP>Follow</EditP>
                               {access !== "" && (
                                 <>
-                                  <Link to={`/answermodify/${ele.answerId}`}>
+                                  <Link
+                                    to={`/answermodify?answerId=${ele.answerId}&questionId=${questionInfo.questionId}`}
+                                  >
                                     <EditP>Edit</EditP>
                                   </Link>
                                   <EditP
@@ -317,7 +319,7 @@ export default function Detail() {
                       )}
                       {access !== "" && (
                         <AddCommentContainer>
-                          <AddCommentText />
+                          {/* <AddCommentText /> */}
                           <AddComment>Add a Comment</AddComment>
                         </AddCommentContainer>
                       )}
