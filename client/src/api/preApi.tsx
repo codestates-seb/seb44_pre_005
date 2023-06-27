@@ -90,11 +90,41 @@ export default {
     });
     return response;
   },
+  // 답변 등록
+  async postAnswer(questionId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `${access}`,
         Refresh: `${refresh}`,
       },
+      body: JSON.stringify({ questionId: questionId, content: content }),
+    });
+    return response;
+  },
+  // 답변 삭제
+  async deleteAnswer(answerId = 1, access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+    });
+    return response;
+  },
+  // 댓글 추가
+  async postComments(answerId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify({ answerId: answerId, content: content }),
     });
     return response;
   },
@@ -119,6 +149,31 @@ export default {
         Authorization: `${access}`,
         Refresh: `${refresh}`,
       },
+    });
+    return response;
+  },
+  // 답변 수정
+  async updateAnswer(
+    answerId: string,
+    data: UpdateAnswer,
+    access: string,
+    refresh: string
+  ) {
+    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify(data),
+    });
+    return response;
+  },
+  // 개별 답변 가져오기
+  async getAnswerModify(answerId: string) {
+    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
+      method: "GET",
     });
     return response;
   },
