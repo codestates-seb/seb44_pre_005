@@ -319,7 +319,7 @@ export default function Detail() {
                       )}
                       {access !== "" && (
                         <AddCommentContainer>
-                          <AddCommentText />
+                          {/* <AddCommentText /> */}
                           <AddComment>Add a Comment</AddComment>
                         </AddCommentContainer>
                       )}
