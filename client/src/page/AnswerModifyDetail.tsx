@@ -1,11 +1,51 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import preApi from "../api/preApi";
 import NavMenu from "../components/NavMenu";
 import SideMenu from "../components/SideMenu";
 import Footer from "../components/Footer";
 import tw from "tailwind-styled-components";
 
+interface Answer {
+  content: string;
+}
+
 export default function AnswerModifyDetail() {
+  const { id } = useParams() as { id: string };
+  const [answer, setAnswer] = useState<Answer>({ content: "" });
+  const [text, setText] = useState(answer.content);
+  const navigate = useNavigate();
+  const cookie = document.cookie.split(";");
+  const access = cookie[0].split("=")[1];
+  const refresh = cookie[1].split("=")[1];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await preApi.getAnswerModify(id);
+        const json = await response.json();
+        setAnswer(json.data);
+        setText(json.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  const handleEdit = async () => {
+    try {
+      const questionId = "1";
+      const data = { questionId, content: text };
+      const response = await preApi.updateAnswer(id, data, access, refresh);
+      console.log(response);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    navigate(`/detail/${id}`);
+  };
+
   return (
     <>
       <Container>
@@ -14,12 +54,15 @@ export default function AnswerModifyDetail() {
           <AnswerContainer>
             <Answer>Answer</Answer>
             <AnswerInputBox>
-              <AnswerInput></AnswerInput>
+              <AnswerInput
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              ></AnswerInput>
             </AnswerInputBox>
           </AnswerContainer>
           <ButtonContainer>
-            <SaveButton>Save edits</SaveButton>
-            <CancelLink to="/detail/">Cancel</CancelLink>
+            <SaveButton onClick={handleEdit}>Save edits</SaveButton>
+            <CancelLink to={`/detail/${id}`}>Cancel</CancelLink>
           </ButtonContainer>
         </AnswerModifyDetailForm>
         <SideMenu />
