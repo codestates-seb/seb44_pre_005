@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { IoEarth } from "react-icons/io5";
@@ -22,7 +22,7 @@ const NavMenu: React.FC = () => {
         <Innerli>
           <ContentOl>
             <OriginLi>
-              {location === "/" || location === "/detail" ? (
+              {location === "/" || location.indexOf("/detail") === 0 ? (
                 <Selected></Selected>
               ) : (
                 ""

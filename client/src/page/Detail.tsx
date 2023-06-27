@@ -6,16 +6,28 @@ import SideMenu from "../components/SideMenu";
 import tw from "tailwind-styled-components";
 import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri";
 import { MdBookmarkBorder, MdHistory } from "react-icons/md";
+import Footer from "../components/Footer";
 
 type Question = {
-  answer: number;
+  questionId: number;
+  title: string;
   content: string;
+  view: number;
   dateCreated: string;
   dataModified: string;
   member: Member;
+  answers: Answer[];
 };
 type Answer = {
   answerId: number;
+  answerContent: string;
+  dateCreated: string;
+  dataModified: string;
+  member: Member;
+  comments: Comment[];
+};
+type Comment = {
+  commentId: number;
   content: string;
   dateCreated: string;
   dataModified: string;
@@ -23,43 +35,120 @@ type Answer = {
 };
 type Member = {
   email: string;
-  memeberId: number;
+  memberId: number;
   name: string;
   phone: string;
 };
 
+const initialQuestion: Question = {
+  questionId: 0,
+  title: "",
+  content: "",
+  view: 0,
+  dateCreated: "",
+  dataModified: "",
+  member: {
+    email: "",
+    memberId: 0,
+    name: "",
+    phone: "",
+  },
+  answers: [],
+};
+const initialAnswer: Answer = {
+  answerId: 0,
+  answerContent: "",
+  dateCreated: "",
+  dataModified: "",
+  member: {
+    email: "",
+    memberId: 0,
+    name: "",
+    phone: "",
+  },
+  comments: [],
+};
+
 export default function Detail() {
   const { id } = useParams();
-  const [questionInfo, setQuestionInfo] = useState<Question>({
-    answer: 1,
-    content: "",
-    dateCreated: "",
-    dataModified: "",
-    member: {
-      email: "",
-      memeberId: 1,
-      name: "",
-      phone: "",
-    },
-  });
-  const [answerInfo, setAnswerInfo] = useState<Answer[]>([]);
+  const [questionInfo, setQuestionInfo] = useState<Question>(initialQuestion);
+  const [answerInfo, setAnswerInfo] = useState<Answer[]>([initialAnswer]);
+
+  const [access, setAccess] = useState("");
+  const [refresh, setRefresh] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSubmit = async () => {
+    if (access === "") {
+      alert("로그인이 필요합니다");
+      return;
+    } else if (content === "") {
+      alert("내용을 작성해주세요");
+      return;
+    }
+    try {
+      const response = await preApi.postAnswer(
+        questionInfo.questionId,
+        content,
+        access,
+        refresh
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    location.reload();
+  };
+
+  const handleDelete = async (answerId = 1) => {
+    try {
+      const response = await preApi.deleteAnswer(answerId, access, refresh);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    location.reload();
+  };
+
+  const addComment = async (answerId = 1, content = "") => {
+    try {
+      const response = await preApi.postAnswer(
+        questionInfo.questionId,
+        content,
+        access,
+        refresh
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    location.reload();
+  };
+
+  const getCookie = () => {
+    if (document.cookie !== "") {
+      const cookie = document.cookie.split(";");
+      setAccess(cookie[0].split("=")[1]);
+      setRefresh(cookie[1].split("=")[1]);
+      console.log(access, refresh);
+    }
+  };
   const getQuestion = async (id = "1") => {
     const response = await preApi.getQuestion(id);
     const json = await response.json();
     setQuestionInfo(json.data);
+    setAnswerInfo(json.data.answers);
+    console.log(json.data);
   };
-  const getAnswers = async () => {
-    const response = await preApi.getAnswer();
-    const json = await response.json();
-    setAnswerInfo(json.data);
-  };
-  const getTime = (createdTime = ""): string => {
+  const getTime = (createdTime = ""): string | number => {
     const currentTime = Date.now();
     const targetTime = new Date(createdTime).getTime();
-    const minutesDifference = Math.floor(
+    const minutesDifference: number = Math.floor(
       (currentTime - targetTime) / (1000 * 60)
     );
-
+    if (isNaN(minutesDifference)) {
+      return 0;
+    }
     if (minutesDifference < 1) {
       return "now";
     } else if (minutesDifference < 60) {
@@ -69,157 +158,197 @@ export default function Detail() {
     }
     return `${Math.floor(minutesDifference / 1440)} days ago`;
   };
+
   useEffect(() => {
     getQuestion(id);
-    // getAnswers();
-  }, []);
-  useEffect(() => {
-    getQuestion(id);
-    // getAnswers();
+    getCookie();
   }, []);
 
   return (
-    <Container>
-      <NavMenu />
-      <DetailContainer>
-        <TitleContainer>
-          <TitleInfo>
-            <Title>
-              RegEx match open tags except XHTML self-contained tags
-            </Title>
-            Asked 13 years, 7 months ago Modified 3 months ago Viewed 3.6m times
-          </TitleInfo>
-          <div>
-            <Link to="/createqustion">
-              <Ask>Ask Question</Ask>
-            </Link>
-          </div>
-        </TitleContainer>
-        <ContentContainer>
-          <Content>
-            <QustionContainer>
-              <RemoteContainer>
-                <ArrowContainer>
-                  <RiArrowUpSFill />
-                </ArrowContainer>
-                <LikeP>2</LikeP>
-                <ArrowContainer>
-                  <RiArrowDownSFill />
-                </ArrowContainer>
-                <EtcEmoji>
-                  <MdBookmarkBorder />
-                </EtcEmoji>
-                <EtcEmoji>
-                  <MdHistory />
-                </EtcEmoji>
-              </RemoteContainer>
-              <QuestionContent>
-                <p>{questionInfo.content}</p>
-                <QuestionInfo>
-                  <EditQustion>
-                    <EditP>Share</EditP>
-                    <EditP>Follow</EditP>
-                    <Link to="/modifydetail/1">
-                      <EditP>Edit</EditP>
-                    </Link>
-                    <EditP>delete</EditP>
-                  </EditQustion>
-                  <WriterContainer>
-                    <p>asked {getTime(questionInfo.dateCreated)}</p>
-                    <WriterInfo className="flex">
-                      <img
-                        src="https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG"
-                        width={32}
-                        height={32}
-                      />
-                      <WriterP>{questionInfo.member.name}</WriterP>
-                    </WriterInfo>
-                  </WriterContainer>
-                </QuestionInfo>
-              </QuestionContent>
-            </QustionContainer>
-            <AnswerContainer>
-              <NumAnswers>{answers.length} Answers</NumAnswers>
-              {answers.map((ele) => {
-                const reply = replys.filter((rep) => rep.answer_id === ele.id);
-                return (
-                  <AnswerContent key={ele.id}>
-                    <AnswerInfo>
-                      <RemoteContainer>
-                        <ArrowContainer>
-                          <RiArrowUpSFill />
-                        </ArrowContainer>
-                        <LikeP>{ele.like}</LikeP>
-                        <ArrowContainer>
-                          <RiArrowDownSFill />
-                        </ArrowContainer>
-                        <EtcEmoji>
-                          <MdBookmarkBorder />
-                        </EtcEmoji>
-                        <EtcEmoji>
-                          <MdHistory />
-                        </EtcEmoji>
-                      </RemoteContainer>
-                      <QuestionContent>
-                        <p>{ele.answer}</p>
-                        <QuestionInfo>
-                          <EditQustion>
-                            <EditP>Share</EditP>
-                            <EditP>Follow</EditP>
-                            <Link to="/answermodify/1">
-                              <EditP>Edit</EditP>
-                            </Link>
-                            <EditP>delete</EditP>
-                          </EditQustion>
-                          <AnswererContainer>
-                            <p>answered 5hours</p>
-                            <WriterInfo className="flex">
-                              <img src={ele.img} width={32} height={32} />
-                              <WriterP>{ele.nickname}</WriterP>
-                            </WriterInfo>
-                          </AnswererContainer>
-                        </QuestionInfo>
-                      </QuestionContent>
-                    </AnswerInfo>
-                    {reply.length !== 0 && (
-                      <CommentContaier key={ele.id}>
-                        {reply.map((rp) => {
-                          return (
-                            <CommentInner key={rp.id}>
-                              <CommentLike>
-                                <p>1</p>
-                              </CommentLike>
-                              <Comment key={rp.id}>
-                                {rp.content} -
-                                <CommentWriter> {rp.nickname}</CommentWriter>
-                                <CommentDate> {rp.date}</CommentDate>
-                              </Comment>
-                            </CommentInner>
-                          );
-                        })}
-                      </CommentContaier>
-                    )}
-                    <AddComment>Add a Comment</AddComment>
-                  </AnswerContent>
-                );
-              })}
-            </AnswerContainer>
-            <AddAnswerContiner>
-              <NumAnswers>Your Answer</NumAnswers>
-              <AddAnswer></AddAnswer>
-              <AddAnswerBtn>Post Your Answer</AddAnswerBtn>
-            </AddAnswerContiner>
-          </Content>
-          <SideMenu />
-        </ContentContainer>
-      </DetailContainer>
-    </Container>
+    <>
+      <Container>
+        <NavMenu />
+        <DetailContainer>
+          <TitleContainer>
+            <TitleInfo>
+              <Title>{questionInfo.title}</Title>
+              Asked {getTime(questionInfo.dateCreated)}
+              <TitleSpan>
+                {getTime(questionInfo.dataModified) !== 0 &&
+                  `Modified ${getTime(questionInfo.dataModified)}`}
+              </TitleSpan>
+              Viewed {questionInfo.view} times
+            </TitleInfo>
+            <div>
+              <Link to="/create">
+                <Ask>Ask Question</Ask>
+              </Link>
+            </div>
+          </TitleContainer>
+          <ContentContainer>
+            <Content>
+              <QustionContainer>
+                <RemoteContainer>
+                  <ArrowContainer>
+                    <RiArrowUpSFill />
+                  </ArrowContainer>
+                  <LikeP>2</LikeP>
+                  <ArrowContainer>
+                    <RiArrowDownSFill />
+                  </ArrowContainer>
+                  <EtcEmoji>
+                    <MdBookmarkBorder />
+                  </EtcEmoji>
+                  <EtcEmoji>
+                    <MdHistory />
+                  </EtcEmoji>
+                </RemoteContainer>
+                <QuestionContent>
+                  <p>{questionInfo.content}</p>
+                  <QuestionInfo>
+                    <EditQustion>
+                      <EditP>Share</EditP>
+                      <EditP>Follow</EditP>
+                      {access !== "" && (
+                        <>
+                          <Link to={`/modifydetail/${questionInfo.questionId}`}>
+                            <EditP>Edit</EditP>
+                          </Link>
+                          <EditP>delete</EditP>
+                        </>
+                      )}
+                    </EditQustion>
+                    <WriterContainer>
+                      <p>asked {getTime(questionInfo.dateCreated)}</p>
+                      <WriterInfo className="flex">
+                        <img
+                          src="https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG"
+                          width={32}
+                          height={32}
+                        />
+                        <WriterP>{questionInfo.member.name}</WriterP>
+                      </WriterInfo>
+                    </WriterContainer>
+                  </QuestionInfo>
+                </QuestionContent>
+              </QustionContainer>
+              <AnswerContainer>
+                <NumAnswers>
+                  {answerInfo.length !== 0 && `${answerInfo.length} Answers`}
+                </NumAnswers>
+                {answerInfo.map((ele) => {
+                  const reply = ele.comments;
+                  return (
+                    <AnswerContent key={ele.answerId}>
+                      <AnswerInfo>
+                        <RemoteContainer>
+                          <ArrowContainer>
+                            <RiArrowUpSFill />
+                          </ArrowContainer>
+                          <LikeP>1</LikeP>
+                          <ArrowContainer>
+                            <RiArrowDownSFill />
+                          </ArrowContainer>
+                          <EtcEmoji>
+                            <MdBookmarkBorder />
+                          </EtcEmoji>
+                          <EtcEmoji>
+                            <MdHistory />
+                          </EtcEmoji>
+                        </RemoteContainer>
+                        <QuestionContent>
+                          <p>{ele.answerContent}</p>
+                          <QuestionInfo>
+                            <EditQustion>
+                              <EditP>Share</EditP>
+                              <EditP>Follow</EditP>
+                              {access !== "" && (
+                                <>
+                                  <Link
+                                    to={`/answermodify?answerId=${ele.answerId}&questionId=${questionInfo.questionId}`}
+                                  >
+                                    <EditP>Edit</EditP>
+                                  </Link>
+                                  <EditP
+                                    onClick={() => {
+                                      handleDelete(ele.answerId);
+                                    }}
+                                  >
+                                    delete
+                                  </EditP>
+                                </>
+                              )}
+                            </EditQustion>
+                            <AnswererContainer>
+                              <p>{`answered ${getTime(ele.dateCreated)}`}</p>
+                              <WriterInfo className="flex">
+                                <img
+                                  src="https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG"
+                                  width={32}
+                                  height={32}
+                                />
+                                <WriterP>{ele.member.name}</WriterP>
+                              </WriterInfo>
+                            </AnswererContainer>
+                          </QuestionInfo>
+                        </QuestionContent>
+                      </AnswerInfo>
+                      {ele.comments.length !== 0 && (
+                        <CommentContaier key={ele.answerId}>
+                          {reply.map((rp) => {
+                            return (
+                              <CommentInner key={rp.commentId}>
+                                <CommentLike>
+                                  <p>1</p>
+                                </CommentLike>
+                                <Comment>
+                                  {rp.content} -
+                                  <CommentWriter>
+                                    {" "}
+                                    {rp.member.name}
+                                  </CommentWriter>
+                                  <CommentDate>
+                                    {" "}
+                                    {rp.dateCreated.slice(0, 10)}
+                                  </CommentDate>
+                                </Comment>
+                              </CommentInner>
+                            );
+                          })}
+                        </CommentContaier>
+                      )}
+                      {access !== "" && (
+                        <AddCommentContainer>
+                          {/* <AddCommentText /> */}
+                          <AddComment>Add a Comment</AddComment>
+                        </AddCommentContainer>
+                      )}
+                    </AnswerContent>
+                  );
+                })}
+              </AnswerContainer>
+              <AddAnswerContiner>
+                <NumAnswers>Your Answer</NumAnswers>
+                <AddAnswer
+                  onChange={(e) => setContent(e.target.value)}
+                ></AddAnswer>
+                <AddAnswerBtn onClick={handleSubmit}>
+                  Post Your Answer
+                </AddAnswerBtn>
+              </AddAnswerContiner>
+            </Content>
+            <SideMenu />
+          </ContentContainer>
+        </DetailContainer>
+      </Container>
+      <Footer />
+    </>
   );
 }
 
 const Container = tw.div`
 flex
-mx-28
+mx-72
 `;
 const DetailContainer = tw.div`
 w-[calc(100%-160px)] min-w-[900px]
@@ -236,10 +365,14 @@ const TitleInfo = tw.div`
 text-sm
 `;
 const Title = tw.p`
-text-[27px]
-mb-1
+text-3xl
+mb-3
+`;
+const TitleSpan = tw.span`
+mx-3
 `;
 const Ask = tw.p`
+min-w-[106px]
 bg-[#0A95FF]
 p-3
 text-sm text-white
@@ -351,8 +484,17 @@ text-[#0074E0]
 const CommentDate = tw.span`
 text-gray-400
 `;
-const AddComment = tw.p`
+const AddCommentContainer = tw.div`
+flex
+flex-col
 ml-14
+mt-4
+`;
+const AddCommentText = tw.textarea`
+border-[1px]
+border-gray-400
+`;
+const AddComment = tw.p`
 mt-4
 text-gray-400
 text-xs
@@ -382,7 +524,7 @@ const userList = {
   birthday: "199701",
 };
 
-const answers = [
+const answers2 = [
   {
     id: 1,
     nickname: "hilmi ugur",

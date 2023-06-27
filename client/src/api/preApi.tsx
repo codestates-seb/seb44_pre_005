@@ -21,6 +21,11 @@ interface UpdateAnswer {
   content: string;
 }
 
+type Answer = {
+  questionId: number;
+  content: string;
+};
+
 export default {
   // 유저 목록 가져오기
   async getUserList(page = 1, size = 10) {
@@ -56,18 +61,13 @@ export default {
     });
     return response;
   },
+  // 질문 가져오기
   async getQuestion(id = "1") {
     const response = await fetch(`${API_BASE}/questions/${id}`, {
       method: "GET",
       headers: {
         "ngrok-skip-browser-warning": "true",
       },
-    });
-    return response;
-  },
-  async getAnswer() {
-    const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
-      method: "GET",
     });
     return response;
   },
@@ -90,28 +90,11 @@ export default {
     });
     return response;
   },
-  // 답변 수정
-  async updateAnswer(
-    id: string,
-    data: UpdateAnswer,
-    access: string,
-    refresh: string
-  ) {
-    const response = await fetch(`${API_BASE}/answers/${id}`, {
-      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `${access}`,
         Refresh: `${refresh}`,
       },
-      body: JSON.stringify(data),
-    });
-    return response;
-  },
-  // 개별 답변 가져오기
-  async getAnswerModify(id: string) {
-    const response = await fetch(`${API_BASE}/answers/${id}`, {
-      method: "GET",
     });
     return response;
   },
