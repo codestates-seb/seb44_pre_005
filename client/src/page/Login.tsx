@@ -87,7 +87,7 @@ export default function Login() {
         <FormContainer>
           <EmailContainer>
             <Email>Email</Email>
-            <EmailInputBox emailError={emailError}>
+            <EmailInputBox $emailError={emailError}>
               <EmailInput
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -103,7 +103,7 @@ export default function Login() {
               <Password>Password</Password>
               <PasswordForgot>Forgot password?</PasswordForgot>
             </PasswordContent>
-            <PasswordInputBox passwordError={passwordError}>
+            <PasswordInputBox $passwordError={passwordError}>
               <PasswordInput
                 type="password"
                 value={password}
@@ -227,10 +227,10 @@ font-[600]
 text-[15px]
 my-[2px]
 `;
-const EmailInputBox = tw.div<{ emailError: boolean }>`
+const EmailInputBox = tw.div<{ $emailError: boolean }>`
 my-[2px]
 border-solid border
-${(props) => (props.emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$emailError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
@@ -267,10 +267,10 @@ text-xs text-[#0074cc]
   cursor-pointer
 }
 `;
-const PasswordInputBox = tw.div<{ passwordError: boolean }>`
+const PasswordInputBox = tw.div<{ $passwordError: boolean }>`
 my-[2px]
 border-solid border
-${(props) => (props.passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
+${(props) => (props.$passwordError ? "border-[#de4f54]" : "border-[#BABFC4]")}
 w-[256px] h-[30px]
 rounded-[3px]
 flex
