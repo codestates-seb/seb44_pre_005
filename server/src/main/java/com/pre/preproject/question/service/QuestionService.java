@@ -49,7 +49,6 @@ public class QuestionService {
 
     }
 
-
     //상세질문조회
     public Question selectQuestion(long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
@@ -59,8 +58,7 @@ public class QuestionService {
         return question;
     }
 
-
-    public Page<Question> findquestions(int page, int size) {
+    public Page<Question> findQuestions(int page, int size) {
         return questionRepository.findByQuestionStatus(PageRequest.of(page, size, Sort.by("questionId").descending()), Question.QuestionStatus.ACTIVE);
     }
 
@@ -70,14 +68,12 @@ public class QuestionService {
         questionRepository.findById(questionId).orElseThrow(()->new RuntimeException());
         question.setQuestionStatus(Question.QuestionStatus.INACTIVE);
         questionRepository.save(question);
-
     }
 
     //회원이 존재하는지 확인
     private void verifyQuestion(Question question) {
         memberService.findVerifiedMember(question.getMember().getMemberId());
     }
-
 
     //조회수 증가
     public void increaseViews(Question question) {
@@ -96,5 +92,4 @@ public class QuestionService {
         long questionCount = questionRepository.count();
         return  questionCount;
     }
-
 }

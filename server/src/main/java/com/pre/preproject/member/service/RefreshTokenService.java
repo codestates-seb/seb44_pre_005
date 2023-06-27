@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-
-
 @RequiredArgsConstructor
 @Service
 public class RefreshTokenService {
@@ -37,5 +35,4 @@ public class RefreshTokenService {
     public Optional<RefreshToken> findRefreshToken(String refreshToken) {
         return refreshTokenRepository.findByValue(refreshToken);
     }
-
 }

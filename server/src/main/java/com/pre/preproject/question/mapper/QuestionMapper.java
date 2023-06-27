@@ -21,15 +21,15 @@ public interface QuestionMapper {
     Question postDtoToQuestion(QuestionDto.Post postDto);
     Question patchDtoToQuestion(QuestionDto.Patch patchDto);
     default QuestionDto.Response questionToResponseDto(Question question){
-        if ( question == null ) {
+        if (question == null) {
             return null;
         }
 
         QuestionDto.Response responseDto = new QuestionDto.Response();
 
-        responseDto.setQuestionId( question.getQuestionId() );
-        responseDto.setTitle( question.getTitle() );
-        responseDto.setContent( question.getContent() );
+        responseDto.setQuestionId(question.getQuestionId());
+        responseDto.setTitle(question.getTitle());
+        responseDto.setContent(question.getContent());
         responseDto.setView(question.getView());
         responseDto.setDateCreated(question.getDateCreated());
         responseDto.setDateModified(question.getDateModified());
@@ -39,15 +39,15 @@ public interface QuestionMapper {
     }
 
     default QuestionDto.ResponseAnswer questionToResponseAnswerDto(Question question){
-        if ( question == null ) {
+        if (question == null) {
             return null;
         }
 
         QuestionDto.ResponseAnswer responseDto = new QuestionDto.ResponseAnswer();
 
-        responseDto.setQuestionId( question.getQuestionId() );
-        responseDto.setTitle( question.getTitle() );
-        responseDto.setContent( question.getContent() );
+        responseDto.setQuestionId(question.getQuestionId());
+        responseDto.setTitle(question.getTitle());
+        responseDto.setContent(question.getContent());
         responseDto.setView(question.getView());
         responseDto.setDateCreated(question.getDateCreated());
         responseDto.setDateModified(question.getDateModified());
@@ -57,17 +57,16 @@ public interface QuestionMapper {
         return responseDto;
     }
 
-
     MemberDto.Response memberToMemberResponse(Member member);
 
     default List<QuestionDto.Response> questionToResponseDto(List<Question> questions){
-        if ( questions == null ) {
+        if (questions == null) {
             return null;
         }
 
         List<QuestionDto.Response> list = new ArrayList<QuestionDto.Response>( questions.size() );
-        for ( Question question : questions ) {
-            list.add( questionToResponseDto( question ) );
+        for (Question question : questions) {
+            list.add(questionToResponseDto(question));
         }
 
         return list;
@@ -86,20 +85,18 @@ public interface QuestionMapper {
                 .build();
     }
 
-
     default List<AnswerDto.ResponseComment> answerListToResponseDtoList(List<Answer> answers){
-        if ( answers == null ) {
+        if (answers == null) {
             return null;
         }
 
         List<AnswerDto.ResponseComment> list = new ArrayList<AnswerDto.ResponseComment>( answers.size() );
-        for ( Answer answer : answers ) {
-            list.add( answerToAnswerResponseDto( answer ) );
+        for (Answer answer : answers) {
+            list.add(answerToAnswerResponseDto(answer));
         }
 
         return list;
     }
-
 
     default List<CommentDto.CommentResponseList> getCommentsByAnswer(List<Comment> comments) {
         return comments
@@ -114,6 +111,4 @@ public interface QuestionMapper {
                         .build())
                 .collect(Collectors.toList());
     }
-
-
 }

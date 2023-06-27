@@ -59,6 +59,7 @@ public class QuestionController {
         questionService.updateQuestion(patchDto, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     //질문 상세 조회, 뷰 카운트
     @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id") long questionId){
@@ -73,7 +74,7 @@ public class QuestionController {
                                        @RequestParam("size") int size,
                                        @RequestParam(required = false) String keyword) {
         //size 값 변경 가능
-        Page<Question> pageQuestions = questionService.findquestions(page-1,size);
+        Page<Question> pageQuestions = questionService.findQuestions(page-1,size);
         List<Question> questions = pageQuestions.getContent();
         for (int i = 0; i < questions.size(); i++) {
             System.out.println(questions.get(i).toString());
@@ -103,7 +104,4 @@ public class QuestionController {
         RefreshToken findtoken = refresht.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findtoken.getMemberId();
     }
-
-
-
 }
