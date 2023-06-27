@@ -1,1 +1,0 @@
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c77289da-85a3-4d65-9a2d-269520d00799/Untitled.png)
