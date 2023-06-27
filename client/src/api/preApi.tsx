@@ -17,6 +17,11 @@ interface UpdateQuestion {
   content: string;
 }
 
+type Answer = {
+  questionId: number;
+  content: string;
+};
+
 export default {
   // 유저 목록 가져오기
   async getUserList(page = 1, size = 10) {
@@ -52,18 +57,13 @@ export default {
     });
     return response;
   },
+  // 질문 가져오기
   async getQuestion(id = "1") {
     const response = await fetch(`${API_BASE}/questions/${id}`, {
       method: "GET",
       headers: {
         "ngrok-skip-browser-warning": "true",
       },
-    });
-    return response;
-  },
-  async getAnswer() {
-    const response = await fetch(`${API_BASE}/answers?page=1&size=100`, {
-      method: "GET",
     });
     return response;
   },
@@ -83,6 +83,44 @@ export default {
         Refresh: `${refresh}`,
       },
       body: JSON.stringify(data),
+    });
+    return response;
+  },
+  // 답변 등록
+  async postAnswer(questionId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify({ questionId: questionId, content: content }),
+    });
+    return response;
+  },
+  // 답변 삭제
+  async deleteAnswer(answerId = 1, access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+    });
+    return response;
+  },
+  // 댓글 추가
+  async postComments(answerId = 1, content = "", access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+      body: JSON.stringify({ answerId: answerId, content: content }),
     });
     return response;
   },
