@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NavMenu from "../components/NavMenu";
 import preApi from "../api/preApi";
 import SideMenu from "../components/SideMenu";
@@ -78,6 +78,8 @@ export default function Detail() {
   const [refresh, setRefresh] = useState("");
   const [content, setContent] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     if (access === "") {
       alert("로그인이 필요합니다");
@@ -110,14 +112,19 @@ export default function Detail() {
     location.reload();
   };
 
-  const addComment = async (answerId = 1, content = "") => {
+  const handleDeleteQusetion = async (questionId = 1) => {
     try {
-      const response = await preApi.postAnswer(
-        questionInfo.questionId,
-        content,
-        access,
-        refresh
-      );
+      const response = await preApi.deleteQuestion(questionId, access, refresh);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    navigate("/");
+  };
+
+  const handleDeleteComments = async (id = 1) => {
+    try {
+      const response = await preApi.deleteComments(id, access, refresh);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -130,7 +137,6 @@ export default function Detail() {
       const cookie = document.cookie.split(";");
       setAccess(cookie[0].split("=")[1]);
       setRefresh(cookie[1].split("=")[1]);
-      console.log(access, refresh);
     }
   };
   const getQuestion = async (id = "1") => {
@@ -138,7 +144,6 @@ export default function Detail() {
     const json = await response.json();
     setQuestionInfo(json.data);
     setAnswerInfo(json.data.answers);
-    console.log(json.data);
   };
   const getTime = (createdTime = ""): string | number => {
     const currentTime = Date.now();
@@ -214,7 +219,13 @@ export default function Detail() {
                           <Link to={`/modifydetail/${questionInfo.questionId}`}>
                             <EditP>Edit</EditP>
                           </Link>
-                          <EditP>delete</EditP>
+                          <EditP
+                            onClick={() => {
+                              handleDeleteQusetion(questionInfo.questionId);
+                            }}
+                          >
+                            delete
+                          </EditP>
                         </>
                       )}
                     </EditQustion>
@@ -311,6 +322,15 @@ export default function Detail() {
                                     {" "}
                                     {rp.dateCreated.slice(0, 10)}
                                   </CommentDate>
+                                  {access !== "" && (
+                                    <EditComment
+                                      onClick={() => {
+                                        handleDeleteComments(rp.commentId);
+                                      }}
+                                    >
+                                      delete
+                                    </EditComment>
+                                  )}
                                 </Comment>
                               </CommentInner>
                             );
@@ -319,7 +339,6 @@ export default function Detail() {
                       )}
                       {access !== "" && (
                         <AddCommentContainer>
-                          {/* <AddCommentText /> */}
                           <AddComment>Add a Comment</AddComment>
                         </AddCommentContainer>
                       )}
@@ -462,7 +481,6 @@ const CommentContaier = tw.div`
 border-t-[1px]
 border-[#D6D9DC]
 ml-14
-mt-12
 `;
 const CommentInner = tw.div`
 flex
@@ -484,15 +502,16 @@ text-[#0074E0]
 const CommentDate = tw.span`
 text-gray-400
 `;
+const EditComment = tw.span`
+ml-2
+cursor-pointer
+text-[#6A737C]
+`;
 const AddCommentContainer = tw.div`
 flex
 flex-col
 ml-14
 mt-4
-`;
-const AddCommentText = tw.textarea`
-border-[1px]
-border-gray-400
 `;
 const AddComment = tw.p`
 mt-4
@@ -517,70 +536,3 @@ mt-8
 cursor-pointer
 inline-block
 `;
-
-const userList = {
-  img: "https://i.stack.imgur.com/I4fiW.jpg?s=128&g=1",
-  name: "VonC",
-  birthday: "199701",
-};
-
-const answers2 = [
-  {
-    id: 1,
-    nickname: "hilmi ugur",
-    img: "https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG",
-    answer: `Yes, you can query a running container to see which logging driver it is using. The information about the logging driver is available in the container's metadata. You can use the docker inspect command with a specific format option to extract the logging driver information.
-
-  docker inspect -f '{{.HostConfig.LogConfig.Type}}' <container_id>`,
-    like: 3,
-  },
-  {
-    id: 2,
-    nickname: "hilmi ugur",
-    img: "https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG",
-    answer: `Yes, you can query a running container to see which logging driver it is using. The information about the logging driver is available in the container's metadata. You can use the docker inspect command with a specific format option to extract the logging driver information.
-
-  docker inspect -f '{{.HostConfig.LogConfig.Type}}' <container_id>`,
-    like: 3,
-  },
-  {
-    id: 3,
-    nickname: "hilmi ugur",
-    img: "https://www.gravatar.com/avatar/57557ba32e0e125eff0f2b39bd710c5b?s=64&d=identicon&r=PG",
-    answer: `Yes, you can query a running container to see which logging driver it is using. The information about the logging driver is available in the container's metadata. You can use the docker inspect command with a specific format option to extract the logging driver information.
-
-  docker inspect -f '{{.HostConfig.LogConfig.Type}}' <container_id>`,
-    like: 3,
-  },
-];
-
-const replys = [
-  {
-    id: 1,
-    answer_id: 1,
-    nickname: "H1",
-    content: `Apache has the LimitRequestBody & LimitRequestFieldSize directives too, not always safe to assume it's restricted by just PHP`,
-    date: "Feb 16, 2010 at 22:33",
-  },
-  {
-    id: 2,
-    answer_id: 1,
-    nickname: "H2",
-    content: `I agree`,
-    date: "Feb 16, 2010 at 22:33",
-  },
-  {
-    id: 3,
-    answer_id: 1,
-    nickname: "H3",
-    content: `Nice to see you again`,
-    date: "Feb 16, 2010 at 22:33",
-  },
-  {
-    id: 4,
-    answer_id: 3,
-    nickname: "hilmi ugur",
-    content: `Nice to see you again`,
-    date: "Feb 16, 2010 at 22:33",
-  },
-];

@@ -124,4 +124,28 @@ export default {
     });
     return response;
   },
+  // 질문 삭제
+  async deleteQuestion(id = 1, access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/questions/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+    });
+    return response;
+  },
+  // 댓글 삭제
+  async deleteComments(id = 1, access = "", refresh = "") {
+    const response = await fetch(`${API_BASE}/comments/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${access}`,
+        Refresh: `${refresh}`,
+      },
+    });
+    return response;
+  },
 };
