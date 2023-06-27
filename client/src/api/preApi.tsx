@@ -16,6 +16,10 @@ interface UpdateQuestion {
   title: string;
   content: string;
 }
+interface UpdateAnswer {
+  questionId: string;
+  content: string;
+}
 
 type Answer = {
   questionId: number;
@@ -86,41 +90,11 @@ export default {
     });
     return response;
   },
-  // 답변 등록
-  async postAnswer(questionId = 1, content = "", access = "", refresh = "") {
-    const response = await fetch(`${API_BASE}/answers`, {
-      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `${access}`,
         Refresh: `${refresh}`,
       },
-      body: JSON.stringify({ questionId: questionId, content: content }),
-    });
-    return response;
-  },
-  // 답변 삭제
-  async deleteAnswer(answerId = 1, access = "", refresh = "") {
-    const response = await fetch(`${API_BASE}/answers/${answerId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${access}`,
-        Refresh: `${refresh}`,
-      },
-    });
-    return response;
-  },
-  // 댓글 추가
-  async postComments(answerId = 1, content = "", access = "", refresh = "") {
-    const response = await fetch(`${API_BASE}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${access}`,
-        Refresh: `${refresh}`,
-      },
-      body: JSON.stringify({ answerId: answerId, content: content }),
     });
     return response;
   },
